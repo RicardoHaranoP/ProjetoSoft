@@ -1,0 +1,29 @@
+
+#root {
+    height: 100%;
+    width: 100%;
+    position: fixed;
+}
+
+header {
+    background-color: #80D8EB;
+}
+
+.faixa a {
+    cursor: pointer;
+    transition: .1s;
+    padding: 20px;
+    text-decoration: none;
+    font-size: 20px;
+    color: black;
+}
+
+.faixa a:hover {
+    background-color: #0A809A;
+    color: #fff;
+  }
+
+.faixa {
+    display: flex;
+    padding-right: 15px;
+}

@@ -1,0 +1,21 @@
+body {
+  background: #F5F5F5;
+}
+
+.container {
+  margin-top: 100px;
+}
+
+.container a {
+text-decoration: none;
+width: 600px;
+background: #80D8EB;
+border-radius: 20px;
+color: #000000;
+display: block;
+font-size: 25px;
+font-weight: bold;
+margin: 20px auto;
+padding: 50px;
+text-align: center;
+}

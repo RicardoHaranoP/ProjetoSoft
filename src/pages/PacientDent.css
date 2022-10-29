@@ -1,0 +1,22 @@
+
+
+.agenda {
+    background-color: #0A809A;
+    color: #fff;
+    float: left;
+    margin-left: 20px;
+    border-radius: 20px;
+    margin-top: 200px;
+    padding: 20px 250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+}
+
+.informacoes {
+    margin-top: 2%;
+    position: absolute;
+    left: 55%;
+    font-size: 1.5em;
+}
