@@ -1,4 +1,4 @@
-import './TopNav.css';
+
 import './ListaPacientDent.css';
 
 import {MdAccountCircle} from 'react-icons/md';

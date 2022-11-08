@@ -1,4 +1,4 @@
-import './TopNav.css';
+
 import './PacientDent.css';
 
 export default function Dentista(){

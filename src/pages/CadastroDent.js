@@ -1,4 +1,4 @@
-import './TopNav.css';
+
 import './Cadastro.css';
 
 export default function CadastroDent(){

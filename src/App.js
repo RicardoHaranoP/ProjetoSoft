@@ -2,9 +2,9 @@ import Home from './pages/Home.js';
 import ListaDentistas from './pages/ListaDentistas.js';
 import ListaPacientes from './pages/ListaPacientes.js';
 import Dentista from './pages/Dentista.js';
-import Agenda from './pages/Agenda.js';
 import CadastroDent from './pages/CadastroDent';
 import Agendamento from './pages/agendamento/Agendamento.js';
+
 
 
 import React from "react";
@@ -25,7 +25,6 @@ function App() {
       <Route path='/dentistas'              element={<ListaDentistas/>}/>
       <Route path='/pacientes'              element={<ListaPacientes/>}/>      
       <Route path='/dentista'               element={<Dentista/>}/>
-      <Route path='/dentista/agenda'        element={<Agenda/>}/>
       <Route path='/dentista/cadastro'      element={<CadastroDent/>}/>
       <Route path='/dentista/agendamento'   element={<Agendamento/>}/>
     </Routes>
