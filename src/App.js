@@ -13,6 +13,7 @@ import {
   Routes,
   Route
 } from "react-router-dom";
+import CadastroPacient from './pages/CadastroPacient.js';
 
 
 
@@ -27,6 +28,7 @@ function App() {
       <Route path='/dentista'               element={<Dentista/>}/>
       <Route path='/dentista/cadastro'      element={<CadastroDent/>}/>
       <Route path='/dentista/agendamento'   element={<Agendamento/>}/>
+      <Route path='/paciente/cadastro'      element={<CadastroPacient/>}/>
     </Routes>
     </BrowserRouter>
   )

@@ -1,9 +1,12 @@
 
+
+import React from 'react';
+import ReactDOM from 'react-dom';
 import {MdAccountCircle} from 'react-icons/md';
 import {MdAddCircle} from 'react-icons/md';
 import './ListaPacientDent.css';
-import 'rsuite/dist/rsuite.min.css';
 import { Table } from 'rsuite';
+
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -45,37 +48,9 @@ const data = [
  
 
 /*
-<Column width={150}>
-                            <HeaderCell>First Name</HeaderCell>
-                            <Cell dataKey="first_name" />
-                        </Column>
 
-                        <Column width={150}>
-                            <HeaderCell>Last Name</HeaderCell>
-                            <Cell dataKey="last_name" />
-                        </Column>
 
-                        <Column width={100}>
-                            <HeaderCell>Gender</HeaderCell>
-                            <Cell dataKey="gender" />
-                        </Column>
-                        <Column width={300}>
-                            <HeaderCell>Email</HeaderCell>
-                            <Cell dataKey="email" />
-                        </Column>
-                                                <Column width={80} fixed="right">
-                            <HeaderCell>...</HeaderCell>
-
-                            <Cell>
-                            {rowData => (
-                                <span>
-                                <a onClick={() => alert(`id:${rowData.id}`)}> Edit </a>
-                                </span>
-                            )}
-                            </Cell>
-                        </Column>
 */
-
 
 export default function ListaPacientes() {
     return(
@@ -85,27 +60,63 @@ export default function ListaPacientes() {
                     <div className='w-100 d-flex justify-content-between'>
                         <h2 className="mb-4 mt-0">Pacientes</h2>
                         <div>
-                            <a className="novo" role="button"><MdAddCircle size={30}/>Novo Paciente</a>
+                        <a className="novo" href="http://localhost:3000/paciente/cadastro" role="button" > <MdAddCircle size={30}/> Novo Paciente</a>
                         </div>
-                    </div>                        
-                </div>
-                
-                <Table
+                    </div> 
+                    <Table
                     height={400}
                     data={data}
                     onRowClick={rowData => {
                         console.log(rowData);
                     }}
                     >
-                        <Column width={60} align="center" fixed>
-                            <HeaderCell>Id</HeaderCell>
-                            <Cell dataKey="id" />
-                        </Column>
-                        
+                    <Column width={60} align="center" fixed>
+                        <HeaderCell>Id</HeaderCell>
+                        <Cell dataKey="id" />
+                    </Column>
 
+                    <Column width={150}>
+                        <HeaderCell>First Name</HeaderCell>
+                        <Cell dataKey="first_name" />
+                    </Column>
 
-                    </Table>
-                
+                    <Column width={150}>
+                        <HeaderCell>Last Name</HeaderCell>
+                        <Cell dataKey="last_name" />
+                    </Column>
+
+                    <Column width={100}>
+                        <HeaderCell>Gender</HeaderCell>
+                        <Cell dataKey="gender" />
+                    </Column>
+
+                    <Column width={100}>
+                        <HeaderCell>Age</HeaderCell>
+                        <Cell dataKey="age" />
+                    </Column>
+
+                    <Column width={150}>
+                        <HeaderCell>Postcode</HeaderCell>
+                        <Cell dataKey="postcode" />
+                    </Column>
+
+                    <Column width={300}>
+                        <HeaderCell>Email</HeaderCell>
+                        <Cell dataKey="email" />
+                    </Column>
+                    <Column width={80} fixed="right">
+                        <HeaderCell>...</HeaderCell>
+
+                        <Cell>
+                        {rowData => (
+                            <span>
+                            <a onClick={() => alert(`id:${rowData.id}`)}> Edit </a>
+                            </span>
+                        )}
+                        </Cell>
+                    </Column>
+                </Table>                       
+                </div>
             </div>
         </div>
     )
