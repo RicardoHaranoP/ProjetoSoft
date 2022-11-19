@@ -1,11 +1,41 @@
-
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from "react-router-dom";
 import './Cadastro.css';
 import api from '../services/api';
 import axios from 'axios';
+import dataService from '../services/dataService';
 
 
 
-export default function CadastroPacient(){
+const CadastroPacient = () => {
+    
+    const {id}=useParams();
+    const navigate = useNavigate();
+
+    const[nome, setNome]=useState('')
+    const[cpf, setCpf]=useState('')
+    const[dataNascimento, setDataNascimento]=useState('')
+    const[celular, setCelular]=useState('')
+    const[email, setEmail]=useState('')
+
+    const savePaciente = (e) => {
+        e.preventDefault();
+
+        const paciente={nome, cpf, dataNascimento, celular, email};
+
+
+        //create
+        dataService.createPaciente(paciente)
+            .then(response => {
+                console.log("Paciente adicionado", response.data);
+                navigate("/");
+            })
+            .catch(error => {
+                console.log('Algo deu errado', error);
+            })
+        
+    }
+
 /*
     constructor(props) {
         super(props);
@@ -28,10 +58,10 @@ export default function CadastroPacient(){
 */
 
 
-    function cadastrarPaciente() {
-        validateControls();
-    }
-
+    /*function cadastrarPaciente() {
+        //validateControls();
+    }*/
+/*
     function validateControls() {
         //FirstName
         var valor = document.getElementById("fname");
@@ -45,13 +75,13 @@ export default function CadastroPacient(){
         }
 
         getControlValues();
-        */
+        
     }
 
     function getControlValues() {
         alert("First Name= " + fname.value)
     }
-
+*/
 
 /*
     allInput.foreach(input => {
@@ -70,7 +100,7 @@ export default function CadastroPacient(){
     console.log(response.data);*/
 
 
-
+/*
     api.get('/paciente')
       .then(function (response) {
         // handle success
@@ -80,6 +110,8 @@ export default function CadastroPacient(){
         // handle error
         console.log(error);
       })
+*/
+
 
 
     return(
@@ -93,22 +125,51 @@ export default function CadastroPacient(){
                             <h2 className="mb-4 mt-0">Cadastro Pacientes</h2>
 
                             <label>Nome:</label>                                        
-                            <input id="fname" type="text"  name="firstname"  placeholder="Digite seu nome"></input>
+                            <input
+                                type="text"
+                                id="nome"                                   
+                                value={nome}  
+                                onChange={(e) => setNome(e.target.value)}
+                                placeholder="Digite seu nome"
+                                />
+                                
                             <label>CPF:</label>
-                            <input type="text" id="cpf" name="cpf"  placeholder="Digite seu CPF"></input>
+                            <input 
+                                type="text" 
+                                id="cpf" 
+                                name="cpf"  
+                                placeholder="Digite seu CPF"
+                                />
+
                             <label>Data de Nascimento:</label>                                        
-                            <input type="text" id="dataNascimento" name="dataNascimento" placeholder="Digite sua Data de Nascimento"></input>
+                            <input 
+                                type="text" 
+                                id="dataNascimento" 
+                                name="dataNascimento" 
+                                placeholder="Digite sua Data de Nascimento"
+                                />
+
                             <label>Celular:</label>
-                            <input type="text" id="celular" name="celular"  placeholder="Digite seu número de celular"></input>  
+                            <input 
+                                type="text" 
+                                id="celular" 
+                                name="celular"  
+                                placeholder="Digite seu número de celular"
+                                />
+
                             <label>email:</label>                                        
-                            <input type="text" id="email" name="email" placeholder="Digite seu email"></input>
+                            <input 
+                                type="text" 
+                                id="email" 
+                                name="email" 
+                                placeholder="Digite seu email"/>
 
                             
                             <div>
                                 <span>
                                     <a type="button" className='btnCancelar' href='../pacientes'>Cancelar</a>
                                 </span>                           
-                                <button type="submit" className='btnCadastrar' onClick={cadastrarPaciente()}>Cadastrar</button>
+                                <button className='btnCadastrar' onClick={(e) => savePaciente(e)}>Cadastrar</button>
                             </div>
                         </div>
                         
@@ -118,7 +179,6 @@ export default function CadastroPacient(){
         </div>
 
     )
-
-
-
 }
+
+export default CadastroPacient;
