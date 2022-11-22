@@ -9,53 +9,144 @@ import dataService from '../services/dataService';
 
 const CadastroPacient = () => {
     
-    const {id}=useParams();
+    //const {id}=useParams();
     const navigate = useNavigate();
+
+    /*
+    const[paciente,setPaciente] = useState({
+        nome: "",
+        dataNascimento: "",
+        celular: "",
+        email: ""
+    })*/
 
     const[nome, setNome]=useState('')
     const[cpf, setCpf]=useState('')
-    const[dataNascimento, setDataNascimento]=useState('')
+    const[dataNasc, setDataNasc]=useState('')
     const[celular, setCelular]=useState('')
     const[email, setEmail]=useState('')
+
+    api.get('/paciente')
+        .catch(function (error) {
+            if (error.response) {
+            // The request was made and the server responded with a status code
+            // that falls out of the range of 2xx
+            console.log(error.response.data);
+            console.log(error.response.status);
+            console.log(error.response.headers);
+            } else if (error.request) {
+            // The request was made but no response was received
+            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+            // http.ClientRequest in node.js
+            console.log(error.request);
+            } else {
+            // Something happened in setting up the request that triggered an Error
+            console.log('Error', error.message);
+            }
+            console.log(error.config);
+        });
+/*
+    api.post('/paciente', {
+            nome: 'Fred',
+            email: 'fdafds@upegd.br',
+            dataNasc: '20/08/1222',
+            celular: '223423'         
+          })
+          .then(function (response) {
+            console.log(response);
+          })
+          .catch(function (error) {
+            if (error.response) {
+            // The request was made and the server responded with a status code
+            // that falls out of the range of 2xx
+            console.log("error.data ",error.response.data);
+            console.log("error.status ",error.response.status);
+            console.log("error.headers ",error.response.headers);
+            } else if (error.request) {
+            // The request was made but no response was received
+            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+            // http.ClientRequest in node.js
+            console.log('error.request',error.request);
+            } else {
+            // Something happened in setting up the request that triggered an Error
+            console.log('Error', error.message);
+            }
+            console.log('error.config', error.config);
+        });
+*/
+
+    const createTeste = (e) => {
+        e.preventDefault();
+        //const paciente={nome, email, dataNasc, celular };
+
+        
+        api.post("/paciente", {
+            nome: 'kardre',
+            email: 'afdasfd@uepg.br',
+            dataNasc: '20/10/1010',
+            celular: '2423452'   
+        })
+            .then(function (response) {
+                console.log("Paciente adicionado", response.data);
+            })
+            .catch(function (error) {
+                if (error.response) {
+                // The request was made and the server responded with a status code
+                // that falls out of the range of 2xx
+                console.log("error.data ",error.response.data);
+                console.log("error.status ",error.response.status);
+                console.log("error.headers ",error.response.headers);
+                } else if (error.request) {
+                // The request was made but no response was received
+                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                // http.ClientRequest in node.js
+                console.log('error.request',error.request);
+                } else {
+                // Something happened in setting up the request that triggered an Error
+                console.log('Error', error.message);
+                }
+                console.log('error.config', error.config);
+            });
+        }
 
     const savePaciente = (e) => {
         e.preventDefault();
 
-        const paciente={nome, cpf, dataNascimento, celular, email};
+        const paciente={nome, dataNasc, celular, email};
 
 
         //create
         dataService.createPaciente(paciente)
+            
             .then(response => {
+                
                 console.log("Paciente adicionado", response.data);
                 navigate("/");
             })
             .catch(error => {
-                console.log('Algo deu errado', error);
-            })
+                //if (error.)
+                 if (error.response) {
+                    // The request was made and the server responded with a status code
+                    // that falls out of the range of 2xx
+                    console.log("error.data ",error.response.data);
+                    console.log("error.status ",error.response.status);
+                    console.log("error.headers ",error.response.headers);
+                } else if (error.request) {
+                    // The request was made but no response was received
+                    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                    // http.ClientRequest in node.js
+                    console.log('error.request',error.request);
+                } else {
+                    // Something happened in setting up the request that triggered an Error
+                    console.log('Error', error.message);
+                }
+                    console.log('error.config', error.config);
+                    console.log(paciente);
+                });
         
     }
 
-/*
-    constructor(props) {
-        super(props);
 
-        this.onChangeNome= this.onChangeNome.bind(this);
- 
-    
-        this.state = {
-            id: null,
-            nome: ""
-          };
-    }
-
-
-    onChangeNome(e) {
-        this.setState({
-          nome: e.target.value
-        });
-      }
-*/
 
 
     /*function cadastrarPaciente() {
@@ -100,20 +191,6 @@ const CadastroPacient = () => {
     console.log(response.data);*/
 
 
-/*
-    api.get('/paciente')
-      .then(function (response) {
-        // handle success
-        console.log(response.data);
-      })
-      .catch(function (error) {
-        // handle error
-        console.log(error);
-      })
-*/
-
-
-
     return(
         <div className="col p-4 overflow-auto h-100">
             <div className="row">
@@ -132,19 +209,25 @@ const CadastroPacient = () => {
                                 onChange={(e) => setNome(e.target.value)}
                                 placeholder="Digite seu nome"
                                 />
-                                
+
+                            {/*
                             <label>CPF:</label>
                             <input 
                                 type="text" 
                                 id="cpf" 
+                                value={cpf}
+                                onChange={(e) => setCpf(e.target.value)}
                                 name="cpf"  
                                 placeholder="Digite seu CPF"
                                 />
+    */}
 
                             <label>Data de Nascimento:</label>                                        
                             <input 
                                 type="text" 
-                                id="dataNascimento" 
+                                id="dataNasc"
+                                value={dataNasc} 
+                                onChange={(e) => setDataNasc(e.target.value)}
                                 name="dataNascimento" 
                                 placeholder="Digite sua Data de Nascimento"
                                 />
@@ -153,6 +236,8 @@ const CadastroPacient = () => {
                             <input 
                                 type="text" 
                                 id="celular" 
+                                value={celular}
+                                onChange={(e) => setCelular(e.target.value)}
                                 name="celular"  
                                 placeholder="Digite seu número de celular"
                                 />
@@ -161,6 +246,8 @@ const CadastroPacient = () => {
                             <input 
                                 type="text" 
                                 id="email" 
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
                                 name="email" 
                                 placeholder="Digite seu email"/>
 
