@@ -6,7 +6,7 @@ import dataService from '../services/dataService';
 
 
 
-const CadastroPacient = () => {
+const EditPaciente = () => {
     
     const {CodPac}=useParams();
     const navigate = useNavigate();
@@ -114,38 +114,6 @@ const CadastroPacient = () => {
                     });
                 }
     }
-
-    useEffect(() => {
-        if (CodPac) {
-            dataService.getPaciente(CodPac)
-                .then(paciente => {
-                    setNome(paciente.data.nome);
-                    setCpf(paciente.data.cpf);
-                    setDataNasc(paciente.data.dataNasc);
-                    setCelular(paciente.data.celular);
-                    setEmail(paciente.data.email);
-                })
-                .catch(error => {
-                    //if (error.)
-                    if (error.response) {
-                        // The request was made and the server responded with a status code
-                        // that falls out of the range of 2xx
-                        console.log("error.data ",error.response.data);
-                        console.log("error.status ",error.response.status);
-                        console.log("error.headers ",error.response.headers);
-                    } else if (error.request) {
-                        // The request was made but no response was received
-                        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                        // http.ClientRequest in node.js
-                        console.log('error.request',error.request);
-                    } else {
-                        // Something happened in setting up the request that triggered an Error
-                        console.log('Error', error.message);
-                    }
-                        console.log('error.config', error.config);                        
-                    });
-        }
-    }, [])
 
 
     /*function cadastrarPaciente() {
@@ -267,4 +235,4 @@ const CadastroPacient = () => {
     )
 }
 
-export default CadastroPacient;
+export default EditPaciente;

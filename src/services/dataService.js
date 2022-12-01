@@ -13,6 +13,14 @@ class DataService{
     createPaciente(data){
         return api.post("/paciente", data);
     }
+
+    updatePaciente(data){
+        return api.put("/paciente", data)
+    }
+
+    deletePaciente(codPac){
+        return api.delete(`/paciente/${codPac}`);
+    }
 }
 
 export default new DataService();

@@ -4,8 +4,8 @@ import ListaPacientes from './pages/ListaPacientes.js';
 import Dentista from './pages/Dentista.js';
 import CadastroDent from './pages/CadastroDent';
 import Agendamento from './pages/agendamento/Agendamento.js';
-
-
+import CadastroPacient from './pages/CadastroPacient.js';
+import EditPaciente from './pages/EditPaciente.js';
 
 import React from "react";
 import {
@@ -13,8 +13,6 @@ import {
   Routes,
   Route
 } from "react-router-dom";
-import CadastroPacient from './pages/CadastroPacient.js';
-
 
 
 
@@ -29,6 +27,7 @@ function App() {
       <Route path='/dentista/cadastro'      element={<CadastroDent/>}/>
       <Route path='/dentista/agendamento'   element={<Agendamento/>}/>
       <Route path='/paciente/cadastro'      element={<CadastroPacient/>}/>
+      <Route path='/paciente/edit/:codPac'  element={<EditPaciente/>}/>
     </Routes>
     </BrowserRouter>
   )
