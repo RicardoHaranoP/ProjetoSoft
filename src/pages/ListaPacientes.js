@@ -90,6 +90,16 @@ const ListarPacientes = () => {
                         console.log(rowData);
                     }}
                     >
+                    <Column width={100} fixed="left">
+                        <HeaderCell></HeaderCell>
+                        <Cell>
+                        {rowData => (
+                            <span>                                
+                                <Link to={`../paciente/${rowData.codPac}`} >Informações</Link>
+                            </span>
+                        )}
+                        </Cell>
+                    </Column>
                     <Column width={60} align="center" fixed>
                         <HeaderCell>Id</HeaderCell>
                         <Cell dataKey="codPac" />
@@ -125,7 +135,7 @@ const ListarPacientes = () => {
                         <Cell>
                         {rowData => (
                             <span>                                
-                                <Link to={`paciente/edit/${rowData.codPac}`} ><MdEdit/></Link>
+                                <Link to={`../paciente/edit/${rowData.codPac}`} ><MdEdit/></Link>
                             </span>
                         )}
                         </Cell>

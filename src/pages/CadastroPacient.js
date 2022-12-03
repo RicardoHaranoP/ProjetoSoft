@@ -8,8 +8,12 @@ import dataService from '../services/dataService';
 
 const CadastroPacient = () => {
     
-    const {CodPac}=useParams();
     const navigate = useNavigate();
+    const {codPac} = useParams();
+
+
+
+
 
     /*
     const[paciente,setPaciente] = useState({
@@ -59,8 +63,9 @@ const CadastroPacient = () => {
 
         const paciente={nome, cpf, dataNasc, celular, email};
 
-        if (CodPac){
-            dataService.updatePaciente(paciente)
+        if (codPac){
+            //update
+            dataService.updatePaciente(codPac,paciente)
                 .then(response => {
                     console.log('paciente atualizado', response.data);
                     navigate('/');
@@ -116,8 +121,8 @@ const CadastroPacient = () => {
     }
 
     useEffect(() => {
-        if (CodPac) {
-            dataService.getPaciente(CodPac)
+        if (codPac) {
+            dataService.getPaciente(codPac)
                 .then(paciente => {
                     setNome(paciente.data.nome);
                     setCpf(paciente.data.cpf);
@@ -200,7 +205,7 @@ const CadastroPacient = () => {
 
                             <h2 className="mb-4 mt-0">Cadastro Pacientes</h2>
 
-                            <label>Nome:</label>                                        
+                            <label>Nome:</label>                                      
                             <input
                                 type="text"
                                 id="nome"                                   
@@ -230,7 +235,7 @@ const CadastroPacient = () => {
                                 name="dataNascimento" 
                                 placeholder="Digite sua Data de Nascimento"
                                 />
-
+                            <br/>
                             <label>Celular:</label>
                             <input 
                                 type="text" 

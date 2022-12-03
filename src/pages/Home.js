@@ -4,7 +4,7 @@ export default function Home() {
     return(
         <div className="container">
 
-            <a href="/" role="button">Marcar Consulta</a> 
+            <a href="/consulta" role="button">Marcar Consulta</a> 
 
             <a href="./dentistas" role="button">Dentistas</a> 
 
