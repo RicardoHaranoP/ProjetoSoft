@@ -48,6 +48,14 @@ class DataService{
 
 
     //métodos axios relacionados à consulta
+    getConsultas(){
+        return api.get(`/consulta`);
+    }
+
+    getConsulta(codCons){
+        return api.get(`/consulta/${codCons}`);
+    }
+
     createConsulta(data){
         return api.post(`/consulta`, data);
     }

@@ -1,5 +1,5 @@
 @import "rsuite/dist/rsuite.css";
-
+/*
 .agenda {
     background-color: #0A809A;
     color: #fff;
@@ -14,11 +14,19 @@
     font-size: 25px;
 }
 
-.informacoes {
-    margin-top: 2%;
-    position: absolute;
-    left: 55%;
-    font-size: 1.5em;
+*/
+
+.btnAgenda {
+    background-color: #0A809A;
+    color: #fff;
+    border-radius: 20px;
+    padding: 20px 250px;
+    font-size: 25px;
+}
+
+.btnAgenda:hover {
+    text-decoration: none;
+    color: #fff;
 }
 
 li {

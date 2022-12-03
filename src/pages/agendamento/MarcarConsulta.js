@@ -151,7 +151,7 @@ const MarcarConsulta = () => {
                                         onChange={(e) => setHoraInicio(e.target.value)}
                                         name="horaInicio" 
                                     />
-                                    <label>Previsão de duração:</label>
+                                    <label>horario de Término:</label>
                                     <input
                                         type="time" 
                                         id="horaFinal"

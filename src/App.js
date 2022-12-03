@@ -22,17 +22,17 @@ function App() {
   return (
     <BrowserRouter>
     <Routes>
-      <Route path='/'                       element={<Home/>}/>
-      <Route path='/dentistas'              element={<ListaDentistas/>}/>   
-      <Route path='/dentista/:codDent'      element={<Dentista/>}/>
-      <Route path='/dentista/cadastro'      element={<CadastroDent/>}/>
-      <Route path='/dentista/edit/:codDent' element={<CadastroDent/>}/>
-      <Route path='/dentista/agendamento'   element={<Agendamento/>}/>
-      <Route path='/pacientes'              element={<ListaPacientes/>}/>  
-      <Route path='/paciente/:codPac'       element={<Paciente/>}/>
-      <Route path='/paciente/cadastro'      element={<CadastroPacient/>}/>
-      <Route path='/paciente/edit/:codPac'  element={<CadastroPacient/>}/>
-      <Route path='/consulta'               element={<MarcarConsulta/>}/>
+      <Route path='/'                                 element={<Home/>}/>
+      <Route path='/dentistas'                        element={<ListaDentistas/>}/>   
+      <Route path='/dentista/:codDent'                element={<Dentista/>}/>
+      <Route path='/dentista/cadastro'                element={<CadastroDent/>}/>
+      <Route path='/dentista/edit/:codDent'           element={<CadastroDent/>}/>
+      <Route path='/dentista/agendamento/:codDent'    element={<Agendamento/>}/>
+      <Route path='/pacientes'                        element={<ListaPacientes/>}/>  
+      <Route path='/paciente/:codPac'                 element={<Paciente/>}/>
+      <Route path='/paciente/cadastro'                element={<CadastroPacient/>}/>
+      <Route path='/paciente/edit/:codPac'            element={<CadastroPacient/>}/>
+      <Route path='/consulta'                         element={<MarcarConsulta/>}/>
     </Routes>
     </BrowserRouter>
   )
