@@ -33,31 +33,30 @@ const Agenda = () => {
     const [dia, setDia]=useState('');
     const [confirmado, setConfirmado]=useState('');
     const [consRealizada, setConsRealizada]=useState('');
-    const [eventos, setEventos]=useState([]);
-//
+    const [consultas, setConsultas]=useState([]);
+    const [inicio,setInicio]=useState([]);
+    const [comprimento, setComprimento]=useState('');
+    const sickBoy = useState([]);// era pra ser o vetor inicio só que não soube fazer com o inicio-setInicio ;(
+
     const teste = [
         {   
             title: "Evento Teste", 
-            start: moment(dia).toDate() ,
-            end: moment(dia).add(30, 'minutes').toDate() 
+            start: moment('2022-12-06 16:00').toDate() ,
+            end: moment('2022-12-06 17:00').toDate() 
         },
         {
             title: 'VAMOS TENTAR ENTÂO Né',
-            start: moment(dia).toDate(),
-            end: moment(dia).add(2, 'hour').toDate()
+            start: moment('2022-12-04 12:00').toDate(),
+            end: moment(sickBoy[2]).add(30, 'minutes').toDate()
         },
         {
             title: 'TESTEZAO',
-            start: moment().add(4, 'hour').toDate(),
-            end: moment().add(5, 'hour').toDate()
+            start: moment(inicio).toDate(),
+            end: moment(inicio).add(2, 'hour').toDate()
         }
     ];
-  
-    const teste2 = [
-        {
-            start: comeco,
-        }
-    ]
+
+    const teste2 = []
 
     const previsaoDuracao = (comeco,fim) => {
         const ms = moment(fim, 'HH:mm').diff(moment(comeco, 'HH:mm'));
@@ -68,19 +67,34 @@ const Agenda = () => {
         console.log(s);
 
         return s;
-    }//
-    
+    }
+    //
     useEffect(() => {
         dataService.getConsultas()
             .then(response => {
                 console.log('getConsultas funfando', response.data);
-                setEventos(response);
-                console.log(eventos.data[1].data);
-                setComeco(eventos.data[1].horaInicio);
-                setFim(eventos.data[1].horaFinal)
-                setDia(eventos.data[1].data);
-                console.log(comeco, fim);
-                previsaoDuracao(comeco,fim);
+                setConsultas(response);
+                setComprimento(response.data.length);
+                //separandoConsultas(response.data.length);
+                //.log(eventos.data[1].data);
+                //setComeco(eventos.data[1].horaInicio);
+                //setFim(eventos.data[1].horaFinal)
+                //setDia(eventos.data[1].data);
+                //console.log(comeco, fim);
+                //console.log('vamo porra, ', dia+' '+ comeco);
+                //setInicio(response.data[1].data+' '+response.data[1].horaInicio);
+                for (let i=0;i<response.data.length;i++){
+                    console.log(i);
+                    setInicio(response.data[i].data+' '+response.data[i].horaInicio );
+                    sickBoy.push(response.data[i].data+' '+response.data[i].horaInicio);
+                    console.log(response.data[i].data+' '+response.data[i].horaInicio);
+                    console.log('sickBoy: ', sickBoy);
+                    console.log(sickBoy[2]);
+                    console.log(inicio);
+                }
+
+                //console.log(moment(dia,comeco).toDate());
+                //previsaoDuracao(comeco,fim);
             })
             .catch(error => {
                 //if (error.)
@@ -101,8 +115,23 @@ const Agenda = () => {
                 }
                     console.log('error.config', error.config);                        
                 });
+        
+        console.log(inicio);
+        console.log('blackbear')
+        //
     },[])
     
+
+
+    const separandoConsultas = async (comprimento) => {
+        
+        for (let i=0 ;i<comprimento;i++){
+            console.log(i);
+            console.log(consultas);
+            //const a = await setConsultas();
+            //console.log(a);
+        }
+    }
 
         return(
             
@@ -114,7 +143,7 @@ const Agenda = () => {
                         <h2>Agendamentos</h2>
                         
         
-                        <Calendar
+                        <Calendar 
                         localizer={localizer}
                         events={teste}
                         defaultView="week"
