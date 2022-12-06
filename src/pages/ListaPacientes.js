@@ -48,6 +48,8 @@ const ListarPacientes = () => {
 
     const handleDelete = (codPac) => {
         console.log('id: ', codPac);
+        var retorno = confirm('Realmente deseja excluir paciente?');
+        if (retorno==true){
         dataService.deletePaciente(codPac)
             .then(response => {                
                 console.log('paciente deletado', response.data);
@@ -71,6 +73,9 @@ const ListarPacientes = () => {
                 }
                 console.log(error.config);
             });
+        }else {
+            console.log('Operação cancelada!!');
+        }
     }
 
     return(

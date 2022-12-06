@@ -34,10 +34,10 @@ const Agenda = () => {
     const [confirmado, setConfirmado]=useState('');
     const [consRealizada, setConsRealizada]=useState('');
     const [consultas, setConsultas]=useState([]);
-    const [inicio,setInicio]=useState([]);
+    const [inicio,setInicio]=useState('');
     const [comprimento, setComprimento]=useState('');
     const sickBoy = useState([]);// era pra ser o vetor inicio só que não soube fazer com o inicio-setInicio ;(
-
+////
     const teste = [
         {   
             title: "Evento Teste", 
@@ -46,8 +46,8 @@ const Agenda = () => {
         },
         {
             title: 'VAMOS TENTAR ENTÂO Né',
-            start: moment('2022-12-04 12:00').toDate(),
-            end: moment(sickBoy[2]).add(30, 'minutes').toDate()
+            start: moment(sickBoy[2]).toDate(),
+            end: moment(sickBoy[2]).add(30, 'minute').toDate()
         },
         {
             title: 'TESTEZAO',
@@ -68,6 +68,22 @@ const Agenda = () => {
 
         return s;
     }
+
+    const separandoConsultas = async (comprimento) => {
+        
+        for (let i=0 ;i<comprimento;i++){
+            console.log(i);
+            console.log(consultas);
+            //const a = await setConsultas();
+            //console.log(a);
+        }
+    }
+
+    const horarioDeInicio = async(i,response) => {
+        const a = await dataService.getConsultas()
+        a = response.data[i].data+' '+response.data[i].horaInicio
+        console.log('horarioDeinicio: ',a);
+    }
     //
     useEffect(() => {
         dataService.getConsultas()
@@ -85,14 +101,18 @@ const Agenda = () => {
                 //setInicio(response.data[1].data+' '+response.data[1].horaInicio);
                 for (let i=0;i<response.data.length;i++){
                     console.log(i);
-                    setInicio(response.data[i].data+' '+response.data[i].horaInicio );
+                    setInicio(response.data[i].data+' '+response.data[i].horaInicio);
+                    //inicio.push(response.data[i].data+' '+response.data[i].horaInicio)
+                    //inicio.concat(response.data[i].data+' '+response.data[i].horaInicio)
                     sickBoy.push(response.data[i].data+' '+response.data[i].horaInicio);
                     console.log(response.data[i].data+' '+response.data[i].horaInicio);
+                    //horarioDeInicio(i,response);
                     console.log('sickBoy: ', sickBoy);
-                    console.log(sickBoy[2]);
-                    console.log(inicio);
-                }
+                    console.log('sickBoy2: ', sickBoy[2]);
+                    console.log('inicio: ',inicio);
 
+                }
+////
                 //console.log(moment(dia,comeco).toDate());
                 //previsaoDuracao(comeco,fim);
             })
@@ -123,15 +143,7 @@ const Agenda = () => {
     
 
 
-    const separandoConsultas = async (comprimento) => {
-        
-        for (let i=0 ;i<comprimento;i++){
-            console.log(i);
-            console.log(consultas);
-            //const a = await setConsultas();
-            //console.log(a);
-        }
-    }
+
 
         return(
             

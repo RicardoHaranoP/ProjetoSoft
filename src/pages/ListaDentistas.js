@@ -48,6 +48,10 @@ const ListarDentistas = () => {
 
     const handleDelete = (codDent) => {
         console.log('id: ', codDent);
+        var retorno = confirm('Realmente deseja excluir dentista?');
+        if (retorno==true){
+
+        
         dataService.deleteDentista(codDent)
             .then(response => {                
                 console.log('paciente deletado', response.data);
@@ -71,6 +75,10 @@ const ListarDentistas = () => {
                 }
                 console.log(error.config);
             });
+            
+        }else{
+            console.log('Operação cancelada!!');
+        }
     }
 
     return(
