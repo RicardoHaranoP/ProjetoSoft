@@ -116,7 +116,7 @@ const MarcarConsulta = () => {
                                         onChange={(e) => setPaciente(e.target.value)}
                                         name="paciente"
                                     />
-
+{/*
                                     <div className="dropdown">
                                         <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             Dropdown button
@@ -126,7 +126,7 @@ const MarcarConsulta = () => {
                                             <a className="dropdown-item" href="#">Another action</a>
                                             <a className="dropdown-item" href="#">Something else here</a>
                                         </div>
-                                    </div>
+                                    </div>*/}
                                     <label>Dentista:</label>
                                     <input
                                         type="text" 
