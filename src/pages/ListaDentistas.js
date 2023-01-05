@@ -108,10 +108,6 @@ const ListarDentistas = () => {
                         )}
                         </Cell>
                     </Column>
-                    <Column width={60} align="center" fixed>
-                        <HeaderCell>Id</HeaderCell>
-                        <Cell dataKey="codDent" />
-                    </Column>
 
                     <Column width={250} align="center" fixed>
                         <HeaderCell>Nome</HeaderCell>

@@ -36,7 +36,6 @@ const Agenda = () => {
     const [consultas, setConsultas]=useState([]);
     const [inicio,setInicio]=useState('');
     const [comprimento, setComprimento]=useState('');
-    const sickBoy = useState([]);// era pra ser o vetor inicio só que não soube fazer com o inicio-setInicio ;(
 ////
     const teste = [
         {   
@@ -45,18 +44,11 @@ const Agenda = () => {
             end: moment('2022-12-06 17:00').toDate() 
         },
         {
-            title: 'VAMOS TENTAR ENTÂO Né',
-            start: moment(sickBoy[2]).toDate(),
-            end: moment(sickBoy[2]).add(30, 'minute').toDate()
-        },
-        {
             title: 'TESTEZAO',
             start: moment(inicio).toDate(),
-            end: moment(inicio).add(2, 'hour').toDate()
+            end: moment(fim).toDate()
         }
     ];
-
-    const teste2 = []
 
     const previsaoDuracao = (comeco,fim) => {
         const ms = moment(fim, 'HH:mm').diff(moment(comeco, 'HH:mm'));
@@ -102,17 +94,14 @@ const Agenda = () => {
                 for (let i=0;i<response.data.length;i++){
                     console.log(i);
                     setInicio(response.data[i].data+' '+response.data[i].horaInicio);
+                    setFim(response.data[i].data+' '+response.data[i].horaFinal)
                     //inicio.push(response.data[i].data+' '+response.data[i].horaInicio)
                     //inicio.concat(response.data[i].data+' '+response.data[i].horaInicio)
-                    sickBoy.push(response.data[i].data+' '+response.data[i].horaInicio);
-                    console.log(response.data[i].data+' '+response.data[i].horaInicio);
-                    //horarioDeInicio(i,response);
-                    console.log('sickBoy: ', sickBoy);
-                    console.log('sickBoy2: ', sickBoy[2]);
                     console.log('inicio: ',inicio);
+                    console.log('final: ',fim)
 
                 }
-////
+//
                 //console.log(moment(dia,comeco).toDate());
                 //previsaoDuracao(comeco,fim);
             })
@@ -137,7 +126,6 @@ const Agenda = () => {
                 });
         
         console.log(inicio);
-        console.log('blackbear')
         //
     },[])
     

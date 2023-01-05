@@ -105,10 +105,6 @@ const ListarPacientes = () => {
                         )}
                         </Cell>
                     </Column>
-                    <Column width={60} align="center" fixed>
-                        <HeaderCell>Id</HeaderCell>
-                        <Cell dataKey="codPac" />
-                    </Column>
 
                     <Column width={250} align="center" fixed>
                         <HeaderCell>Nome</HeaderCell>
