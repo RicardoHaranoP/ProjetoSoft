@@ -7,6 +7,7 @@ import Agendamento from './pages/agendamento/Agendamento.js';
 import CadastroPacient from './pages/CadastroPacient.js';
 import MarcarConsulta from './pages/agendamento/MarcarConsulta.js';
 import Paciente from './pages/Paciente.js';
+import Teste from './pages/agendamento/teste.js'
 
 import React from "react";
 import {
@@ -33,6 +34,7 @@ function App() {
       <Route path='/paciente/cadastro'                element={<CadastroPacient/>}/>
       <Route path='/paciente/edit/:codPac'            element={<CadastroPacient/>}/>
       <Route path='/consulta'                         element={<MarcarConsulta/>}/>
+      <Route path='/teste'                            element={<Teste/>}/>
     </Routes>
     </BrowserRouter>
   )

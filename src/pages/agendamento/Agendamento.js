@@ -8,155 +8,168 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 
+
+
 const localizer = momentLocalizer(moment);
 
+const eventos = []
 
 const Agenda = () => {
-   /*
+    const { codCons } = useParams();
 
-    retrieveData() {
-        dataService.getAll()
-            .then(response => {
-                console.log(response.data);
-            })
-            .catch(error => {
-                console.log(error);
-            });
-    }
-    
-    */
+    const [consultas, setConsultas] = useState([])
 
-    const {codCons} = useParams();
-    
-    const [comeco, setComeco]=useState('');
-    const [fim, setFim]=useState('');
-    const [dia, setDia]=useState('');
-    const [confirmado, setConfirmado]=useState('');
-    const [consRealizada, setConsRealizada]=useState('');
-    const [consultas, setConsultas]=useState([]);
-    const [inicio,setInicio]=useState('');
-    const [comprimento, setComprimento]=useState('');
-////
-    const teste = [
-        {   
-            title: "Evento Teste", 
-            start: moment('2022-12-06 16:00').toDate() ,
-            end: moment('2022-12-06 17:00').toDate() 
-        },
-        {
-            title: 'TESTEZAO',
-            start: moment(inicio).toDate(),
-            end: moment(fim).toDate()
-        }
-    ];
+    const dia = []
+    const horaInicio = []
+    const horaFinal = []
 
-    const previsaoDuracao = (comeco,fim) => {
-        const ms = moment(fim, 'HH:mm').diff(moment(comeco, 'HH:mm'));
-        const d = moment.duration(ms);
-        const s = Math.floor(d.asHours()) + moment.utc(ms).format(":mm:ss");
-        console.log(ms);//
-        console.log(d);
-        console.log(s);
 
-        return s;
-    }
-
-    const separandoConsultas = async (comprimento) => {
-        
-        for (let i=0 ;i<comprimento;i++){
-            console.log(i);
-            console.log(consultas);
-            //const a = await setConsultas();
-            //console.log(a);
-        }
-    }
-
-    const horarioDeInicio = async(i,response) => {
-        const a = await dataService.getConsultas()
-        a = response.data[i].data+' '+response.data[i].horaInicio
-        console.log('horarioDeinicio: ',a);
-    }
     //
     useEffect(() => {
         dataService.getConsultas()
-            .then(response => {
-                console.log('getConsultas funfando', response.data);
-                setConsultas(response);
-                setComprimento(response.data.length);
-                //separandoConsultas(response.data.length);
-                //.log(eventos.data[1].data);
-                //setComeco(eventos.data[1].horaInicio);
-                //setFim(eventos.data[1].horaFinal)
-                //setDia(eventos.data[1].data);
-                //console.log(comeco, fim);
-                //console.log('vamo porra, ', dia+' '+ comeco);
-                //setInicio(response.data[1].data+' '+response.data[1].horaInicio);
-                for (let i=0;i<response.data.length;i++){
-                    console.log(i);
-                    setInicio(response.data[i].data+' '+response.data[i].horaInicio);
-                    setFim(response.data[i].data+' '+response.data[i].horaFinal)
-                    //inicio.push(response.data[i].data+' '+response.data[i].horaInicio)
-                    //inicio.concat(response.data[i].data+' '+response.data[i].horaInicio)
-                    console.log('inicio: ',inicio);
-                    console.log('final: ',fim)
-
-                }
-//
-                //console.log(moment(dia,comeco).toDate());
-                //previsaoDuracao(comeco,fim);
+            .then((response) => {
+                setConsultas(response.data);
             })
             .catch(error => {
-                //if (error.)
                 if (error.response) {
                     // The request was made and the server responded with a status code
                     // that falls out of the range of 2xx
-                    console.log("error.data ",error.response.data);
-                    console.log("error.status ",error.response.status);
-                    console.log("error.headers ",error.response.headers);
+                    console.log("error.data ", error.response.data);
+                    console.log("error.status ", error.response.status);
+                    console.log("error.headers ", error.response.headers);
                 } else if (error.request) {
                     // The request was made but no response was received
                     // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
                     // http.ClientRequest in node.js
-                    console.log('error.request',error.request);
+                    console.log('error.request', error.request);
                 } else {
                     // Something happened in setting up the request that triggered an Error
                     console.log('Error', error.message);
                 }
-                    console.log('error.config', error.config);                        
-                });
-        
-        console.log(inicio);
-        //
-    },[])
-    
+                console.log('error.config', error.config);
+            });
+
+
+        pegaEvents()
+        console.log(dia, horaInicio, horaFinal)
+        console.log(eventos)
+    }, [])
+
+
+    async function pegaEvents() {
+
+        for (let i = 0; i < consultas.length; i++) {
+            dia.push(consultas[i].data)
+            horaInicio.push(consultas[i].horaInicio)
+            horaFinal.push(consultas[i].horaFinal)
+
+            eventos.push(
+                {
+                    title: 'eventos',
+                    start: moment(dia[i] + ' ' + horaInicio[i]).toDate(),
+                    end: moment(dia[i] + ' ' + horaFinal[i]).toDate()
+                },
+            )
+        }
+    }
+    //
 
 
 
 
-        return(
-            
-            <>
+    // const previsaoDuracao = (comeco,fim) => {
+    //     const ms = moment(fim, 'HH:mm').diff(moment(comeco, 'HH:mm'));
+    //     const d = moment.duration(ms);
+    //     const s = Math.floor(d.asHours()) + moment.utc(ms).format(":mm:ss");
+    //     console.log(ms);//
+    //     console.log(d);
+    //     console.log(s);
+
+    //     return s;
+    // }
+
+    // const separandoConsultas = async (comprimento) => {
+
+    //     for (let i=0 ;i<comprimento;i++){
+    //         console.log(i);
+    //         console.log(consultas);
+    //         //const a = await setConsultas();
+    //         //console.log(a);
+    //     }
+    // }
+
+    // const horarioDeInicio = async(i,response) => {
+    //     const a = await dataService.getConsultas()
+    //     a = response.data[i].data+' '+response.data[i].horaInicio
+    //     console.log('horarioDeinicio: ',a);
+    // }
+    //    
+
+    //ESPERA DEIXA EU VER
+    // async function pegaConsultas() {
+    //     dataService.getConsultas()
+    //         .then(response => {
+    //             console.log('getConsultas funfando', response.data);
+    //             for (let i = 0; i < response.data.length; i++) {
+
+    //                 setInicio(response.data[i].data + ' ' + response.data[i].horaInicio);
+    //                 setFim(response.data[i].data + ' ' + response.data[i].horaFinal)
+
+    //             }
+    //             //
+    //         })
+    //         .catch(error => {
+    //             if (error.response) {
+    //                 // The request was made and the server responded with a status code
+    //                 // that falls out of the range of 2xx
+    //                 console.log("error.data ", error.response.data);
+    //                 console.log("error.status ", error.response.status);
+    //                 console.log("error.headers ", error.response.headers);
+    //             } else if (error.request) {
+    //                 // The request was made but no response was received
+    //                 // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+    //                 // http.ClientRequest in node.js
+    //                 console.log('error.request', error.request);
+    //             } else {
+    //                 // Something happened in setting up the request that triggered an Error
+    //                 console.log('Error', error.message);
+    //             }
+    //             console.log('error.config', error.config);
+    //         });
+    // }
+    //
+
+
+
+
+
+
+    return (
+
+        <>
             <div className='col p-5 overflow-auto h-100'>
 
                 <div className="row">
                     <div className="col-12">
                         <h2>Agendamentos</h2>
-                        
-        
-                        <Calendar 
-                        localizer={localizer}
-                        events={teste}
-                        defaultView="week"
-                        selectable
-                        popup
-                        style={{ height: 600 }}
+
+
+                        <Calendar
+                            localizer={localizer}
+                            events={eventos}
+                            defaultView="week"
+                            selectable
+                            popup
+                            startAccessor="start"
+                            endAccessor="end"
+                            style={{ height: 600 }}
                         />
                     </div>
-                </div>            
+                </div>
             </div>
-            </>
-        )
-    
+        </>
+    )
+
 }
 
 export default Agenda;
