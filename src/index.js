@@ -5,13 +5,13 @@ import Header from './components/Header.js';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <Header/>
+  <>
+    <Header />
     <div className="container-fluid h-100">
       <div className="row h-100">
-        <App/>
+        <App />
       </div>
     </div>
-  </React.StrictMode>
+  </>
 );
 

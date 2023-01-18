@@ -3,12 +3,26 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import React, { Component, useEffect } from "react";
 import moment from 'moment';
 import dataService from "../../services/dataService";
+import 'moment/locale/pt-br';
 
 import { useState } from 'react';
-import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import { useCallback } from 'react';
 
-
+const messages = {
+    allDay: 'Dia Inteiro',
+    previous: '<',
+    next: '>',
+    today: 'Hoje',
+    month: 'Mês',
+    week: 'Semana',
+    day: 'Dia',
+    agenda: 'Agenda',
+    date: 'Data',
+    time: 'Hora',
+    event: 'Evento',
+    showMore: (total) => `+ (${total}) Eventos`,
+}
 
 const localizer = momentLocalizer(moment);
 
@@ -17,18 +31,18 @@ const eventos = []
 const Agenda = () => {
     const { codCons } = useParams();
 
-    const [consultas, setConsultas] = useState([])
 
     const dia = []
     const horaInicio = []
     const horaFinal = []
 
 
+
     //
     useEffect(() => {
         dataService.getConsultas()
             .then((response) => {
-                setConsultas(response.data);
+                pegaEvents()
             })
             .catch(error => {
                 if (error.response) {
@@ -50,14 +64,17 @@ const Agenda = () => {
             });
 
 
-        pegaEvents()
-        console.log(dia, horaInicio, horaFinal)
-        console.log(eventos)
+
+
+        //console.log(dia, horaInicio, horaFinal)
+        //console.log(eventos)
     }, [])
 
-
+    //
     async function pegaEvents() {
-
+        var consultas = await dataService.getConsultas()
+        consultas = consultas.data
+        console.log(consultas)
         for (let i = 0; i < consultas.length; i++) {
             dia.push(consultas[i].data)
             horaInicio.push(consultas[i].horaInicio)
@@ -65,84 +82,27 @@ const Agenda = () => {
 
             eventos.push(
                 {
-                    title: 'eventos',
+                    title: 'Meeting',
                     start: moment(dia[i] + ' ' + horaInicio[i]).toDate(),
                     end: moment(dia[i] + ' ' + horaFinal[i]).toDate()
                 },
             )
         }
+
     }
-    //
 
 
-
-
-    // const previsaoDuracao = (comeco,fim) => {
-    //     const ms = moment(fim, 'HH:mm').diff(moment(comeco, 'HH:mm'));
-    //     const d = moment.duration(ms);
-    //     const s = Math.floor(d.asHours()) + moment.utc(ms).format(":mm:ss");
-    //     console.log(ms);//
-    //     console.log(d);
-    //     console.log(s);
-
-    //     return s;
-    // }
-
-    // const separandoConsultas = async (comprimento) => {
-
-    //     for (let i=0 ;i<comprimento;i++){
-    //         console.log(i);
-    //         console.log(consultas);
-    //         //const a = await setConsultas();
-    //         //console.log(a);
-    //     }
-    // }
-
-    // const horarioDeInicio = async(i,response) => {
-    //     const a = await dataService.getConsultas()
-    //     a = response.data[i].data+' '+response.data[i].horaInicio
-    //     console.log('horarioDeinicio: ',a);
-    // }
-    //    
-
-    //ESPERA DEIXA EU VER
-    // async function pegaConsultas() {
-    //     dataService.getConsultas()
-    //         .then(response => {
-    //             console.log('getConsultas funfando', response.data);
-    //             for (let i = 0; i < response.data.length; i++) {
-
-    //                 setInicio(response.data[i].data + ' ' + response.data[i].horaInicio);
-    //                 setFim(response.data[i].data + ' ' + response.data[i].horaFinal)
-
-    //             }
-    //             //
-    //         })
-    //         .catch(error => {
-    //             if (error.response) {
-    //                 // The request was made and the server responded with a status code
-    //                 // that falls out of the range of 2xx
-    //                 console.log("error.data ", error.response.data);
-    //                 console.log("error.status ", error.response.status);
-    //                 console.log("error.headers ", error.response.headers);
-    //             } else if (error.request) {
-    //                 // The request was made but no response was received
-    //                 // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-    //                 // http.ClientRequest in node.js
-    //                 console.log('error.request', error.request);
-    //             } else {
-    //                 // Something happened in setting up the request that triggered an Error
-    //                 console.log('Error', error.message);
-    //             }
-    //             console.log('error.config', error.config);
-    //         });
-    // }
-    //
-
-
-
-
-
+    const eventPropGetter = useCallback(
+        (event, start, end, isSelected) => ({
+            ...(moment(end)<moment(Date()) && {
+                style: {backgroundColor: 'MediumSeaGreen',},
+            }),
+            ...(moment(start)>moment(Date()) && {
+                style: {backgroundColor: 'DarkOrange',},
+            })
+        }),
+        []
+    )
 
     return (
 
@@ -153,16 +113,18 @@ const Agenda = () => {
                     <div className="col-12">
                         <h2>Agendamentos</h2>
 
-
                         <Calendar
+
                             localizer={localizer}
+                            messages={messages}
+                            culture={'pt-BR'}
                             events={eventos}
                             defaultView="week"
-                            selectable
                             popup
                             startAccessor="start"
                             endAccessor="end"
-                            style={{ height: 600 }}
+                            style={{ height: 500 }}
+                            eventPropGetter={eventPropGetter}
                         />
                     </div>
                 </div>
