@@ -62,7 +62,7 @@ class DataService{
 
     updateConsulta(codCons,data){
         return api.put(`/consulta/${codCons}`, data);
-    }
+    } 
 }
 
 export default new DataService();

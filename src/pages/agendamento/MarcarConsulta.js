@@ -88,6 +88,8 @@ const MarcarConsulta = () => {
         }
     })
 
+
+
     return(
         <>
         
@@ -132,7 +134,7 @@ const MarcarConsulta = () => {
                                         type="text" 
                                         id="dentista"
                                         value={dentista} 
-                                        onChange={(e) => setDentista(e.target.value)}
+                                        onChange={(e) => {setDentista(e.target.value)}}
                                         name="dentista" 
                                     />
                                     <label>data da Consulta:</label>
@@ -140,7 +142,7 @@ const MarcarConsulta = () => {
                                         type="Date" 
                                         id="data"
                                         value={data} 
-                                        onChange={(e) => setData(e.target.value)}
+                                        onChange={(e) => {setData(e.target.value)}}
                                         name="data" 
                                     />
                                     <label>horario da Consulta:</label>

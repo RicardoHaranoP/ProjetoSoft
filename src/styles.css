@@ -1,6 +1,3 @@
-
-
-
 #root {
     height: 100%;
     width: 100%;
@@ -10,6 +7,7 @@
 header {
     background-color: #80D8EB;
 }
+
 
 .faixa a {
     cursor: pointer;
@@ -23,7 +21,7 @@ header {
 .faixa a:hover {
     background-color: #0A809A;
     color: #fff;
-  }
+}
 
 .faixa {
     display: flex;

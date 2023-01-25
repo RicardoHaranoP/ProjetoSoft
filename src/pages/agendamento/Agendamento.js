@@ -1,9 +1,10 @@
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import React, { Component, useEffect } from "react";
+import React, { Component, useEffect, useRef } from "react";
 import moment from 'moment';
 import dataService from "../../services/dataService";
 import 'moment/locale/pt-br';
+import './modal.css'
 
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -28,63 +29,70 @@ const localizer = momentLocalizer(moment);
 
 const eventos = []
 
+
 const Agenda = () => {
-    const { codCons } = useParams();
 
+    const clickRef = useRef(null)
 
-    const dia = []
-    const horaInicio = []
-    const horaFinal = []
-
-
+    const { codDent } = useParams();
 
     //
     useEffect(() => {
+
+
+        const modal = document.querySelector("#modal");
+        const fade = document.querySelector("#fade");
+
+        pegaDentistas()
+
         dataService.getConsultas()
             .then((response) => {
+                response.data
                 pegaEvents()
             })
             .catch(error => {
-                if (error.response) {
-                    // The request was made and the server responded with a status code
-                    // that falls out of the range of 2xx
-                    console.log("error.data ", error.response.data);
-                    console.log("error.status ", error.response.status);
-                    console.log("error.headers ", error.response.headers);
-                } else if (error.request) {
-                    // The request was made but no response was received
-                    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                    // http.ClientRequest in node.js
-                    console.log('error.request', error.request);
-                } else {
-                    // Something happened in setting up the request that triggered an Error
-                    console.log('Error', error.message);
-                }
-                console.log('error.config', error.config);
+                erroDataService();
             });
 
+        return () => {
+            window.clearTimeout(clickRef?.current)
+        }
 
 
-
-        //console.log(dia, horaInicio, horaFinal)
-        //console.log(eventos)
     }, [])
+
+    const erroDataService = () => {
+        if (error.response) {
+            // The request was made and the server responded with a status code
+            // that falls out of the range of 2xx
+            console.log("error.data ", error.response.data);
+            console.log("error.status ", error.response.status);
+            console.log("error.headers ", error.response.headers);
+        } else if (error.request) {
+            // The request was made but no response was received
+            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+            // http.ClientRequest in node.js
+            console.log('error.request', error.request);
+        } else {
+            // Something happened in setting up the request that triggered an Error
+            console.log('Error', error.message);
+        }
+        console.log('error.config', error.config);
+    }
 
     //
     async function pegaEvents() {
         var consultas = await dataService.getConsultas()
         consultas = consultas.data
-        console.log(consultas)
+
         for (let i = 0; i < consultas.length; i++) {
-            dia.push(consultas[i].data)
-            horaInicio.push(consultas[i].horaInicio)
-            horaFinal.push(consultas[i].horaFinal)
+
 
             eventos.push(
                 {
                     title: 'Meeting',
-                    start: moment(dia[i] + ' ' + horaInicio[i]).toDate(),
-                    end: moment(dia[i] + ' ' + horaFinal[i]).toDate()
+                    start: moment(consultas[i].data + ' ' + consultas[i].horaInicio).toDate(),
+                    end: moment(consultas[i].data + ' ' + consultas[i].horaFinal).toDate()
                 },
             )
         }
@@ -92,17 +100,46 @@ const Agenda = () => {
     }
 
 
+
+
+    async function pegaDentistas() {
+        var dentistas = await dataService.getDentistas()
+        dataService.getDentistas()
+            .then((response) => {
+                //console.log(response)
+            })
+            .catch(error => {
+                erroDataService()
+            });
+
+    }
+
     const eventPropGetter = useCallback(
         (event, start, end, isSelected) => ({
-            ...(moment(end)<moment(Date()) && {
-                style: {backgroundColor: 'MediumSeaGreen',},
+            ...(moment(end) < moment(Date()) && {
+                style: { backgroundColor: 'MediumSeaGreen', },
             }),
-            ...(moment(start)>moment(Date()) && {
-                style: {backgroundColor: 'DarkOrange',},
+            ...(moment(start) > moment(Date()) && {
+                style: { backgroundColor: 'DarkOrange', },
             })
         }),
         []
     )
+
+    const onSelectEvent = useCallback(() => {
+        window.clearTimeout(clickRef?.current)
+        clickRef.current = window.setTimeout(() => {
+            changeModal()
+        }, 250)
+    }, [])
+
+
+    function changeModal() {
+        modal.classList.toggle('hide')
+        fade.classList.toggle('hide')
+    }
+
+
 
     return (
 
@@ -112,7 +149,6 @@ const Agenda = () => {
                 <div className="row">
                     <div className="col-12">
                         <h2>Agendamentos</h2>
-
                         <Calendar
 
                             localizer={localizer}
@@ -125,7 +161,20 @@ const Agenda = () => {
                             endAccessor="end"
                             style={{ height: 500 }}
                             eventPropGetter={eventPropGetter}
+                            onSelectEvent={onSelectEvent}
                         />
+                        <div id='fade' className='hide' ></div>
+                        <div id='modal' className='hide'>
+                            <div className='modal-header'>
+                                <h2>Este é o modal</h2>
+                                <button id='close-modal' className='fechar-modal' onClick={changeModal}>Fechar</button>
+                            </div>
+                            <div className='modal-body'>
+                                <p>lorem</p>
+                                <button className='cancelar'>Cancelar Consulta</button>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>

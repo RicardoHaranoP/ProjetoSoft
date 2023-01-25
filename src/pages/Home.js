@@ -10,7 +10,9 @@ export default function Home() {
 
             <a href="./pacientes" role="button">Pacientes</a> 
 
-            <a href="./teste" role="button">Teste</a> 
+            <a href="./login" role="button">Login</a> 
+            
+            <a href="./teste" role="button">teste</a> 
         </div>
     )
 }
