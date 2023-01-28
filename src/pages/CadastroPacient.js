@@ -60,12 +60,13 @@ const CadastroPacient = () => {
 
     const savePaciente = (e) => {
         e.preventDefault();
-
         const paciente = { nome, cpf, dataNasc, celular, email };
+        console.log('bom dia')
 
         const camposValidos = isCamposValid();
 
         if (codPac) {
+
             //update
             dataService.updatePaciente(codPac, paciente)
                 .then(response => {
@@ -92,11 +93,10 @@ const CadastroPacient = () => {
                     console.log('error.config', error.config);
                 });
         } else {
+
             //create
             dataService.createPaciente(paciente)
-
                 .then(response => {
-
                     console.log("Paciente adicionado", response.data);
                     navigate("/");
                 })

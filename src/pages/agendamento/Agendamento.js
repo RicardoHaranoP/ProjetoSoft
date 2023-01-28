@@ -1,6 +1,6 @@
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import React, { Component, useEffect, useRef } from "react";
+import React, { Component, useEffect, useLayoutEffect, useRef } from "react";
 import moment from 'moment';
 import dataService from "../../services/dataService";
 import 'moment/locale/pt-br';
@@ -32,10 +32,11 @@ const eventos = []
 
 const Agenda = () => {
 
+    const [list, setList] = useState([]);
     const clickRef = useRef(null)
 
-    const { codDent } = useParams();
 
+    let { codDent } = useParams()
     //
     useEffect(() => {
 
@@ -44,15 +45,8 @@ const Agenda = () => {
         const fade = document.querySelector("#fade");
 
         pegaDentistas()
+        pegaPacientes()
 
-        dataService.getConsultas()
-            .then((response) => {
-                response.data
-                pegaEvents()
-            })
-            .catch(error => {
-                erroDataService();
-            });
 
         return () => {
             window.clearTimeout(clickRef?.current)
@@ -61,7 +55,7 @@ const Agenda = () => {
 
     }, [])
 
-    const erroDataService = () => {
+    const erroDataService = (error) => {
         if (error.response) {
             // The request was made and the server responded with a status code
             // that falls out of the range of 2xx
@@ -82,34 +76,59 @@ const Agenda = () => {
 
     //
     async function pegaEvents() {
-        var consultas = await dataService.getConsultas()
-        consultas = consultas.data
 
-        for (let i = 0; i < consultas.length; i++) {
+        await dataService.getConsultas()
+            .then((response) => {
+
+                console.log('consulta: ', response)
+                response = response.data
+
+                for (let i = 0; i < response.length; i++) {
+
+                    if (response[i].codDent == codDent) {
+                        eventos.push(
+                            {
+                                title: 'Meeting',
+                                start: moment(response[i].data + ' ' + response[i].horaInicio).toDate(),
+                                end: moment(response[i].data + ' ' + response[i].horaFinal).toDate()
+                            },
+                        )
+                    }
+                }
+            })
+            .catch(error => {
+                erroDataService(error)
+            });
 
 
-            eventos.push(
-                {
-                    title: 'Meeting',
-                    start: moment(consultas[i].data + ' ' + consultas[i].horaInicio).toDate(),
-                    end: moment(consultas[i].data + ' ' + consultas[i].horaFinal).toDate()
-                },
-            )
-        }
-
+        
     }
 
 
 
 
     async function pegaDentistas() {
+
         var dentistas = await dataService.getDentistas()
-        dataService.getDentistas()
             .then((response) => {
-                //console.log(response)
+
+                console.log('dentista: ', response)
             })
             .catch(error => {
-                erroDataService()
+                erroDataService(error)
+            });
+
+    }
+
+    async function pegaPacientes() {
+
+        var pacientes = await dataService.getPacientes()
+            .then((response) => {
+
+                console.log('paciente: ', response)
+            })
+            .catch(error => {
+                erroDataService(error)
             });
 
     }
@@ -139,7 +158,48 @@ const Agenda = () => {
         fade.classList.toggle('hide')
     }
 
+    useLayoutEffect(() => {
+        pegaEvents()
+        //tentativa numero 2
+        async function fetchData() {
+            const response = await dataService.getConsultas()
+            
+            const filteredList = response.data.filter(item => item.codDent == codDent)
+            console.log(filteredList)
+            setList(filteredList)
+            console.log('list: ',list)
+            console.log('eventos',eventos)
 
+        }
+        fetchData()
+
+
+        // //tentativa numero 1
+        // const teste = dataService.getConsultas()
+
+        // teste
+        //     .then(response => {
+
+        //         const list = Array.from(response.data)
+        //         console.log('list: ', list)
+        //         for (let i = 0; i < list.length; i++) {
+
+        //             if (list[i].codDent == codDent) {
+        //                 eventos.push(
+        //                     {
+        //                         title: 'Meeting',
+        //                         start: moment(list[i].data + ' ' + list[i].horaInicio).toDate(),
+        //                         end: moment(list[i].data + ' ' + list[i].horaFinal).toDate()
+        //                     },
+        //                 )
+        //             }
+        //         }
+        //         console.log(eventos)
+        //     })
+
+
+
+    }, [])
 
     return (
 
@@ -149,6 +209,7 @@ const Agenda = () => {
                 <div className="row">
                     <div className="col-12">
                         <h2>Agendamentos</h2>
+                        {console.log('html: ', eventos)}
                         <Calendar
 
                             localizer={localizer}
