@@ -33,8 +33,11 @@ const eventos = []
 const Agenda = () => {
 
     const [list, setList] = useState([]);
+    const [selectedEvent, setSelectedEvent] = useState(null)
+    const [dentista, setDentista] = useState([]);
+    const [pacientes, setPacientes] = useState([])
     const clickRef = useRef(null)
-
+    //
 
     let { codDent } = useParams()
     //
@@ -86,9 +89,18 @@ const Agenda = () => {
                 for (let i = 0; i < response.length; i++) {
 
                     if (response[i].codDent == codDent) {
+                        // pacientes.forEach(element =>{
+                        //     if(response[i].codPac == element.codPac) {
+                        //         var nomePac = element.nome
+                                
+                        //     }
+                        // });
+                    
+                        
                         eventos.push(
                             {
-                                title: 'Meeting',
+                                codCons: response[i].codCons,
+                                title: `m`,
                                 start: moment(response[i].data + ' ' + response[i].horaInicio).toDate(),
                                 end: moment(response[i].data + ' ' + response[i].horaFinal).toDate()
                             },
@@ -101,7 +113,7 @@ const Agenda = () => {
             });
 
 
-        
+
     }
 
 
@@ -109,9 +121,13 @@ const Agenda = () => {
 
     async function pegaDentistas() {
 
-        var dentistas = await dataService.getDentistas()
+        await dataService.getDentistas()
             .then((response) => {
-
+                response.data.forEach(element => {
+                    if(element.codDent == codDent){
+                        setDentista(element)
+                    }
+                });
                 console.log('dentista: ', response)
             })
             .catch(error => {
@@ -122,15 +138,35 @@ const Agenda = () => {
 
     async function pegaPacientes() {
 
-        var pacientes = await dataService.getPacientes()
+        await dataService.getPacientes()
             .then((response) => {
-
+                setPacientes(response)
                 console.log('paciente: ', response)
             })
             .catch(error => {
                 erroDataService(error)
             });
 
+    }
+
+    const handleDelete = (codCons) => {
+        console.log('id: ', codCons);
+        var retorno = confirm('Realmente deseja cancelar consulta?');
+        if (retorno == true) {
+
+
+            dataService.deleteConsulta(codCons)
+                .then(response => {
+                    console.log('consulta cancelada', response.data);
+                    pegaEvents();
+                })
+                .catch(function (error) {
+                    erroDataService(error)
+                });
+
+        } else {
+            console.log('Operação cancelada!!');
+        }
     }
 
     const eventPropGetter = useCallback(
@@ -145,7 +181,9 @@ const Agenda = () => {
         []
     )
 
-    const onSelectEvent = useCallback(() => {
+    const onSelectEvent = useCallback((event) => {
+        setSelectedEvent(event);
+
         window.clearTimeout(clickRef?.current)
         clickRef.current = window.setTimeout(() => {
             changeModal()
@@ -158,49 +196,25 @@ const Agenda = () => {
         fade.classList.toggle('hide')
     }
 
+    //tentativa numero 2
+    async function fetchData() {
+        const response = await dataService.getConsultas()
+
+        const filteredList = response.data.filter(item => item.codDent == codDent)
+        //console.log(filteredList)
+        setList(filteredList)
+        //console.log('list: ',list)
+        //console.log('eventos',eventos)
+
+    }
+
     useLayoutEffect(() => {
+        pegaPacientes()
         pegaEvents()
-        //tentativa numero 2
-        async function fetchData() {
-            const response = await dataService.getConsultas()
-            
-            const filteredList = response.data.filter(item => item.codDent == codDent)
-            console.log(filteredList)
-            setList(filteredList)
-            console.log('list: ',list)
-            console.log('eventos',eventos)
-
-        }
         fetchData()
-
-
-        // //tentativa numero 1
-        // const teste = dataService.getConsultas()
-
-        // teste
-        //     .then(response => {
-
-        //         const list = Array.from(response.data)
-        //         console.log('list: ', list)
-        //         for (let i = 0; i < list.length; i++) {
-
-        //             if (list[i].codDent == codDent) {
-        //                 eventos.push(
-        //                     {
-        //                         title: 'Meeting',
-        //                         start: moment(list[i].data + ' ' + list[i].horaInicio).toDate(),
-        //                         end: moment(list[i].data + ' ' + list[i].horaFinal).toDate()
-        //                     },
-        //                 )
-        //             }
-        //         }
-        //         console.log(eventos)
-        //     })
-
-
-
     }, [])
 
+    console.log('haha pacientes: ',pacientes)
     return (
 
         <>
@@ -208,10 +222,9 @@ const Agenda = () => {
 
                 <div className="row">
                     <div className="col-12">
-                        <h2>Agendamentos</h2>
-                        {console.log('html: ', eventos)}
-                        <Calendar
+                        <h2>Agendamentos {dentista.nome}</h2>
 
+                        <Calendar
                             localizer={localizer}
                             messages={messages}
                             culture={'pt-BR'}
@@ -222,7 +235,7 @@ const Agenda = () => {
                             endAccessor="end"
                             style={{ height: 500 }}
                             eventPropGetter={eventPropGetter}
-                            onSelectEvent={onSelectEvent}
+                            onSelectEvent={onSelectEvent}                        
                         />
                         <div id='fade' className='hide' ></div>
                         <div id='modal' className='hide'>
@@ -230,10 +243,12 @@ const Agenda = () => {
                                 <h2>Este é o modal</h2>
                                 <button id='close-modal' className='fechar-modal' onClick={changeModal}>Fechar</button>
                             </div>
-                            <div className='modal-body'>
-                                <p>lorem</p>
-                                <button className='cancelar'>Cancelar Consulta</button>
-                            </div>
+                            {selectedEvent && (<div className='modal-body'>
+                                <p>Data: {selectedEvent.start.toLocaleDateString()}</p>
+                                <p>Horario Inicio: {selectedEvent.start.toLocaleTimeString([],{hour: '2-digit', minute: '2-digit'})}</p>
+                                <p>Horario Fim: {selectedEvent.end.toLocaleTimeString([],{hour: '2-digit', minute: '2-digit'})}</p>
+                                <button className='cancelar' onClick={() => (handleDelete(selectedEvent.codCons))}>Cancelar Consulta</button>
+                            </div>)}
                         </div>
 
                     </div>

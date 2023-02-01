@@ -62,7 +62,11 @@ class DataService{
 
     updateConsulta(codCons,data){
         return api.put(`/consulta/${codCons}`, data);
-    } 
+    }
+
+    deleteConsulta(codCons){
+        return api.delete(`/consulta/${codCons}`);
+    }
 }
 
 export default new DataService();
