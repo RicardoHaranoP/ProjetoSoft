@@ -61,64 +61,64 @@ const CadastroPacient = () => {
     const savePaciente = (e) => {
         e.preventDefault();
         const paciente = { nome, cpf, dataNasc, celular, email };
-        console.log('bom dia')
 
         const camposValidos = isCamposValid();
+        if (camposValidos) {
+            if (codPac) {
 
-        if (codPac) {
+                //update
+                dataService.updatePaciente(codPac, paciente)
+                    .then(response => {
+                        console.log('paciente atualizado', response.data);
+                        navigate('/');
+                    })
+                    .catch(error => {
+                        //if (error.)
+                        if (error.response) {
+                            // The request was made and the server responded with a status code
+                            // that falls out of the range of 2xx
+                            console.log("error.data ", error.response.data);
+                            console.log("error.status ", error.response.status);
+                            console.log("error.headers ", error.response.headers);
+                        } else if (error.request) {
+                            // The request was made but no response was received
+                            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                            // http.ClientRequest in node.js
+                            console.log('error.request', error.request);
+                        } else {
+                            // Something happened in setting up the request that triggered an Error
+                            console.log('Error', error.message);
+                        }
+                        console.log('error.config', error.config);
+                    });
+            } else {
 
-            //update
-            dataService.updatePaciente(codPac, paciente)
-                .then(response => {
-                    console.log('paciente atualizado', response.data);
-                    navigate('/');
-                })
-                .catch(error => {
-                    //if (error.)
-                    if (error.response) {
-                        // The request was made and the server responded with a status code
-                        // that falls out of the range of 2xx
-                        console.log("error.data ", error.response.data);
-                        console.log("error.status ", error.response.status);
-                        console.log("error.headers ", error.response.headers);
-                    } else if (error.request) {
-                        // The request was made but no response was received
-                        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                        // http.ClientRequest in node.js
-                        console.log('error.request', error.request);
-                    } else {
-                        // Something happened in setting up the request that triggered an Error
-                        console.log('Error', error.message);
-                    }
-                    console.log('error.config', error.config);
-                });
-        } else {
-
-            //create
-            dataService.createPaciente(paciente)
-                .then(response => {
-                    console.log("Paciente adicionado", response.data);
-                    navigate("/");
-                })
-                .catch(error => {
-                    //if (error.)
-                    if (error.response) {
-                        // The request was made and the server responded with a status code
-                        // that falls out of the range of 2xx
-                        console.log("error.data ", error.response.data);
-                        console.log("error.status ", error.response.status);
-                        console.log("error.headers ", error.response.headers);
-                    } else if (error.request) {
-                        // The request was made but no response was received
-                        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                        // http.ClientRequest in node.js
-                        console.log('error.request', error.request);
-                    } else {
-                        // Something happened in setting up the request that triggered an Error
-                        console.log('Error', error.message);
-                    }
-                    console.log('error.config', error.config);
-                });
+                //create
+                dataService.createPaciente(paciente)
+                    .then(response => {
+                        console.log("Paciente adicionado", response.data);
+                        navigate("/");
+                    })
+                    .catch(error => {
+                        //if (error.)
+                        if (error.response) {
+                            // The request was made and the server responded with a status code
+                            // that falls out of the range of 2xx
+                            console.log("error.data ", error.response.data);
+                            console.log("error.status ", error.response.status);
+                            console.log("error.headers ", error.response.headers);
+                        } else if (error.request) {
+                            // The request was made but no response was received
+                            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                            // http.ClientRequest in node.js
+                            console.log('error.request', error.request);
+                        } else {
+                            // Something happened in setting up the request that triggered an Error
+                            console.log('Error', error.message);
+                        }
+                        console.log('error.config', error.config);
+                    });
+            }
         }
     }
 
@@ -145,11 +145,12 @@ const CadastroPacient = () => {
 
             //validando CPF
             if (campo.id == 'cpf') {
-                if (!validarCPF(campo)) {                    
+                if (!validarCPF(campo)) {
                     valid = false
                 }
             }
         }
+        return valid
     }
 
     // cria uma mensagem de erro em uma 'div'
