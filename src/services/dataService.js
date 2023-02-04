@@ -67,6 +67,27 @@ class DataService{
     deleteConsulta(codCons){
         return api.delete(`/consulta/${codCons}`);
     }
+
+    //métodos axios relacionados à anamnese
+    getAnamneses(){
+        return api.get(`/anamnese`)
+    }
+
+    getAnamnese(codAnam){
+        return api.get(`/anamnese/${codAnam}`);
+    }
+
+    createAnamnese(codPac,data){
+        return api.post(`/anamnese/${codPac}`, data)
+    }
+
+    updateAnamnese(codAnam, data) {
+        return api.put(`/anamnese/${codAnam}`)
+    }
+
+    deleteAnamnese(codAnam){
+        return api.delete(`/anamnese/${codAnam}`)
+    }
 }
 
 export default new DataService();

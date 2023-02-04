@@ -7,7 +7,7 @@ import 'moment/locale/pt-br';
 import './modal.css'
 
 import { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import {  useNavigate, useParams } from 'react-router-dom';
 import { useCallback } from 'react';
 
 const messages = {
@@ -31,25 +31,33 @@ const eventos = []
 
 
 const Agenda = () => {
+    const navigate= useNavigate()
 
     const [list, setList] = useState([]);
     const [selectedEvent, setSelectedEvent] = useState(null)
     const [dentista, setDentista] = useState([]);
     const [pacientes, setPacientes] = useState([])
+    const [paciente, setPaciente] = useState(null)
     const clickRef = useRef(null)
     //
+    //const [nome, setNome] = useState(null)
+    const [consultas, setConsultas] = useState([])
 
     let { codDent } = useParams()
     //
     useEffect(() => {
 
 
-        const modal = document.querySelector("#modal");
-        const fade = document.querySelector("#fade");
-
+        // const modal = document.querySelector("#modal");
+        // const fade = document.querySelector("#fade");
+        pegaEvents()
         pegaDentistas()
         pegaPacientes()
 
+        
+
+        fetchData()
+       
 
         return () => {
             window.clearTimeout(clickRef?.current)
@@ -78,53 +86,30 @@ const Agenda = () => {
     }
 
     //
-    async function pegaEvents() {
-
-        await dataService.getConsultas()
-            .then((response) => {
-
-                console.log('consulta: ', response)
-                response = response.data
-
-                for (let i = 0; i < response.length; i++) {
-
-                    if (response[i].codDent == codDent) {
-                        // pacientes.forEach(element =>{
-                        //     if(response[i].codPac == element.codPac) {
-                        //         var nomePac = element.nome
-                                
-                        //     }
-                        // });
-                    
-                        
-                        eventos.push(
-                            {
-                                codCons: response[i].codCons,
-                                title: `m`,
-                                start: moment(response[i].data + ' ' + response[i].horaInicio).toDate(),
-                                end: moment(response[i].data + ' ' + response[i].horaFinal).toDate()
-                            },
-                        )
-                    }
-                }
-            })
-            .catch(error => {
-                erroDataService(error)
-            });
 
 
 
+    async function nomePaciente(codPac) {
+
+
+        let promise = await dataService.getPaciente(codPac)
+        //console.log('promise',promise)
+        const nome = promise.data.nome
+        //console.log('nome', typeof(nome))
+        // pacientes.data.forEach(paciente => {
+        //     if (paciente.codPac == response.codPac) {
+        //         setPaciente(response.nome)
+        //     }
+        // })
+        return nome
     }
 
+    function pegaDentistas() {
 
-
-
-    async function pegaDentistas() {
-
-        await dataService.getDentistas()
+        dataService.getDentistas()
             .then((response) => {
                 response.data.forEach(element => {
-                    if(element.codDent == codDent){
+                    if (element.codDent == codDent) {
                         setDentista(element)
                     }
                 });
@@ -136,9 +121,9 @@ const Agenda = () => {
 
     }
 
-    async function pegaPacientes() {
+    function pegaPacientes() {
 
-        await dataService.getPacientes()
+        dataService.getPacientes()
             .then((response) => {
                 setPacientes(response)
                 console.log('paciente: ', response)
@@ -149,6 +134,45 @@ const Agenda = () => {
 
     }
 
+    const pegaEvents = () => {
+
+        dataService.getConsultas()
+            .then((response) => {
+
+                console.log('consulta: ', response.data)
+                response = response.data
+                let nome = ''
+
+                response.forEach(async (item) => {
+                    console.log(item.codPac)
+                    const promise = nomePaciente(item.codPac)
+                    await promise.then(response => { console.log('response ', response); nome = response })
+
+
+                    if (item.codDent == codDent) {
+                        console.log(nome)
+
+                        eventos.push(
+                            {
+                                codCons: item.codCons,
+                                title: `${nome}`,
+                                start: moment(item.data + ' ' + item.horaInicio).toDate(),
+                                end: moment(item.data + ' ' + item.horaFinal).toDate()
+                            },
+                        )
+                    }
+                })
+            })
+            .catch(error => {
+                erroDataService(error)
+            });
+
+
+
+    }
+
+
+
     const handleDelete = (codCons) => {
         console.log('id: ', codCons);
         var retorno = confirm('Realmente deseja cancelar consulta?');
@@ -158,7 +182,7 @@ const Agenda = () => {
             dataService.deleteConsulta(codCons)
                 .then(response => {
                     console.log('consulta cancelada', response.data);
-                    pegaEvents();
+                    navigate('../')
                 })
                 .catch(function (error) {
                     erroDataService(error)
@@ -203,18 +227,13 @@ const Agenda = () => {
         const filteredList = response.data.filter(item => item.codDent == codDent)
         //console.log(filteredList)
         setList(filteredList)
-        //console.log('list: ',list)
+        console.log('list: ',list)
         //console.log('eventos',eventos)
 
     }
 
-    useLayoutEffect(() => {
-        pegaPacientes()
-        pegaEvents()
-        fetchData()
-    }, [])
 
-    console.log('haha pacientes: ',pacientes)
+    
     return (
 
         <>
@@ -235,20 +254,21 @@ const Agenda = () => {
                             endAccessor="end"
                             style={{ height: 500 }}
                             eventPropGetter={eventPropGetter}
-                            onSelectEvent={onSelectEvent}                        
+                            onSelectEvent={onSelectEvent}
                         />
                         <div id='fade' className='hide' ></div>
                         <div id='modal' className='hide'>
+                        {selectedEvent && (<>
                             <div className='modal-header'>
-                                <h2>Este é o modal</h2>
+                                <h2>{selectedEvent.title}</h2>
                                 <button id='close-modal' className='fechar-modal' onClick={changeModal}>Fechar</button>
                             </div>
-                            {selectedEvent && (<div className='modal-body'>
+                            <div className='modal-body'>
                                 <p>Data: {selectedEvent.start.toLocaleDateString()}</p>
-                                <p>Horario Inicio: {selectedEvent.start.toLocaleTimeString([],{hour: '2-digit', minute: '2-digit'})}</p>
-                                <p>Horario Fim: {selectedEvent.end.toLocaleTimeString([],{hour: '2-digit', minute: '2-digit'})}</p>
+                                <p>Horario Inicio: {selectedEvent.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
+                                <p>Horario Fim: {selectedEvent.end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
                                 <button className='cancelar' onClick={() => (handleDelete(selectedEvent.codCons))}>Cancelar Consulta</button>
-                            </div>)}
+                            </div></>)}
                         </div>
 
                     </div>
@@ -256,7 +276,7 @@ const Agenda = () => {
             </div>
         </>
     )
-
+    
 }
 
 export default Agenda;

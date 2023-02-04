@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, Link } from 'react-router-dom';
 import dataService from '../services/dataService';
 import './PacientDent.css';
 
@@ -64,6 +64,9 @@ const Paciente = () => {
                                 <li className='m-3 fs-4'><b>Data de Nascimento:</b><br/> {dataNasc}<br/></li>
                                 <li className='m-3 fs-4'><b>Celular:</b><br/> {celular}<br/></li>
 
+                                <div>
+                                    <Link to={`../paciente/anamnese/${codPac}`} type='button' className="btnAgenda position-absolute top-50 start-50">Anamnese</Link>
+                                </div>
                             </div>
                         </div>
                     </div>

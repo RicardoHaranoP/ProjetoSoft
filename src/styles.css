@@ -2,6 +2,7 @@
     height: 100%;
     width: 100%;
     position: fixed;
+    overflow-y: scroll;
 }
 
 header {
@@ -26,4 +27,24 @@ header {
 .faixa {
     display: flex;
     padding-right: 15px;
+}
+
+.btn-login a {
+    cursor: pointer;
+    transition: .1s;
+    padding: 20px;
+    text-decoration: none;
+    font-size: 20px;
+    color: black;
+}
+
+.btn-login a:hover {
+    background-color: #0A809A;
+    color: #fff;
+}
+
+
+.scrollable-div {
+    overflow-y: scroll;
+    height: 500px;
 }

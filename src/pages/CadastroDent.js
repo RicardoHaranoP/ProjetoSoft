@@ -153,49 +153,6 @@ const CadastroDent = () => {
         }
     }, [])
 
-
-    /*function cadastrarPaciente() {
-        //validateControls();
-    }*/
-/*
-    function validateControls() {
-        //FirstName
-        var valor = document.getElementById("fname");
-        alert("Você digitou: " + valor);
-        /*
-        var fname = document.getElementById("fname")
-        if (fname == "") {
-            window.alert("please enter your first name");
-            fname.focus();
-            return false;
-        }
-
-        getControlValues();
-        
-    }
-
-    function getControlValues() {
-        alert("First Name= " + fname.value)
-    }
-*/
-
-/*
-    allInput.foreach(input => {
-        if(input.value != ""){
-            form.classList.add('secActive');
-        }else{
-            form.classList.remove('secActive');
-            alert("input está vazio")
-        }
-    })*/
-
-    /*
-    const response = axios.post('http://localhost:8000/paciente', {
-        first_name: 'John Doe',
-    });
-    console.log(response.data);*/
-
-
     return(
         <div className="col p-4 overflow-auto h-100">
             <div className="row">
