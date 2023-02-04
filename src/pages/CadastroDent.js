@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import './Cadastro.css';
 import api from '../services/api';
 import dataService from '../services/dataService';
-
+import InputMask from "react-input-mask";
 
 
 const CadastroDent = () => {
@@ -143,7 +143,24 @@ const CadastroDent = () => {
                 createError(campo, `O campo "${label}" não pode estar em branco`)
                 valid = false;
             }
+
+            //validando email
+            if (campo.id == 'email') {
+                if (!validarEmail(campo)) {
+                    valid = false
+                }
+            }
+
+            if (campo.id == 'cro') {
+                if(isNaN(campo.value)){
+                    createError(campo, 'CRO deve ser um número')
+                    valid = false
+                }
+            }
+
         }
+
+
         return valid
     }
 
@@ -153,6 +170,17 @@ const CadastroDent = () => {
         div.innerHTML = msg
         div.classList.add('error-text')
         campo.insertAdjacentElement('afterend', div)
+    }
+
+
+    function validarEmail(campo) {
+        const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        if (!emailRegex.test(campo.value)) {
+            createError(campo, 'Email inválido')
+            return false
+        }
+
+        return true
     }
 
     useEffect(() => {
@@ -198,71 +226,71 @@ const CadastroDent = () => {
 
                             <h2 className="mb-4 mt-0">Cadastro Dentistas</h2>
                             <form method='POST' className='formulario'>
-                            <label>Nome:</label>
-                            <input
-                                type="text"
-                                id="nome"
-                                value={nome}
-                                onChange={(e) => setNome(e.target.value)}
-                                placeholder="Digite seu nome"
-                                className='validar'
-                            />
+                                <label>Nome:</label>
+                                <input
+                                    type="text"
+                                    id="nome"
+                                    value={nome}
+                                    onChange={(e) => setNome(e.target.value)}
+                                    placeholder="Digite seu nome"
+                                    className='validar'
+                                />
 
 
-                            <label>CRO:</label>
-                            <input
-                                type="text"
-                                id="cro"
-                                value={cro}
-                                onChange={(e) => setCro(e.target.value)}
-                                name="cro"
-                                placeholder="Digite seu cro"
-                                className='validar'
-                            />
+                                <label>CRO:</label>
+                                <input
+                                    type="text"
+                                    id="cro"
+                                    value={cro}
+                                    onChange={(e) => setCro(e.target.value)}
+                                    name="cro"
+                                    placeholder="Digite seu cro"
+                                    className='validar'
+                                />
 
 
-                            <label>Data de Nascimento:</label>
-                            <input
-                                type="Date"
-                                id="dataNasc"
-                                value={dataNasc}
-                                onChange={(e) => setDataNasc(e.target.value)}
-                                name="dataNascimento"
-                                placeholder="Digite sua Data de Nascimento"
-                                className='validar'
-                            />
-                            <br />
-                            <label>Celular:</label>
-                            <input
-                                type="text"
-                                id="celular"
-                                value={celular}
-                                onChange={(e) => setCelular(e.target.value)}
-                                name="celular"
-                                placeholder="Digite seu número de celular"
-                                className='validar'
-                            />
+                                <label>Data de Nascimento:</label>
+                                <input
+                                    type="Date"
+                                    id="dataNasc"
+                                    value={dataNasc}
+                                    onChange={(e) => setDataNasc(e.target.value)}
+                                    name="dataNascimento"
+                                    placeholder="Digite sua Data de Nascimento"
+                                    className='validar'
+                                />
+                                <br />
+                                <label>Celular:</label>
+                                <InputMask
+                                    mask="(99) 99999-9999"
+                                    value={celular}
+                                    onChange={(e) => setCelular(e.target.value)}
+                                    placeholder="Digite seu número de celular"
+                                    className="validar"
+                                >
+                                    {(inputProps) => <input {...inputProps} />}
+                                </InputMask><br />
 
-                            <label>email:</label>
-                            <input
-                                type="text"
-                                id="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                name="email"
-                                placeholder="Digite seu email"
-                                className='validar' />
+                                <label>email:</label>
+                                <input
+                                    type="text"
+                                    id="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    name="email"
+                                    placeholder="Digite seu email"
+                                    className='validar' />
 
 
-                            <div>
-                                <span>
-                                    <a type="button" className='btnCancelar' href='../pacientes'>Cancelar</a>
-                                </span>
-                                <button className='btnCadastrar' onClick={(e) => saveDentista(e)}>Cadastrar</button>
-                            </div>
+                                <div>
+                                    <span>
+                                        <a type="button" className='btnCancelar' href='../pacientes'>Cancelar</a>
+                                    </span>
+                                    <button className='btnCadastrar' onClick={(e) => saveDentista(e)}>Cadastrar</button>
+                                </div>
                             </form>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>

@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
 import './Cadastro.css';
-import api from '../services/api';
 import dataService from '../services/dataService';
 import ValidaCPF from '../components/ValidaCPF'
-
+import InputMask from "react-input-mask";
 
 const CadastroPacient = () => {
 
     const navigate = useNavigate();
     const { codPac } = useParams();
 
-
+    const [cpfsRegistrados, setCpfsRegistrados] = useState([])
 
 
 
@@ -28,8 +27,18 @@ const CadastroPacient = () => {
     const [dataNasc, setDataNasc] = useState('')
     const [celular, setCelular] = useState('')
     const [email, setEmail] = useState('')
+    
+    function pegaCpfs() {
+        dataService.getPacientes()
+        .then(response => {
+            console.log('pacientes', response.data)
 
-    api.get('/paciente')
+            let cpfs = response.data.map(paciente => {
+                return paciente.cpf
+            })
+
+            setCpfsRegistrados(cpfs)    
+        })
         .catch(function (error) {
             if (error.response) {
                 // The request was made and the server responded with a status code
@@ -48,15 +57,7 @@ const CadastroPacient = () => {
             }
             console.log(error.config);
         });
-    /*
-        //Dob
-        var data = document.getElementById("data")
-        if (data.value == "") {
-            window.alert("please enter your Date of Birth");
-            data.focus();
-            return false;
-        }*/
-
+    }
 
     const savePaciente = (e) => {
         e.preventDefault();
@@ -148,6 +149,19 @@ const CadastroPacient = () => {
                 if (!validarCPF(campo)) {
                     valid = false
                 }
+                console.log('oi')
+
+                //verificar se já está registrado
+                if(!isCPFDuplicado(campo)){
+                    valid = false
+                }
+            }
+
+            //validando email
+            if (campo.id == 'email') {
+                if (!validarEmail(campo)) {
+                    valid = false
+                }
             }
         }
         return valid
@@ -167,6 +181,25 @@ const CadastroPacient = () => {
             createError(campo, 'CPF inválido')
             return false
         }
+        return true
+    }
+
+    function isCPFDuplicado(campo) {
+        if (cpfsRegistrados.includes(campo.value)) {
+            createError(campo, 'CPF já está registrado')
+            return false
+        }
+        
+        return true
+    }
+
+    function validarEmail(campo) {
+        const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        if (!emailRegex.test(campo.value)) {
+            createError(campo, 'Email inválido')
+            return false
+        }
+
         return true
     }
 
@@ -200,6 +233,9 @@ const CadastroPacient = () => {
                     console.log('error.config', error.config);
                 });
         }
+
+        pegaCpfs()
+        console.log(cpfsRegistrados)
     }, [])
 
 
@@ -266,16 +302,17 @@ const CadastroPacient = () => {
                                 />
 
 
-                                <label>CPF:</label>
-                                <input
-                                    type="text"
-                                    id="cpf"
+                                <label>CPF:</label><br/>
+                                <InputMask
+                                    mask="999.999.999-99"
+                                    id='cpf'
                                     value={cpf}
                                     onChange={(e) => setCpf(e.target.value)}
-                                    name="cpf"
                                     placeholder="Digite seu CPF"
-                                    className='validar'
-                                />
+                                    className="validar"
+                                >
+                                    {(inputProps) => <input {...inputProps} />}
+                                </InputMask>
 
 
                                 <label>Data de Nascimento:</label>
@@ -290,15 +327,15 @@ const CadastroPacient = () => {
                                 />
                                 <br />
                                 <label>Celular:</label>
-                                <input
-                                    type="text"
-                                    id="celular"
+                                <InputMask
+                                    mask="(99) 99999-9999"
                                     value={celular}
                                     onChange={(e) => setCelular(e.target.value)}
-                                    name="celular"
                                     placeholder="Digite seu número de celular"
-                                    className='validar'
-                                />
+                                    className="validar"
+                                >
+                                    {(inputProps) => <input {...inputProps} />}
+                                </InputMask><br/>
 
                                 <label>email:</label>
                                 <input

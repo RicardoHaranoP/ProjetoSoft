@@ -25,19 +25,19 @@ const ListarDentistas = () => {
             .then(response => {
                 console.log('dentista', response.data);
                 let dentistasFormatados = response.data.map(dentista => {
-                    
+
                     let data = new Date(dentista.dataNasc)
                     data.setDate(data.getDate() + 2);
-                    dentista.dataNasc = data.toLocaleDateString('pt-BR',{
+                    dentista.dataNasc = data.toLocaleDateString('pt-BR', {
                         day: '2-digit',
                         month: '2-digit',
                         year: 'numeric'
                     });
                     return dentista
                 })
-                
+
                 setDentista(dentistasFormatados);
-                
+
             })
             .catch(function (error) {
                 if (error.response) {
@@ -94,32 +94,58 @@ const ListarDentistas = () => {
         }
     }
 
+    function changeModal() {
+        modal.classList.toggle('hide')
+        fade.classList.toggle('hide')
+    }
+
     return (
         <div className="col p-4 overflow-auto h-100">
             <div className="row">
                 <div className="col-12">
+                    <button className='helpButton' onClick={changeModal}>?</button>
+                    <div id='fade' className='hide' ></div>
+                    <div id='modal' className='hide'>
+                        <div className='modal-header'>
+                            <h2>Help</h2>
+                            <button id='close-modal' className='fechar-modal' onClick={changeModal}>Fechar</button>
+                        </div>
+                        <div className='modal-body'>
+                            <ul>
+                                <li><p>Esta é a página que lista todos os dentistas registrados</p></li>
+                                <li><p>O nome do dentista pode ser clicado para ir para uma página com informações do dentista e sua agenda</p></li>
+                                <li><p>Para editar alguma informação do dentista, basta clicar no simbolo de edição <MdEdit /></p></li>
+                                <li><p>Para deletar um dentista, basta clicar no simbolo de delete <MdDelete /></p></li>
+                                <li><p>Para registrar um novo dentista no sistema, basta clicar no botão 'Novo Dentista'</p></li>
+                            </ul>
+                        </div>
+                    </div>
                     <div className='w-100 d-flex justify-content-between'>
+
                         <h2 className="mb-4 mt-0">Dentistas</h2>
+
                         <div>
                             <a className="novo" href="http://localhost:3000/dentista/cadastro" role="button" > <MdAddCircle size={30} /> Novo Dentista</a>
                         </div>
+
+
                     </div>
                     <Table
                         height={400}
                         data={dentista}
                         onRowClick={rowData => {
-                            console.log('rowdata',rowData);
+                            console.log('rowdata', rowData);
                         }}
                     >
 
                         <Column width={250} align="center" fixed>
                             <HeaderCell>Nome</HeaderCell>
                             <Cell dataKey='nome'>
-                            {rowData => (
-                                
-                                <Link to={`../dentista/${rowData.codDent}`}>{rowData.nome}</Link>
-                                
-                            )}
+                                {rowData => (
+
+                                    <Link to={`../dentista/${rowData.codDent}`}>{rowData.nome}</Link>
+
+                                )}
                             </Cell>
                         </Column>
 

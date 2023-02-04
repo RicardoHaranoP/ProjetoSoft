@@ -55,6 +55,11 @@ const MarcarConsulta = () => {
 
         await dataService.getDentistas()
             .then((response) => {
+                response.data.sort((a, b) => {
+                    if (a.nome < b.nome) return -1
+                    if (a.nome > b.nome) return 1
+                    return 0
+                })
                 setDentistas(response.data)
                 console.log('dentista: ', response.data)
             })
@@ -68,6 +73,13 @@ const MarcarConsulta = () => {
 
         await dataService.getPacientes()
             .then((response) => {
+
+                response.data.sort((a, b) => {
+                    if (a.nome < b.nome) return -1
+                    if (a.nome > b.nome) return 1
+                    return 0
+                })
+                console.log(response.data)
                 setPacientes(response.data)
                 console.log('paciente: ', response.data)
             })
@@ -116,7 +128,12 @@ const MarcarConsulta = () => {
 
     const handlePacienteSelection = (e) => {
         setPaciente(e.target.value)
-      };
+    };
+
+    function changeModal() {
+        modal.classList.toggle('hide')
+        fade.classList.toggle('hide')
+    }
 
     return (
         <>
@@ -127,8 +144,26 @@ const MarcarConsulta = () => {
                         <div className='w-100 d-flex justify-content-between'>
                             <div>
 
-
+                                <button className='helpButton' onClick={changeModal}>?</button>
                                 <h2 className="mb-4 mt-0">Marcar Consulta</h2>
+
+                                <div id='fade' className='hide' ></div>
+                                <div id='modal' className='hide'>
+                                    <div className='modal-header'>
+                                        <h2>Help</h2>
+                                        <button id='close-modal' className='fechar-modal' onClick={changeModal}>Fechar</button>
+                                    </div>
+                                    <div className='modal-body'>
+                                        <ul>
+                                            <li><p>Esta página serve para cadastrar uma consulta na agenda de um dentista</p></li>
+                                            <li><p>Em 'Selecione o Dentista:' pode ser selecionado um dentista já foi registrado no sistema</p></li>
+                                            <li><p>Em 'Selecione o Paciente:' pode ser selecionado um paciente já registrado no sistema</p></li>
+                                            <li><p>Em 'Data da Consulta:' selecione a data em que a consulta será realizada</p></li>
+                                            <li><p>Em 'Horario da consulta' selecione o horario de inicio previsto da consulta</p></li>
+                                            <li><p>Em 'Horario de termino' selecione o horario de término previsto da consulta</p></li>
+                                        </ul>
+                                    </div>
+                                </div>
 
                                 <form>
                                     <label>

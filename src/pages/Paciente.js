@@ -19,6 +19,13 @@ const Paciente = () => {
         //Runs only on the first render
         dataService.getPaciente(codPac)
         .then(response => {
+            let data = new Date(response.data.dataNasc)
+            data.setDate(data.getDate() + 2);
+            response.data.dataNasc = data.toLocaleDateString('pt-BR',{
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+            });
             setNome(response.data.nome);
             setEmail(response.data.email);
             setDataNasc(response.data.dataNasc);
