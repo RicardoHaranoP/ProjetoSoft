@@ -8,38 +8,54 @@ import CadastroPacient from './pages/CadastroPacient.js';
 import MarcarConsulta from './pages/agendamento/MarcarConsulta.js';
 import Paciente from './pages/Paciente.js';
 import Teste from './pages/agendamento/teste.js'
-import Login from './pages/login.js'
+import PaginaLogin from './pages/login.js'
 import Anamnese from './pages/anamnese.js'
 
-import React from "react";
+import React, { useState } from "react";
 import {
   BrowserRouter,
   Routes,
-  Route
+  Route,
+  Navigate,
+  Outlet
 } from "react-router-dom";
 
+const users = [
+  { username: 'user1', password: 'password1' },
+  { username: 'user2', password: 'password2' }
+];
 
+const PrivateRoute = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(localStorage.getItem('isAuthenticated'||false))
+
+  return isAuthenticated ? <Outlet /> : <PaginaLogin setIsAuthenticated={setIsAuthenticated} />;
+}
 
 
 function App() {
   return (
     <BrowserRouter>
-    <Routes>
-      <Route path='/'                                 element={<Home/>}/>
-      <Route path='/dentistas'                        element={<ListaDentistas/>}/>   
-      <Route path='/dentista/:codDent'                element={<Dentista/>}/>
-      <Route path='/dentista/cadastro'                element={<CadastroDent/>}/>
-      <Route path='/dentista/edit/:codDent'           element={<CadastroDent/>}/>
-      <Route path='/dentista/agendamento/:codDent'    element={<Agendamento/>}/>
-      <Route path='/pacientes'                        element={<ListaPacientes/>}/>  
-      <Route path='/paciente/:codPac'                 element={<Paciente/>}/>
-      <Route path='/paciente/cadastro'                element={<CadastroPacient/>}/>
-      <Route path='/paciente/edit/:codPac'            element={<CadastroPacient/>}/>
-      <Route path='/consulta'                         element={<MarcarConsulta/>}/>
-      <Route path='/teste'                            element={<Teste/>}/>
-      <Route path='/login'                            element={<Login/>}/>
-      <Route path='/paciente/anamnese/:codPac'        element={<Anamnese/>}/>
-    </Routes>
+      <Routes>
+        <Route element={<PrivateRoute />}>
+          <Route path='/dentistas' element={<ListaDentistas />} />
+          <Route path='/' element={<Home />} />
+          <Route path='/pacientes' element={<ListaPacientes />} />
+        </Route>
+
+
+        <Route path='/dentista/:codDent' element={<Dentista />} />
+        <Route path='/dentista/cadastro' element={<CadastroDent />} />
+        <Route path='/dentista/edit/:codDent' element={<CadastroDent />} />
+        <Route path='/dentista/agendamento/:codDent' element={<Agendamento />} />
+
+        <Route path='/paciente/:codPac' element={<Paciente />} />
+        <Route path='/paciente/cadastro' element={<CadastroPacient />} />
+        <Route path='/paciente/edit/:codPac' element={<CadastroPacient />} />
+        <Route path='/consulta' element={<MarcarConsulta />} />
+        <Route path='/teste' element={<Teste />} />
+
+        <Route path='/paciente/anamnese/:codPac' element={<Anamnese />} />
+      </Routes>
     </BrowserRouter>
   )
 }

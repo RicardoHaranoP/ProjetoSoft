@@ -31,8 +31,6 @@ export default function Home() {
             <a href="./dentistas" role="button">Dentistas</a>
 
             <a href="./pacientes" role="button">Pacientes</a>
-
-            <a href="./teste" role="button">teste</a>
         </div>
     )
 }

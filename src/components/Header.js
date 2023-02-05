@@ -10,9 +10,6 @@ const Header = () => {
                     <a href="/dentistas">Dentistas</a>
                     <a href="/pacientes">Pacientes</a>
                 </div>
-                <div className='btn-login d-flex justify-content-end' >
-                    <a href='/login' >Login</a>
-                </div>
             </div>
             
         </header>

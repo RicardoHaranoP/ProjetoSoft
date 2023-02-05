@@ -85,6 +85,7 @@ export default function anamnese() {
                 .then(anamnese => {
                     console.log('anamnese', anamnese)
                     setCirurgia(anamnese.data[anamnese.data.length-1].cirurgia)
+                    setQCirurgia(anamnese.data[anamnese.data.length-1].qCirurgia)
                 })
                 .catch(error => {
                     erroDataService(error)
@@ -133,7 +134,10 @@ export default function anamnese() {
                     />
                     <label>Fez Cirurgia?</label>
                     <label>Qual?</label>
-                    <input type='text' />
+                    <input type='text'
+                    value={qCirurgia}
+                    onChange={(e)=> setQCirurgia(e.target.value)}
+                    />
                 </div>
                 {/* <div className="form-group">
                     <input

@@ -34,3 +34,9 @@ button:hover {
     background-color: #0A809A;
     color: white;
 }
+
+
+.error-text {
+    color: red;
+    font-size: 12px;
+}
