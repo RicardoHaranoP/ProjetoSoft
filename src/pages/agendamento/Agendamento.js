@@ -6,9 +6,11 @@ import dataService from "../../services/dataService";
 import 'moment/locale/pt-br';
 import './modal.css'
 
-import { useState } from 'react';
-import {  useNavigate, useParams } from 'react-router-dom';
+import { useState, useContext } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useCallback } from 'react';
+
+import userContext from '../../userContext';
 
 const messages = {
     allDay: 'Dia Inteiro',
@@ -25,14 +27,13 @@ const messages = {
     showMore: (total) => `+ (${total}) Eventos`,
 }
 
+
 const localizer = momentLocalizer(moment);
 
 const eventos = []
 
-
 const Agenda = () => {
-    const navigate= useNavigate()
-
+    const navigate = useNavigate()
     const [list, setList] = useState([]);
     const [selectedEvent, setSelectedEvent] = useState(null)
     const [dentista, setDentista] = useState([]);
@@ -54,10 +55,10 @@ const Agenda = () => {
         pegaDentistas()
         pegaPacientes()
 
-        
+
 
         fetchData()
-       
+
 
         return () => {
             window.clearTimeout(clickRef?.current)
@@ -65,6 +66,8 @@ const Agenda = () => {
 
 
     }, [])
+
+
 
     const erroDataService = (error) => {
         if (error.response) {
@@ -150,7 +153,6 @@ const Agenda = () => {
 
 
                     if (item.codDent == codDent) {
-                        console.log(nome)
 
                         eventos.push(
                             {
@@ -161,6 +163,8 @@ const Agenda = () => {
                             },
                         )
                     }
+
+
                 })
             })
             .catch(error => {
@@ -227,25 +231,26 @@ const Agenda = () => {
         const filteredList = response.data.filter(item => item.codDent == codDent)
         //console.log(filteredList)
         setList(filteredList)
-        console.log('list: ',list)
+        console.log('list: ', list)
         //console.log('eventos',eventos)
 
     }
 
 
 
-    
+
     return (
 
         <>
             <div className='col p-5 overflow-auto h-100'>
 
                 <div className="row">
-                    
+
                     <div className="col-12">
                         <h2>Agendamentos {dentista.nome}</h2>
 
                         <Calendar
+                           
                             localizer={localizer}
                             messages={messages}
                             culture={'pt-BR'}
@@ -260,17 +265,17 @@ const Agenda = () => {
                         />
                         <div id='fade' className='hide' ></div>
                         <div id='modal' className='hide'>
-                        {selectedEvent && (<>
-                            <div className='modal-header'>
-                                <h2>{selectedEvent.title}</h2>
-                                <button id='close-modal' className='fechar-modal' onClick={changeModal}>Fechar</button>
-                            </div>
-                            <div className='modal-body'>
-                                <p>Data: {selectedEvent.start.toLocaleDateString()}</p>
-                                <p>Horario Inicio: {selectedEvent.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
-                                <p>Horario Fim: {selectedEvent.end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
-                                <button className='cancelar' onClick={() => (handleDelete(selectedEvent.codCons))}>Cancelar Consulta</button>
-                            </div></>)}
+                            {selectedEvent && (<>
+                                <div className='modal-header'>
+                                    <h2>{selectedEvent.title}</h2>
+                                    <button id='close-modal' className='fechar-modal' onClick={changeModal}>Fechar</button>
+                                </div>
+                                <div className='modal-body'>
+                                    <p>Data: {selectedEvent.start.toLocaleDateString()}</p>
+                                    <p>Horario Inicio: {selectedEvent.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
+                                    <p>Horario Fim: {selectedEvent.end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
+                                    <button className='cancelar' onClick={() => (handleDelete(selectedEvent.codCons))}>Cancelar Consulta</button>
+                                </div></>)}
                         </div>
 
                     </div>
@@ -278,7 +283,7 @@ const Agenda = () => {
             </div>
         </>
     )
-    
+
 }
 
 export default Agenda;

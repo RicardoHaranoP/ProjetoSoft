@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import dataService from '../services/dataService';
-import './PacientDent.css';
+import '../css/PacientDent.css';
 
 const Paciente = () => {
 
@@ -82,16 +82,25 @@ const Paciente = () => {
                         <div className='w-100 d-flex justify-content-between'>
                             <div className='d-inline'>
                                 <h2 className="mb-5 mt-0">Informações do Paciente</h2>
-                                <div>
+                                <div className='row'>
 
                                     <li className='m-3 fs-4'><b>Nome:</b><br /> {nome}<br /></li>
                                     <li className='m-3 fs-4'><b>Email:</b><br /> {email}<br /></li>
                                     <li className='m-3 fs-4'><b>CPF:</b><br /> {cpf}<br /></li>
                                     <li className='m-3 fs-4'><b>Data de Nascimento:</b><br /> {dataNasc}<br /></li>
                                     <li className='m-3 fs-4'><b>Celular:</b><br /> {celular}<br /></li>
-
-                                    <div>
-                                        <Link to={`../paciente/anamnese/${codPac}`} type='button' className="btnAgenda position-absolute top-50 start-50">Anamnese</Link>
+                                    <div className='row'>
+                                        <div className='col-12'>
+                                            <div className='mb-3'>
+                                                <Link to={`../paciente/ListaAnamnese/${codPac}`} type='button' className="btnAgenda mt-2">Anamnese</Link>
+                                            </div>
+                                            <div className='mb-3'>
+                                                <Link to={`../paciente/ListaProcedimentos/${codPac}`} type='button' className="btnAgenda mt-2">Procedimentos</Link>
+                                            </div>
+                                            <div>
+                                                <Link to={`../paciente/ListaOdontograma/${codPac}`} type='button' className="btnAgenda mt-2">Odontograma</Link>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

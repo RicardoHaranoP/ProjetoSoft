@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
-import './Cadastro.css';
+import '../css/Cadastro.css';
 import dataService from '../services/dataService';
 import ValidaCPF from '../components/ValidaCPF'
 import InputMask from "react-input-mask";
@@ -11,8 +11,6 @@ const CadastroPacient = () => {
     const { codPac } = useParams();
 
     const [cpfsRegistrados, setCpfsRegistrados] = useState([])
-
-
 
     /*
     const[paciente,setPaciente] = useState({

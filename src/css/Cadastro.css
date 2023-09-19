@@ -1,0 +1,92 @@
+
+p {
+    margin-top: 20px;
+    margin-left: 20px;
+    font-size: 20px;
+}
+label{
+    padding: 12px 1200px 12px 0;
+    display: inline-block;
+    font-size: 20px;
+}
+
+.btnCadastrar {
+    padding: 12px 20px;
+    border: none;
+    cursor: pointer;
+
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 20px;
+    background-color: #6DFF8D;
+    color: #000;
+    text-align: center;
+    float: right;
+    margin: 20px;
+}
+
+.btnCancelar {
+    padding: 12px 20px;
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 20px;
+    background-color: #FFAAAA;
+    color: #000;
+    text-align: center;
+    float: right;
+    margin: 20px;
+}
+
+.btnCancelar:hover {
+    text-decoration: none;
+    color: #000;
+}
+
+*{box-sizing: border-box;
+}
+input[type=date]
+{
+    width: 10%;
+    padding: 12px;
+    border: 1px solid rgb(168, 166, 166);
+    border-radius: 4px;
+    resize: vertical;
+}
+input[type=text], input[type=email], input[type=number], input[type=select],input[type=select],input[type=password], input[type=tel]
+{
+    width: 100%;
+    padding: 12px;
+    border: 1px solid rgb(168, 166, 166);
+    border-radius: 4px;
+    resize: vertical;
+}
+textarea{
+    width:45%;
+    padding: 100px;
+    border: 1px solid rgb(168, 166, 166);
+    border-radius: 4px;
+    resize: vertical;
+}
+input[type=radio],input[type=checkbox]{
+    width: 1%;
+    padding-left: 0%;
+    border: 1px solid rgb(168, 166, 166);
+    border-radius: 4px;
+    resize: vertical;
+}
+
+.numCRO {
+    width: 100px;
+}
+
+.dropdown{
+    position: relative;
+}
+
+.error-text {
+    color: red;
+    font-size: 12px;
+}
+
+
+

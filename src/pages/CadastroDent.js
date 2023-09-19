@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
-import './Cadastro.css';
+import '../css/Cadastro.css';
 import api from '../services/api';
 import dataService from '../services/dataService';
 import InputMask from "react-input-mask";
@@ -152,7 +152,7 @@ const CadastroDent = () => {
             }
 
             if (campo.id == 'cro') {
-                if(isNaN(campo.value)){
+                if (isNaN(campo.value)) {
                     createError(campo, 'CRO deve ser um número')
                     valid = false
                 }
@@ -236,7 +236,6 @@ const CadastroDent = () => {
                                     className='validar'
                                 />
 
-
                                 <label>CRO:</label>
                                 <input
                                     type="text"
@@ -246,19 +245,20 @@ const CadastroDent = () => {
                                     name="cro"
                                     placeholder="Digite seu cro"
                                     className='validar'
+                                    style={{ width: '110px' }}
                                 />
 
-
                                 <label>Data de Nascimento:</label>
+
                                 <input
                                     type="Date"
                                     id="dataNasc"
                                     value={dataNasc}
-                                    onChange={(e) => setDataNasc(e.target.value)}
+                                    onChange={(e) => { setDataNasc(e.target.value); console.log(e) }}
                                     name="dataNascimento"
-                                    placeholder="Digite sua Data de Nascimento"
                                     className='validar'
                                 />
+
                                 <br />
                                 <label>Celular:</label>
                                 <InputMask

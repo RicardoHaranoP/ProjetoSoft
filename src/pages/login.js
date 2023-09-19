@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react'
-import './login.css'
+import '../css/login.css'
 
 const users = [
     { username: 'user1', password: 'password1' },

@@ -1,0 +1,43 @@
+
+
+.novo {
+    float: right;
+    font-size: 20px;
+    margin-top: 10px;
+    margin-right: 30px;
+    text-decoration: none;
+    background-color: #0A809A;
+    color: #fff;
+    border-radius: 20px;
+    padding: 0px 15px 0px 0px;
+}
+
+.novo:hover {
+    text-decoration: none;
+    color: #fff;
+}
+
+.paraEspecifico button{
+    font-size: 25px;
+    margin-top: 20px;
+    margin-left: 20px;
+    float: left;
+    height: 245px;
+    width: 1310px;
+    border-radius: 20px;
+    color: #fff;
+    background-color: #0A809A;
+    border-radius: 20px;
+}
+
+.linha {
+    float: left;
+    display: block;
+    text-align: left;
+}
+
+.AccountCircleIcon{
+    float: left;
+    margin-left: 20px;
+}
+

@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import dataService from '../services/dataService';
-import './PacientDent.css';
+import '../css/PacientDent.css';
 
 const Dentista = () => {
 

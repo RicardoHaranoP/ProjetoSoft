@@ -1,0 +1,34 @@
+@import "rsuite/dist/rsuite.css";
+/*
+.agenda {
+    background-color: #0A809A;
+    color: #fff;
+    float: left;
+    margin-left: 20px;
+    border-radius: 20px;
+    margin-top: 200px;
+    padding: 20px 250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+}
+
+*/
+
+.btnAgenda {
+    background-color: #0A809A;
+    color: #fff;
+    border-radius: 20px;
+    padding: 20px 250px;
+    font-size: 25px;
+}
+
+.btnAgenda:hover {
+    text-decoration: none;
+    color: #fff;
+}
+
+li {
+    list-style: none;
+}

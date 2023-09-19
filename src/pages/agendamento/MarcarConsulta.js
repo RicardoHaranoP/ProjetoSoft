@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import '../Cadastro.css';
+import '../../css/Cadastro.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import dataService from "../../services/dataService";
 

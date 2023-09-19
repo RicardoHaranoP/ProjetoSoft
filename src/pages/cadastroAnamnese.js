@@ -4,7 +4,7 @@ import dataService from "../services/dataService";
 
 let pacienteAtualNome = null
 
-export default function anamnese() {
+const CadastroAnamnese = () => {
     const navigate = useNavigate()
 
     const { codPac } = useParams()
@@ -80,17 +80,8 @@ export default function anamnese() {
     }
 
     useEffect(() => {
-        if (codPac) {
-            dataService.getAnamnese(codPac)
-                .then(anamnese => {
-                    console.log('anamnese', anamnese)
-                    setCirurgia(anamnese.data[anamnese.data.length-1].cirurgia)
-                    setQCirurgia(anamnese.data[anamnese.data.length-1].qCirurgia)
-                })
-                .catch(error => {
-                    erroDataService(error)
-                })
-        }
+
+
         pegaPacientes()
 
     }, [])
@@ -108,7 +99,7 @@ export default function anamnese() {
 
 
         //create
-        dataService.createAnamnese(codPac,anamnese)
+        dataService.createAnamnese(codPac, anamnese)
             .then(response => {
                 console.log('Anamnese criada', response.data)
                 navigate('/')
@@ -124,22 +115,25 @@ export default function anamnese() {
         <div>
 
             <h1>Anamnese {pacienteAtualNome}</h1>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} >
 
-                <div className="form-group">
-                    <input
-                        type={"checkbox"}
-                        checked={cirurgia}
-                        onChange={(e) => setCirurgia(!cirurgia)}
-                    />
-                    <label>Fez Cirurgia?</label>
+                <div className="form-group" style={{ display: 'flex', flexDirection: 'column' }}>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <input
+                            type="checkbox"
+                            checked={cirurgia}
+                            onChange={(e) => setCirurgia(!cirurgia)}
+                            style={{ marginRight: '5px' }}
+                        />
+                        <label style={{ marginRight: '5px' }}>Fez Cirurgia?</label>
+                    </div>
                     <label>Qual?</label>
                     <input type='text'
-                    value={qCirurgia}
-                    onChange={(e)=> setQCirurgia(e.target.value)}
+                        value={qCirurgia}
+                        onChange={(e) => setQCirurgia(e.target.value)}
                     />
                 </div>
-                <div className="form-group">
+                {/* <div className="form-group">
                     <input
                         type="checkbox"
                     />
@@ -278,9 +272,11 @@ export default function anamnese() {
                         type={'checkbox'}
                     />
                     <label>Ferida Labio e Lingua?</label>
-                </div>
+                </div> */}
                 <button type="submit" className="btnCadastrar">Salvar</button>
             </form>
         </div>
     )
 }
+
+export default CadastroAnamnese;

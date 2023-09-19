@@ -7,7 +7,7 @@ import { MdAccountCircle } from 'react-icons/md';
 import { MdAddCircle } from 'react-icons/md';
 import { MdDelete } from 'react-icons/md';
 import { MdEdit } from 'react-icons/md';
-import './ListaPacientDent.css';
+import '../css/ListaPacientDent.css';
 import { Table } from 'rsuite';
 import dataService from '../services/dataService';
 
