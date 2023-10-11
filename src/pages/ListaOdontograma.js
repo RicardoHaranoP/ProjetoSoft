@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom"
+import { Link, useNavigate, useParams } from "react-router-dom"
 import dataService from "../services/dataService";
+import { MdAddCircle } from 'react-icons/md';
 import { MdDelete } from 'react-icons/md';
 import { MdEdit } from 'react-icons/md';
 import { Table } from 'rsuite';
@@ -16,7 +17,7 @@ export default function ListaOdontograma() {
 
     const [pacientes, setPacientes] = useState([])
     const [odontogramas, setOdontogramas] = useState([])
-    
+
 
     const erroDataService = (error) => {
         if (error.response) {
@@ -74,6 +75,9 @@ export default function ListaOdontograma() {
             <div className="row">
                 <div className="col-12">
                     <h1>Odontograma {pacienteAtualNome}</h1>
+                    <div>
+                        <a className="novo" href={`http://localhost:3000/paciente/${codPac}/odontograma/cadastro`} role="button" > <MdAddCircle size={30} /> Novo Odontograma</a>
+                    </div>
                     <Table
                         height={400}
                         data={odontogramas}
@@ -94,16 +98,16 @@ export default function ListaOdontograma() {
 
                         <Column width={80} fixed="right">
                             <HeaderCell>Dente</HeaderCell>
-                            <Cell dataKey="dente"/>
+                            <Cell dataKey="dente" />
                         </Column>
                         <Column width={80} fixed="right">
                             <HeaderCell>Face</HeaderCell>
-                            <Cell dataKey="face"/>                                        
+                            <Cell dataKey="face" />
                         </Column>
                         <Column width={80} fixed="right">
                             <HeaderCell>Data</HeaderCell>
 
-                            <Cell dataKey="dataProcedimento"/>
+                            <Cell dataKey="dataProcedimento" />
                         </Column>
                         <Column width={80} fixed="right">
                             <HeaderCell>Deletar</HeaderCell>

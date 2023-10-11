@@ -6,11 +6,10 @@ import dataService from "../../services/dataService";
 import 'moment/locale/pt-br';
 import './modal.css'
 
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useCallback } from 'react';
 
-import userContext from '../../userContext';
 
 const messages = {
     allDay: 'Dia Inteiro',

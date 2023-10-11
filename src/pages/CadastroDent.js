@@ -236,7 +236,7 @@ const CadastroDent = () => {
                                     className='validar'
                                 />
 
-                                <label>CRO:</label>
+                                <label>CRO:</label><br/>
                                 <input
                                     type="text"
                                     id="cro"
@@ -260,7 +260,7 @@ const CadastroDent = () => {
                                 />
 
                                 <br />
-                                <label>Celular:</label>
+                                <label>Celular:</label><br/>
                                 <InputMask
                                     mask="(99) 99999-9999"
                                     value={celular}
@@ -300,32 +300,3 @@ const CadastroDent = () => {
 }
 
 export default CadastroDent;
-{/*
-import './Cadastro.css';
-
-export default function CadastroDent(){
-    return(
-        <div>
-
-            <p>Cadastrar Dentista</p>
-            
-            <div>
-                <p>Nome:</p>
-            </div>
-            <div>
-                <p>CPF:</p>
-            </div>
-            <div>
-                <p>Data Nascimento:</p>
-            </div>
-            <div>
-                <p>Celular:</p>
-            </div>
-            <div>
-                <p>email:</p>
-            </div>
-        </div>
-
-    )
-}
- */}

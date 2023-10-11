@@ -73,8 +73,8 @@ class DataService{
         return api.get(`/anamnese`)
     }
 
-    getAnamnese(codAnam){
-        return api.get(`/anamnese/${codAnam}`);
+    getAnamnese(codPac){
+        return api.get(`/anamnese/${codPac}`);
     }
 
     createAnamnese(codPac,data){
@@ -87,6 +87,20 @@ class DataService{
 
     deleteAnamnese(codAnam){
         return api.delete(`/anamnese/${codAnam}`)
+    }
+
+
+    //métodos axios relacionados ao odontograma
+    createOdontograma(codPac, data){
+        return api.post(`/odontograma/${codPac}`, data)
+    }
+
+    //métodos axios relacionados ao procedimento
+    createProcedimento(data){
+        return api.post(`/procedimento`, data)
+    }
+    getProcedimentos() {
+        return api.get(`/procedimento`);
     }
 }
 

@@ -37,6 +37,7 @@ const CadastroAnamnese = () => {
     const [alergiaIodo, setAlergiaIodo] = useState(false)
     const [denteMole, setDenteMole] = useState(false)
     const [feridaLabioeLingua, setFeridaLabioeLingua] = useState(false)
+    const [anotacao, setAnotacao] = useState('')
 
     const erroDataService = (error) => {
         if (error.response) {
@@ -94,7 +95,8 @@ const CadastroAnamnese = () => {
             cirurgia, qCirurgia, alergiaRemedio, qAlergiaRemedio, pressaoAlta, sangraCorte,
             manchasRochas, cicatrizacaoDemorada, anemia, transfusaoSangue, dst, tonturas,
             convulsoes, diabetes, fuma, alcool, asma, bronquite, rinite, sinusite, gastrite,
-            alergiaPeniscilina, cancerDeProstata, alergiaIodo, denteMole, feridaLabioeLingua
+            alergiaPeniscilina, cancerDeProstata, alergiaIodo, denteMole, feridaLabioeLingua,
+            anotacao
         }
 
 
@@ -272,7 +274,14 @@ const CadastroAnamnese = () => {
                         type={'checkbox'}
                     />
                     <label>Ferida Labio e Lingua?</label>
-                </div> */}
+                </div>
+                <div className="form-group">
+                    <input
+                        type='text'
+                    />
+                    <label>Anotações?</label>
+                </div>
+                 */}
                 <button type="submit" className="btnCadastrar">Salvar</button>
             </form>
         </div>

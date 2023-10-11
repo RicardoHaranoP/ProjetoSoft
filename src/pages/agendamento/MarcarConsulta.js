@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import '../../css/Cadastro.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import dataService from "../../services/dataService";
+import { DatePicker } from 'rsuite';
 
 
 const MarcarConsulta = () => {
@@ -197,6 +198,13 @@ const MarcarConsulta = () => {
                                         name="data"
                                     />
                                     <label>horario da Consulta:</label>
+                                    <DatePicker
+                                        format="HH:mm"
+                                        ranges={[]}
+                                        hideHours={hour => hour < 6 || hour > 22}
+                                        hideMinutes={minute => minute % 30 !== 0}
+                                        style={{ width: 100 }}
+                                    />
                                     <input
                                         type="time"
                                         id="horaInicio"
@@ -204,7 +212,14 @@ const MarcarConsulta = () => {
                                         onChange={(e) => setHoraInicio(e.target.value)}
                                         name="horaInicio"
                                     />
-                                    <label>horario de Término:</label>
+                                    <label>duracao da consulta:</label>
+                                    <DatePicker
+                                        format="HH:mm"
+                                        ranges={[]}
+                                        hideHours={hour => hour > 3}
+                                        hideMinutes={minute => minute % 30 !== 0}
+                                        style={{ width: 100 }}
+                                    />
                                     <input
                                         type="time"
                                         id="horaFinal"

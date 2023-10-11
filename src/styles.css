@@ -2,7 +2,9 @@
     height: 100%;
     width: 100%;
     position: fixed;
+    overflow-y: scroll;
 }
+
 
 header {
     background-color: #80D8EB;

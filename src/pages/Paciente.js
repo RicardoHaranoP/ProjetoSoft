@@ -90,12 +90,9 @@ const Paciente = () => {
                                     <li className='m-3 fs-4'><b>Data de Nascimento:</b><br /> {dataNasc}<br /></li>
                                     <li className='m-3 fs-4'><b>Celular:</b><br /> {celular}<br /></li>
                                     <div className='row'>
-                                        <div className='col-12'>
+                                        <div className='col-12' style={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>
                                             <div className='mb-3'>
                                                 <Link to={`../paciente/ListaAnamnese/${codPac}`} type='button' className="btnAgenda mt-2">Anamnese</Link>
-                                            </div>
-                                            <div className='mb-3'>
-                                                <Link to={`../paciente/ListaProcedimentos/${codPac}`} type='button' className="btnAgenda mt-2">Procedimentos</Link>
                                             </div>
                                             <div>
                                                 <Link to={`../paciente/ListaOdontograma/${codPac}`} type='button' className="btnAgenda mt-2">Odontograma</Link>

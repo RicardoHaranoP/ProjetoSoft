@@ -7,7 +7,7 @@ let pacienteAtualNome = null
 export default function anamnese() {
     const navigate = useNavigate()
 
-    const { codPac } = useParams()
+    const { nomePaciente, codPac } = useParams()
     const [pacientes, setPacientes] = useState([])
 
 
@@ -80,7 +80,8 @@ export default function anamnese() {
     }
 
     useEffect(() => {
-        if (codPac) {
+     
+            console.log('ta passando?')
             dataService.getAnamnese(codPac)
                 .then(anamnese => {
                     console.log('anamnese', anamnese)
@@ -90,7 +91,7 @@ export default function anamnese() {
                 .catch(error => {
                     erroDataService(error)
                 })
-        }
+        
         pegaPacientes()
 
     }, [])
@@ -123,7 +124,7 @@ export default function anamnese() {
     return (
         <div>
 
-            <h1>Anamnese {pacienteAtualNome}</h1>
+            <h1>Anamnese {nomePaciente}</h1>
             <form onSubmit={handleSubmit}>
 
                 <div className="form-group">

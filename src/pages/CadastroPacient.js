@@ -324,7 +324,7 @@ const CadastroPacient = () => {
                                     className='validar'
                                 />
                                 <br />
-                                <label>Celular:</label>
+                                <label>Celular:</label><br/>
                                 <InputMask
                                     mask="(99) 99999-9999"
                                     value={celular}

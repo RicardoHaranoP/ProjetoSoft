@@ -12,9 +12,10 @@ import PaginaLogin from './pages/login.js'
 import ListaAnamnese from './pages/ListaAnamnese.js'
 import Anamnese from './pages/anamnese.js'
 import CadastroAnamnese from './pages/cadastroAnamnese.js'
-import ListaProcedimentos from './pages/ListaProcedimentos.js'
+import CadastroProcedimentos from './pages/CadastroProcedimentos.js'
 import ListaOdontograma from './pages/ListaOdontograma.js'
 import Odontograma from './pages/odontograma.js'
+import CadastroOdontograma from './pages/CadastroOdontograma.js'
 
 import React, { useState } from "react";
 import {
@@ -25,7 +26,6 @@ import {
   Outlet
 } from "react-router-dom";
 
-import userContext from './userContext.js';
 import eventos from './pages/agendamento/Agendamento.js'
 
 const users = [
@@ -42,7 +42,6 @@ const PrivateRoute = () => {
 
 function App() {
   return (
-    <userContext.Provider value={Agendamento}>
       <BrowserRouter>
         <Routes>
           <Route element={<PrivateRoute />}>
@@ -65,15 +64,16 @@ function App() {
           <Route path='/paciente/ListaAnamnese/:codPac' element={<ListaAnamnese />} />
           <Route path='/paciente/:codPac/anamnese/cadastro' element={<CadastroAnamnese />} />
           <Route path='/paciente/anamnese/:codPac' element={<Anamnese />} />
+          <Route path='/paciente/anamnese/:nomePaciente/:codAnam' element={<Anamnese />} />
 
-          <Route path='/paciente/ListaProcedimentos/:codPac' element={<ListaProcedimentos />} />
+          <Route path='/cadastroProcedimentos' element={<CadastroProcedimentos />} />
           
           <Route path='/paciente/ListaOdontograma/:codPac' element={<ListaOdontograma />} />
+          <Route path='/paciente/:codPac/odontograma/cadastro' element={<CadastroOdontograma />} />
           <Route path='/paciente/odontograma/:codPac' element={<Odontograma />} />
 
         </Routes>
       </BrowserRouter>
-    </userContext.Provider>
   )
 }
 

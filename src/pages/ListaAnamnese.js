@@ -23,7 +23,7 @@ const ListaAnamnese = () => {
     const { codPac } = useParams();
 
     useEffect(() => {
-
+        console.log('codPac', codPac)
         pegarAnamneses()
         pegaPacienteAtual()
     }, []);
@@ -121,7 +121,7 @@ const ListaAnamnese = () => {
                             <Cell dataKey='nome'>
                                 {rowData => (
 
-                                    <Link to={`../dentista/${rowData.codDent}`}>{rowData.nome}</Link>
+                                    <Link to={`../../paciente/anamnese/${pacienteAtualNome}/${rowData.codAnam}`}>Anamnese</Link>
 
                                 )}
                             </Cell>
