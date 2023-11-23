@@ -39,12 +39,11 @@ const Agenda = () => {
     const [pacientes, setPacientes] = useState([])
     const [paciente, setPaciente] = useState(null)
     const clickRef = useRef(null)
-    //
-    //const [nome, setNome] = useState(null)
     const [consultas, setConsultas] = useState([])
+    const [confimado, setConfirmado] = useState([])
 
     let { codDent } = useParams()
-    //
+
     useEffect(() => {
 
 
@@ -55,9 +54,9 @@ const Agenda = () => {
         pegaPacientes()
 
 
+        //
 
         fetchData()
-
 
         return () => {
             window.clearTimeout(clickRef?.current)
@@ -142,11 +141,13 @@ const Agenda = () => {
             .then((response) => {
 
                 console.log('consulta: ', response.data)
+                setConsultas(response.data)
                 response = response.data
                 let nome = ''
 
                 response.forEach(async (item) => {
-                    console.log(item.codPac)
+                    console.log('response item', item)
+                    // setConfirmado([...confimado], item.setConfirmado)
                     const promise = nomePaciente(item.codPac)
                     await promise.then(response => { console.log('response ', response); nome = response })
 
@@ -158,7 +159,8 @@ const Agenda = () => {
                                 codCons: item.codCons,
                                 title: `${nome}`,
                                 start: moment(item.data + ' ' + item.horaInicio).toDate(),
-                                end: moment(item.data + ' ' + item.horaFinal).toDate()
+                                end: moment(item.data + ' ' + item.horaFinal).toDate(),
+                                confirmado: item.confirmado
                             },
                         )
                     }
@@ -175,6 +177,9 @@ const Agenda = () => {
     }
 
 
+    const handleUpdate = (codCons) => {
+        navigate(`../dentista/agendamento/edit/${codCons}`)
+    }
 
     const handleDelete = (codCons) => {
         console.log('id: ', codCons);
@@ -196,14 +201,47 @@ const Agenda = () => {
         }
     }
 
+    const handleConfirmacao = (event) => {
+        console.log(event.confirmado)
+        console.log(eventos)
+        console.log('consultafdasf', consultas)
+        let aux = ''
+        consultas.forEach((item) => {
+
+            if (item.codCons == event.codCons) {
+                aux = item
+            }
+        })
+        console.log('aux', aux)
+        eventos.forEach((item) => {
+
+
+            if (item.codCons == event.codCons) {
+
+                console.log('item', item)
+                aux.confirmado = 1
+                dataService.updateConsulta(event.codCons, aux)
+                    .then(response => {
+                        console.log('Consulta atualizada', response.data);
+                        location.reload()
+                    })
+                    .catch(error => {
+                        erroDataService(error)
+                    });
+            }
+        })
+        console.log('aux2', aux)
+    }
+
     const eventPropGetter = useCallback(
         (event, start, end, isSelected) => ({
+
             ...(moment(end) < moment(Date()) && {
                 style: { backgroundColor: 'MediumSeaGreen', },
             }),
-            ...(moment(start) > moment(Date()) && {
+            ...(moment(start) > moment(Date()) && !event.confirmado && {
                 style: { backgroundColor: 'DarkOrange', },
-            })
+            }),
         }),
         []
     )
@@ -236,8 +274,6 @@ const Agenda = () => {
     }
 
 
-
-
     return (
 
         <>
@@ -247,9 +283,8 @@ const Agenda = () => {
 
                     <div className="col-12">
                         <h2>Agendamentos {dentista.nome}</h2>
-
                         <Calendar
-                           
+
                             localizer={localizer}
                             messages={messages}
                             culture={'pt-BR'}
@@ -273,6 +308,19 @@ const Agenda = () => {
                                     <p>Data: {selectedEvent.start.toLocaleDateString()}</p>
                                     <p>Horario Inicio: {selectedEvent.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
                                     <p>Horario Fim: {selectedEvent.end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
+                                    {(selectedEvent.start > moment(Date())) && (
+
+                                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                                            <p>Consulta Confirmada?</p>
+                                            <input checked={selectedEvent.confirmado} type="checkbox" id="checkboxConfirmacao" style={{ width: '20px', height: '20px', marginTop: '20px', marginLeft: '5px' }} disabled></input>
+                                        </div>
+                                    )}
+                                    {!selectedEvent.confirmado && (selectedEvent.start > moment(Date())) && (
+                                        <div>
+                                            <button onClick={() => (handleConfirmacao(selectedEvent))} id='btnConfirmacao'>Confirmar Consulta</button>
+                                        </div>
+                                    )}
+                                    <button onClick={() => (handleUpdate(selectedEvent.codCons))}>Atualizar Consulta</button>
                                     <button className='cancelar' onClick={() => (handleDelete(selectedEvent.codCons))}>Cancelar Consulta</button>
                                 </div></>)}
                         </div>
@@ -280,9 +328,12 @@ const Agenda = () => {
                     </div>
                 </div>
             </div>
+
         </>
     )
 
+
 }
+
 
 export default Agenda;

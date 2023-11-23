@@ -1,7 +1,7 @@
 
 
 import React, { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import ReactDOM from 'react-dom';
 import { MdAccountCircle } from 'react-icons/md';
 import { MdAddCircle } from 'react-icons/md';
@@ -21,6 +21,7 @@ const ListaAnamnese = () => {
     const [pacienteAtualNome, setPacienteAtualNome] = useState(null);
 
     const { codPac } = useParams();
+    const navigate = useNavigate()
 
     useEffect(() => {
         console.log('codPac', codPac)
@@ -29,10 +30,14 @@ const ListaAnamnese = () => {
     }, []);
 
     const pegarAnamneses = () => {
-        dataService.getAnamnese()
+        dataService.getAnamneses()
             .then(response => {
                 console.log('anamnese', response.data)
-                setAnamnese(response.data)
+                response.data.forEach(element => {
+                    if (element.codPac == codPac) {
+                        setAnamnese((prevState) => [...prevState, element])
+                    }
+                })
             })
             .catch(function (error) {
                 erroDataService(error)
@@ -58,7 +63,22 @@ const ListaAnamnese = () => {
             });
     }
 
-    const handleDelete = (id) => {}
+    const handleDelete = (id) => {
+        var retorno = confirm(`Realmente deseja excluir a anamnese?`);
+        if (retorno == true) {
+            dataService.deleteAnamnese(id)
+                .then((response) => {
+                    console.log('anamnese deletada ', response)
+                    navigate('../')
+
+                })
+                .catch(error => {
+                    erroDataService(error)
+                });
+        } else {
+            console.log('operação cancelada')
+        }
+    }
 
     function changeModal() {
         modal.classList.toggle('hide')
@@ -121,7 +141,7 @@ const ListaAnamnese = () => {
                             <Cell dataKey='nome'>
                                 {rowData => (
 
-                                    <Link to={`../../paciente/anamnese/${pacienteAtualNome}/${rowData.codAnam}`}>Anamnese</Link>
+                                    <Link to={`../../paciente/anamnese/${pacienteAtualNome}/${rowData.codAnam}`}>Anamnese do dia {rowData.dataRealizacao}</Link>
 
                                 )}
                             </Cell>
@@ -133,7 +153,7 @@ const ListaAnamnese = () => {
                             <Cell>
                                 {rowData => (
                                     <span>
-                                        <Link to={`../dentista/edit/${rowData.codDent}`} ><MdEdit /></Link>
+                                        <Link to={`../paciente/anamnese/edit/${pacienteAtualNome}/${codPac}/${rowData.codAnam}`} ><MdEdit /></Link>
                                     </span>
                                 )}
                             </Cell>
@@ -144,7 +164,7 @@ const ListaAnamnese = () => {
                             <Cell>
                                 {rowData => (
                                     <span>
-                                        <a onClick={() => handleDelete(rowData.codDent)}><MdDelete /></a>
+                                        <a onClick={() => handleDelete(rowData.codAnam)}><MdDelete /></a>
                                     </span>
                                 )}
                             </Cell>

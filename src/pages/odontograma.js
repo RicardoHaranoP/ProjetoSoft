@@ -2,8 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import dataService from '../services/dataService';
-import { FaTooth } from 'react-icons/fa'
-import { BiSquare } from 'react-icons/bi'
+import { MdAddCircle } from 'react-icons/md';
 
 let pacienteAtualNome = null
 
@@ -12,11 +11,12 @@ const Odontograma = () => {
     const navigate = useNavigate();
     const { codPac } = useParams();
 
-    
+
     const [pacientes, setPacientes] = useState([])
+    const [odontograma, setOdontograma] = useState([])
 
     const primeiraLinha = Array.from({ length: 16 }, (_, index) => index + 1);
-    const segundaLinha = Array.from({ length: 16 }, (_, index) => 32 - index);
+    const segundaLinha = Array.from({ length: 16 }, (_, index) => index + 17);
 
     const numQuadradosLinha = 16;
     const [cores, setCores] = useState(Array(numQuadradosLinha).fill('white'));
@@ -62,19 +62,71 @@ const Odontograma = () => {
             });
     }
 
+    async function pegaOdontogramas() {
+        try {
+            const response = await dataService.getOdontogramas()
+
+            console.log('Odontograma: ', response)
+            // setOdontograma(response.data)
+            console.log(response.data[0])
+
+            response.data.forEach(element => {
+                if (element.codPac == codPac) {
+                    setOdontograma((prevState) => [...prevState, element])
+                }
+            })
+
+        }
+        catch (error) {
+            erroDataService(error)
+        };
+    }
+
+    function colocaNoOdontograma() {
+        console.log('vei ', odontograma)
+        odontograma.forEach(element => {
+            console.log('element', element)
+
+            let elementoDente = document.getElementById(`coluna${element.quadrante}${element.dente}`)
+            console.log('elemento dente', elementoDente)
+            console.log('element.face ', element.face)
+
+            let elementoFace = elementoDente.querySelector(`.quad${element.face}`)
+            let numFace = parseFloat(element.face) + 5
+            if (!elementoFace) {
+                let aux = elementoDente.querySelectorAll('.linha')
+                elementoFace = aux[0].querySelector(`.quad${numFace}`)
+
+                if (!elementoFace) {
+                    elementoFace = aux[1].querySelector(`.quad${numFace}`)
+                }
+
+                console.log(' ajdfsadsfadxf ', aux)
+            }
+            console.log('ElementoDente: ', elementoDente)
+            console.log('ElementoFace: ', elementoFace)
+
+            elementoFace.style.backgroundColor = 'red'
+        })
+
+    }
 
 
     useEffect(() => {
 
-        pegaPacientes()
-        
+        pegaPacientes();
+        pegaOdontogramas();
 
     }, []);
 
-    const getColor = (index) => {
-        const colors = ['white', 'red', 'green', 'black'];
-        return colors[index];
-    };
+    useEffect(() => {
+
+        if (odontograma) {
+
+            colocaNoOdontograma()
+        }
+
+    }, [odontograma]);
 
 
     const QuadradosLinha1 = () => {
@@ -155,13 +207,13 @@ const Odontograma = () => {
             {
                 cores.map((cor, index) => (
 
-                    <div className='coluna'>
+                    <div id={`coluna${index + 1}`} className='coluna'>
 
                         <div className='linha'>
 
                             <div
-                                className="quadrado quad1"
-                                onClick={() => handleQuadradoClick1(index)}
+                                className=" quad1"
+                                onClick={() => handleClick1(index)}
                                 style={{ cursor: 'pointer', marginLeft: '15px' }}
                             ></div>
 
@@ -170,28 +222,30 @@ const Odontograma = () => {
 
                         <div className='linha'>
                             <div
-                                className="quadrado quad3"
+                                className=" quad3"
                                 onClick={() => handleQuadradoClick3(index)}
                                 style={{ cursor: 'pointer' }}
                             ></div>
                             <div
-                                className="quadrado quad4"
+                                className=" quad4"
                                 onClick={() => handleQuadradoClick4(index)}
                                 style={{ cursor: 'pointer' }}
                             ></div>
                             <div
-                                className="quadrado quad5"
+                                className=" quad5"
                                 onClick={() => handleQuadradoClick5(index)}
                                 style={{ cursor: 'pointer' }}
                             ></div>
                         </div >
 
+                        <div className='linha'>
+                            <div
+                                className=" quad2"
+                                onClick={() => handleQuadradoClick2(index)}
+                                style={{ cursor: 'pointer', marginLeft: '15px' }}
+                            ></div>
+                        </div>
 
-                        <div
-                            className="quadrado quad2"
-                            onClick={() => handleQuadradoClick2(index)}
-                            style={{ cursor: 'pointer', marginLeft: '15px' }}
-                        ></div>
 
                     </div>
                 ))
@@ -201,130 +255,38 @@ const Odontograma = () => {
         );
     };
 
-    const QuadradosLinha2 = () => {
+   
 
-        const handleQuadradoClick1 = (index) => {
-            var elemento = document.getElementsByClassName('quad6');
+    const NumberLine = ({ start, end }) => {
+        const generateNumberLine = () => {
+            let line = '';
 
-            if (clickCount === 0) {
-                elemento[index].style.backgroundColor = 'green';
-            } else if (clickCount === 1) {
-                elemento[index].style.backgroundColor = 'red';
-            } else if (clickCount === 2) {
-                elemento[index].style.backgroundColor = 'black';
+            if (start > end) {
+                for (let i = start; i >= end; i--) {
+
+                    line += i + ' ';
+                }
+                return line.trim();
+            } else {
+
+                for (let i = start; i <= end; i++) {
+                    line += i + ' ';
+                }
+                return line.trim();
             }
-
-            clickCount = (clickCount + 1) % 3;
         };
 
-        const handleQuadradoClick2 = (index) => {
-            var elemento = document.getElementsByClassName('quad7');
-
-            if (clickCount === 0) {
-                elemento[index].style.backgroundColor = 'green';
-            } else if (clickCount === 1) {
-                elemento[index].style.backgroundColor = 'red';
-            } else if (clickCount === 2) {
-                elemento[index].style.backgroundColor = 'black';
-            }
-
-            clickCount = (clickCount + 1) % 3;
-        };
-
-        const handleQuadradoClick3 = (index) => {
-            var elemento = document.getElementsByClassName('quad8');
-
-            if (clickCount === 0) {
-                elemento[index].style.backgroundColor = 'green';
-            } else if (clickCount === 1) {
-                elemento[index].style.backgroundColor = 'red';
-            } else if (clickCount === 2) {
-                elemento[index].style.backgroundColor = 'black';
-            }
-
-            clickCount = (clickCount + 1) % 3;
-        };
-
-        const handleQuadradoClick4 = (index) => {
-            var elemento = document.getElementsByClassName('quad9');
-
-            if (clickCount === 0) {
-                elemento[index].style.backgroundColor = 'green';
-            } else if (clickCount === 1) {
-                elemento[index].style.backgroundColor = 'red';
-            } else if (clickCount === 2) {
-                elemento[index].style.backgroundColor = 'black';
-            }
-
-            clickCount = (clickCount + 1) % 3;
-        };
-
-        const handleQuadradoClick5 = (index) => {
-            var elemento = document.getElementsByClassName('quad10');
-
-            if (clickCount === 0) {
-                elemento[index].style.backgroundColor = 'green';
-            } else if (clickCount === 1) {
-                elemento[index].style.backgroundColor = 'red';
-            } else if (clickCount === 2) {
-                elemento[index].style.backgroundColor = 'black';
-            }
-
-            clickCount = (clickCount + 1) % 3;
-        };
-
-
-
-        return (<>
-            {
-                cores.map((cor, index) => (
-
-                    <div className='coluna'>
-
-                        <div className='linha'>
-
-                            <div
-                                className="quadrado quad6"
-                                onClick={() => handleQuadradoClick1(index)}
-                                style={{ cursor: 'pointer', marginLeft: '15px' }}
-                            ></div>
-
-                        </div>
-
-
-                        <div className='linha'>
-                            <div
-                                className="quadrado quad8"
-                                onClick={() => handleQuadradoClick3(index)}
-                                style={{ cursor: 'pointer' }}
-                            ></div>
-                            <div
-                                className="quadrado quad9"
-                                onClick={() => handleQuadradoClick4(index)}
-                                style={{ cursor: 'pointer' }}
-                            ></div>
-                            <div
-                                className="quadrado quad10"
-                                onClick={() => handleQuadradoClick5(index)}
-                                style={{ cursor: 'pointer' }}
-                            ></div>
-                        </div >
-
-
-                        <div
-                            className="quadrado quad7"
-                            onClick={() => handleQuadradoClick2(index)}
-                            style={{ cursor: 'pointer', marginLeft: '15px' }}
-                        ></div>
-
-                    </div>
-                ))
-            }
-        </>
-
+        return (
+            <div>
+                {generateNumberLine().split(' ').map((number, index) => (
+                    <span key={index} style={{ margin: '22px' }}>
+                        {number}
+                    </span>
+                ))}
+            </div>
         );
-    };
 
+    };
 
     function changeModal() {
         modal.classList.toggle('hide')
@@ -350,34 +312,1355 @@ const Odontograma = () => {
                             </div>
                         </div>
                         <h2 className="mb-5 mt-0">Odontograma {pacienteAtualNome} </h2>
-
-                        <div className="number-line">
-                            {primeiraLinha.map((number) => (
-                                <span key={number} className="number">
-                                    {number}
-                                </span>
-                            ))}
+                        <div>
+                            <a className="novo" href={`http://localhost:3000/paciente/${codPac}/odontograma/cadastro`} role="button" > <MdAddCircle size={30} /> Novo Odontograma</a>
+                        </div><br /><br /><br /><br />
+                        <div style={{ textAlign:'center' ,alignItems: 'center',   justifyContent: 'space-between'}}>
+                        <div style={{ display: 'flex' }}>
+                            <NumberLine start={18} end={11} />
+                            <NumberLine start={21} end={28} />
                         </div>
-                        <div className='number-line'>
+                        <div style={{ display: 'flex' }}>
+                            <div id={`coluna18`} className='coluna'>
+
+                                <div className='linha'>
+
+                                    <div
+                                        className="quadrado quad1"
+                                        onClick={() => handleQuadradoClick1(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+
+                                </div>
+
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad3"
+                                        onClick={() => handleQuadradoClick3(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad4"
+                                        onClick={() => handleQuadradoClick4(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad5"
+                                        onClick={() => handleQuadradoClick5(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                </div >
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad2"
+                                        onClick={() => handleQuadradoClick2(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+                                </div>
+
+
+                            </div>
+                            <div id={`coluna17`} className='coluna'>
+
+                                <div className='linha'>
+
+                                    <div
+                                        className="quadrado quad1"
+                                        onClick={() => handleQuadradoClick1(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+
+                                </div>
+
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad3"
+                                        onClick={() => handleQuadradoClick3(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad4"
+                                        onClick={() => handleQuadradoClick4(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad5"
+                                        onClick={() => handleQuadradoClick5(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                </div >
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad2"
+                                        onClick={() => handleQuadradoClick2(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+                                </div>
+
+
+                            </div>
+                            <div id={`coluna16`} className='coluna'>
+
+                                <div className='linha'>
+
+                                    <div
+                                        className="quadrado quad1"
+                                        onClick={() => handleQuadradoClick1(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+
+                                </div>
+
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad3"
+                                        onClick={() => handleQuadradoClick3(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad4"
+                                        onClick={() => handleQuadradoClick4(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad5"
+                                        onClick={() => handleQuadradoClick5(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                </div >
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad2"
+                                        onClick={() => handleQuadradoClick2(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+                                </div>
+
+
+                            </div>
+                            <div id={`coluna15`} className='coluna'>
+
+                                <div className='linha'>
+
+                                    <div
+                                        className="quadrado quad1"
+                                        onClick={() => handleQuadradoClick1(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+
+                                </div>
+
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad3"
+                                        onClick={() => handleQuadradoClick3(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad4"
+                                        onClick={() => handleQuadradoClick4(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad5"
+                                        onClick={() => handleQuadradoClick5(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                </div >
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad2"
+                                        onClick={() => handleQuadradoClick2(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+                                </div>
+
+
+                            </div>
+                            <div id={`coluna14`} className='coluna'>
+
+                                <div className='linha'>
+
+                                    <div
+                                        className="quadrado quad1"
+                                        onClick={() => handleQuadradoClick1(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+
+                                </div>
+
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad3"
+                                        onClick={() => handleQuadradoClick3(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad4"
+                                        onClick={() => handleQuadradoClick4(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad5"
+                                        onClick={() => handleQuadradoClick5(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                </div >
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad2"
+                                        onClick={() => handleQuadradoClick2(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+                                </div>
+
+
+                            </div>
+                            <div id={`coluna13`} className='coluna'>
+
+                                <div className='linha'>
+
+                                    <div
+                                        className="quadrado quad1"
+                                        onClick={() => handleQuadradoClick1(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+
+                                </div>
+
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad3"
+                                        onClick={() => handleQuadradoClick3(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad4"
+                                        onClick={() => handleQuadradoClick4(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad5"
+                                        onClick={() => handleQuadradoClick5(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                </div >
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad2"
+                                        onClick={() => handleQuadradoClick2(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+                                </div>
+
+
+                            </div>
+                            <div id={`coluna12`} className='coluna'>
+
+                                <div className='linha'>
+
+                                    <div
+                                        className="quadrado quad1"
+                                        onClick={() => handleQuadradoClick1(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+
+                                </div>
+
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad3"
+                                        onClick={() => handleQuadradoClick3(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad4"
+                                        onClick={() => handleQuadradoClick4(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad5"
+                                        onClick={() => handleQuadradoClick5(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                </div >
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad2"
+                                        onClick={() => handleQuadradoClick2(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+                                </div>
+
+
+                            </div>
+                            <div id={`coluna11`} className='coluna'>
+
+                                <div className='linha'>
+
+                                    <div
+                                        className="quadrado quad1"
+                                        onClick={() => handleQuadradoClick1(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+
+                                </div>
+
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad3"
+                                        onClick={() => handleQuadradoClick3(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad4"
+                                        onClick={() => handleQuadradoClick4(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad5"
+                                        onClick={() => handleQuadradoClick5(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                </div >
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad2"
+                                        onClick={() => handleQuadradoClick2(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+                                </div>
+
+
+                            </div>
+                            <div id={`coluna21`} className='coluna'>
+
+                                <div className='linha'>
+
+                                    <div
+                                        className="quadrado quad1"
+                                        onClick={() => handleQuadradoClick1(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+
+                                </div>
+
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad3"
+                                        onClick={() => handleQuadradoClick3(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad4"
+                                        onClick={() => handleQuadradoClick4(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad5"
+                                        onClick={() => handleQuadradoClick5(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                </div >
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad2"
+                                        onClick={() => handleQuadradoClick2(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+                                </div>
+
+
+                            </div>
+                            <div id={`coluna22`} className='coluna'>
+
+                                <div className='linha'>
+
+                                    <div
+                                        className="quadrado quad1"
+                                        onClick={() => handleQuadradoClick1(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+
+                                </div>
+
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad3"
+                                        onClick={() => handleQuadradoClick3(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad4"
+                                        onClick={() => handleQuadradoClick4(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad5"
+                                        onClick={() => handleQuadradoClick5(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                </div >
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad2"
+                                        onClick={() => handleQuadradoClick2(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+                                </div>
+
+
+                            </div>
+                            <div id={`coluna23`} className='coluna'>
+
+                                <div className='linha'>
+
+                                    <div
+                                        className="quadrado quad1"
+                                        onClick={() => handleQuadradoClick1(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+
+                                </div>
+
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad3"
+                                        onClick={() => handleQuadradoClick3(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad4"
+                                        onClick={() => handleQuadradoClick4(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad5"
+                                        onClick={() => handleQuadradoClick5(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                </div >
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad2"
+                                        onClick={() => handleQuadradoClick2(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+                                </div>
+
+
+                            </div>
+                            <div id={`coluna24`} className='coluna'>
+
+                                <div className='linha'>
+
+                                    <div
+                                        className="quadrado quad1"
+                                        onClick={() => handleQuadradoClick1(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+
+                                </div>
+
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad3"
+                                        onClick={() => handleQuadradoClick3(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad4"
+                                        onClick={() => handleQuadradoClick4(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad5"
+                                        onClick={() => handleQuadradoClick5(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                </div >
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad2"
+                                        onClick={() => handleQuadradoClick2(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+                                </div>
+
+
+                            </div>
+                            <div id={`coluna25`} className='coluna'>
+
+                                <div className='linha'>
+
+                                    <div
+                                        className="quadrado quad1"
+                                        onClick={() => handleQuadradoClick1(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+
+                                </div>
+
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad3"
+                                        onClick={() => handleQuadradoClick3(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad4"
+                                        onClick={() => handleQuadradoClick4(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad5"
+                                        onClick={() => handleQuadradoClick5(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                </div >
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad2"
+                                        onClick={() => handleQuadradoClick2(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+                                </div>
+
+
+                            </div>
+                            <div id={`coluna26`} className='coluna'>
+
+                                <div className='linha'>
+
+                                    <div
+                                        className="quadrado quad1"
+                                        onClick={() => handleQuadradoClick1(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+
+                                </div>
+
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad3"
+                                        onClick={() => handleQuadradoClick3(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad4"
+                                        onClick={() => handleQuadradoClick4(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad5"
+                                        onClick={() => handleQuadradoClick5(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                </div >
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad2"
+                                        onClick={() => handleQuadradoClick2(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+                                </div>
+
+
+                            </div>
+                            <div id={`coluna27`} className='coluna'>
+
+                                <div className='linha'>
+
+                                    <div
+                                        className="quadrado quad1"
+                                        onClick={() => handleQuadradoClick1(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+
+                                </div>
+
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad3"
+                                        onClick={() => handleQuadradoClick3(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad4"
+                                        onClick={() => handleQuadradoClick4(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad5"
+                                        onClick={() => handleQuadradoClick5(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                </div >
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad2"
+                                        onClick={() => handleQuadradoClick2(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+                                </div>
+
+
+                            </div>
+                            <div id={`coluna28`} className='coluna'>
+
+                                <div className='linha'>
+
+                                    <div
+                                        className="quadrado quad1"
+                                        onClick={() => handleQuadradoClick1(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+
+                                </div>
+
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad3"
+                                        onClick={() => handleQuadradoClick3(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad4"
+                                        onClick={() => handleQuadradoClick4(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad5"
+                                        onClick={() => handleQuadradoClick5(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                </div >
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad2"
+                                        onClick={() => handleQuadradoClick2(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                        <div style={{ display: 'flex' }}>
+                            <div id={`coluna48`} className='coluna'>
+
+                                <div className='linha'>
+
+                                    <div
+                                        className="quadrado quad2"
+                                        onClick={() => handleQuadradoClick1(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+
+                                </div>
+
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad3"
+                                        onClick={() => handleQuadradoClick3(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad4"
+                                        onClick={() => handleQuadradoClick4(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad5"
+                                        onClick={() => handleQuadradoClick5(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                </div >
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad1"
+                                        onClick={() => handleQuadradoClick2(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+                                </div>
+
+
+                            </div>
+                            <div id={`coluna47`} className='coluna'>
+
+                                <div className='linha'>
+
+                                    <div
+                                        className="quadrado quad2"
+                                        onClick={() => handleQuadradoClick1(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+
+                                </div>
+
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad3"
+                                        onClick={() => handleQuadradoClick3(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad4"
+                                        onClick={() => handleQuadradoClick4(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad5"
+                                        onClick={() => handleQuadradoClick5(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                </div >
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad1"
+                                        onClick={() => handleQuadradoClick2(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+                                </div>
+
+
+                            </div>
+                            <div id={`coluna46`} className='coluna'>
+
+                                <div className='linha'>
+
+                                    <div
+                                        className="quadrado quad2"
+                                        onClick={() => handleQuadradoClick1(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+
+                                </div>
+
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad3"
+                                        onClick={() => handleQuadradoClick3(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad4"
+                                        onClick={() => handleQuadradoClick4(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad5"
+                                        onClick={() => handleQuadradoClick5(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                </div >
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad1"
+                                        onClick={() => handleQuadradoClick2(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+                                </div>
+
+
+                            </div>
+                            <div id={`coluna45`} className='coluna'>
+
+                                <div className='linha'>
+
+                                    <div
+                                        className="quadrado quad2"
+                                        onClick={() => handleQuadradoClick1(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+
+                                </div>
+
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad3"
+                                        onClick={() => handleQuadradoClick3(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad4"
+                                        onClick={() => handleQuadradoClick4(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad5"
+                                        onClick={() => handleQuadradoClick5(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                </div >
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad1"
+                                        onClick={() => handleQuadradoClick2(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+                                </div>
+
+
+                            </div>
+                            <div id={`coluna44`} className='coluna'>
+
+                                <div className='linha'>
+
+                                    <div
+                                        className="quadrado quad2"
+                                        onClick={() => handleQuadradoClick1(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+
+                                </div>
+
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad3"
+                                        onClick={() => handleQuadradoClick3(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad4"
+                                        onClick={() => handleQuadradoClick4(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad5"
+                                        onClick={() => handleQuadradoClick5(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                </div >
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad1"
+                                        onClick={() => handleQuadradoClick2(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+                                </div>
+
+
+                            </div>
+                            <div id={`coluna43`} className='coluna'>
+
+                                <div className='linha'>
+
+                                    <div
+                                        className="quadrado quad2"
+                                        onClick={() => handleQuadradoClick1(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+
+                                </div>
+
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad3"
+                                        onClick={() => handleQuadradoClick3(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad4"
+                                        onClick={() => handleQuadradoClick4(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad5"
+                                        onClick={() => handleQuadradoClick5(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                </div >
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad1"
+                                        onClick={() => handleQuadradoClick2(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+                                </div>
+
+
+                            </div>
+                            <div id={`coluna42`} className='coluna'>
+
+                                <div className='linha'>
+
+                                    <div
+                                        className="quadrado quad2"
+                                        onClick={() => handleQuadradoClick1(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+
+                                </div>
+
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad3"
+                                        onClick={() => handleQuadradoClick3(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad4"
+                                        onClick={() => handleQuadradoClick4(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad5"
+                                        onClick={() => handleQuadradoClick5(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                </div >
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad1"
+                                        onClick={() => handleQuadradoClick2(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+                                </div>
+
+
+                            </div>
+                            <div id={`coluna41`} className='coluna'>
+
+                                <div className='linha'>
+
+                                    <div
+                                        className="quadrado quad2"
+                                        onClick={() => handleQuadradoClick1(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+
+                                </div>
+
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad3"
+                                        onClick={() => handleQuadradoClick3(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad4"
+                                        onClick={() => handleQuadradoClick4(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad5"
+                                        onClick={() => handleQuadradoClick5(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                </div >
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad1"
+                                        onClick={() => handleQuadradoClick2(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+                                </div>
+
+
+                            </div>
+                            <div id={`coluna31`} className='coluna'>
+
+                                <div className='linha'>
+
+                                    <div
+                                        className="quadrado quad2"
+                                        onClick={() => handleQuadradoClick1(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+
+                                </div>
+
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad3"
+                                        onClick={() => handleQuadradoClick3(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad4"
+                                        onClick={() => handleQuadradoClick4(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad5"
+                                        onClick={() => handleQuadradoClick5(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                </div >
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad1"
+                                        onClick={() => handleQuadradoClick2(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+                                </div>
+
+
+                            </div>
+                            <div id={`coluna32`} className='coluna'>
+
+                                <div className='linha'>
+
+                                    <div
+                                        className="quadrado quad2"
+                                        onClick={() => handleQuadradoClick1(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+
+                                </div>
+
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad3"
+                                        onClick={() => handleQuadradoClick3(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad4"
+                                        onClick={() => handleQuadradoClick4(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad5"
+                                        onClick={() => handleQuadradoClick5(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                </div >
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad1"
+                                        onClick={() => handleQuadradoClick2(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+                                </div>
+
+
+                            </div>
+                            <div id={`coluna33`} className='coluna'>
+
+                                <div className='linha'>
+
+                                    <div
+                                        className="quadrado quad2"
+                                        onClick={() => handleQuadradoClick1(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+
+                                </div>
+
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad3"
+                                        onClick={() => handleQuadradoClick3(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad4"
+                                        onClick={() => handleQuadradoClick4(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad5"
+                                        onClick={() => handleQuadradoClick5(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                </div >
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad1"
+                                        onClick={() => handleQuadradoClick2(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+                                </div>
+
+
+                            </div>
+                            <div id={`coluna34`} className='coluna'>
+
+                                <div className='linha'>
+
+                                    <div
+                                        className="quadrado quad2"
+                                        onClick={() => handleQuadradoClick1(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+
+                                </div>
+
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad3"
+                                        onClick={() => handleQuadradoClick3(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad4"
+                                        onClick={() => handleQuadradoClick4(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad5"
+                                        onClick={() => handleQuadradoClick5(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                </div >
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad1"
+                                        onClick={() => handleQuadradoClick2(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+                                </div>
+
+
+                            </div>
+                            <div id={`coluna35`} className='coluna'>
+
+                                <div className='linha'>
+
+                                    <div
+                                        className="quadrado quad2"
+                                        onClick={() => handleQuadradoClick1(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+
+                                </div>
+
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad3"
+                                        onClick={() => handleQuadradoClick3(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad4"
+                                        onClick={() => handleQuadradoClick4(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad5"
+                                        onClick={() => handleQuadradoClick5(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                </div >
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad1"
+                                        onClick={() => handleQuadradoClick2(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+                                </div>
+
+
+                            </div>
+                            <div id={`coluna36`} className='coluna'>
+
+                                <div className='linha'>
+
+                                    <div
+                                        className="quadrado quad2"
+                                        onClick={() => handleQuadradoClick1(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+
+                                </div>
+
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad3"
+                                        onClick={() => handleQuadradoClick3(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad4"
+                                        onClick={() => handleQuadradoClick4(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad5"
+                                        onClick={() => handleQuadradoClick5(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                </div >
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad1"
+                                        onClick={() => handleQuadradoClick2(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+                                </div>
+
+
+                            </div>
+                            <div id={`coluna37`} className='coluna'>
+
+                                <div className='linha'>
+
+                                    <div
+                                        className="quadrado quad2"
+                                        onClick={() => handleQuadradoClick1(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+
+                                </div>
+
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad3"
+                                        onClick={() => handleQuadradoClick3(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad4"
+                                        onClick={() => handleQuadradoClick4(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad5"
+                                        onClick={() => handleQuadradoClick5(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                </div >
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad1"
+                                        onClick={() => handleQuadradoClick2(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+                                </div>
+
+
+                            </div>
+                            <div id={`coluna38`} className='coluna'>
+
+                                <div className='linha'>
+
+                                    <div
+                                        className="quadrado quad2"
+                                        onClick={() => handleQuadradoClick1(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+
+                                </div>
+
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad3"
+                                        onClick={() => handleQuadradoClick3(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad4"
+                                        onClick={() => handleQuadradoClick4(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                    <div
+                                        className="quadrado quad5"
+                                        onClick={() => handleQuadradoClick5(index)}
+                                        style={{ cursor: 'pointer' }}
+                                    ></div>
+                                </div >
+
+                                <div className='linha'>
+                                    <div
+                                        className="quadrado quad1"
+                                        onClick={() => handleQuadradoClick2(index)}
+                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                    ></div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <div style={{ display: 'flex' }}>
+                            <NumberLine start={48} end={41} />
+                            <NumberLine start={31} end={38} />
+                        </div>
+                        </div>
+                        <div>
 
                             {QuadradosLinha1()}
 
                         </div>
 
-                        <div className='number-line'>
-                            {QuadradosLinha2()}
+                        <div className='legenda'>
+                            <div style={{ display: "flex" }}>
+                                <div className="quadrado" style={{ margin: "10px", backgroundColor: "green" }}></div>
+                                <span>Concluido</span>
+                            </div>
+                            <div style={{ display: "flex" }}>
+                                <div className="quadrado" style={{ margin: "10px", backgroundColor: "red" }}></div>
+                                <span>Em procedimento</span>
+                            </div>
                         </div>
-                        <div className="number-line">
-                            {segundaLinha.map((number) => (
-                                <span key={number} className="number">
-                                    {number}
-                                </span>
-                            ))}
-                        </div>
-
                     </div>
                 </div>
-            </div>
+            </div >
         </>
 
     )

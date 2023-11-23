@@ -83,5 +83,59 @@ header {
 .coluna {
     display: flex;
     flex-direction: column;
+    margin: 7px;
+}
+
+.legenda {
+    margin-top: 30px;
 
 }
+
+    /* Estilizando o dropdown */
+    .dropdown {
+        position: relative;
+        display: inline-block;
+      }
+
+      .dropdown-content {
+        max-height: 300px;
+        overflow-y: scroll;
+      }
+  
+      /* Estilizando o botão */
+      .dropbtn {
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+        padding: 10px;
+        margin: 0px;
+      }
+  
+      /* Estilizando o conteúdo do dropdown */
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+      }
+  
+      /* Estilizando os itens do dropdown */
+      .dropdown-content a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        cursor: pointer;
+      }
+  
+      /* Mudando a cor do item do dropdown quando passa o mouse sobre ele */
+      .dropdown-content a:hover {
+        background-color: #f1f1f1;
+      }
+  
+      /* Exibindo o dropdown quando o botão é hoverado */
+      .dropdown:hover .dropdown-content {
+        display: block;
+      }

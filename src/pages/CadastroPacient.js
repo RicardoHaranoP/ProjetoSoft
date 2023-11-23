@@ -161,6 +161,12 @@ const CadastroPacient = () => {
                     valid = false
                 }
             }
+
+            if(campo.id == 'dataNasc') {
+                if (!validarDataNasc(campo)) {
+                    valid = false
+                }
+            }
         }
         return valid
     }
@@ -198,6 +204,14 @@ const CadastroPacient = () => {
             return false
         }
 
+        return true
+    }
+
+    function validarDataNasc(campo) {
+        if (new Date(campo.value) > new Date()){
+            createError(campo, 'Data não pode ser posterior ao dia atual')
+            return false
+        }
         return true
     }
 

@@ -4,13 +4,12 @@ import dataService from "../services/dataService";
 
 let pacienteAtualNome = null
 
-const CadastroAnamnese = () => {
+const EditAnamnese = () => {
     const navigate = useNavigate()
 
-    const { codPac } = useParams()
+    const { pacienteNome, codPac, codAnam } = useParams()
     const [pacientes, setPacientes] = useState([])
 
-    const [dataRealizacao, setDataRealizacao] = useState(new Date())
 
     const [cirurgia, setCirurgia] = useState(false)
     const [qCirurgia, setQCirurgia] = useState('')
@@ -68,9 +67,10 @@ const CadastroAnamnese = () => {
                 response.data.forEach(element => {
 
                     if (element.codPac == codPac) {
+                        
                         pacienteAtualNome = element.nome
-                        setPaciente(element.codPac)
-
+                        
+                        setPaciente(element)
                     }
                 });
                 setPacientes(response.data)
@@ -84,10 +84,25 @@ const CadastroAnamnese = () => {
 
     }
 
+    function pegaAnamnese() {
+        dataService.getAnamnese(codAnam)
+            .then(response => {
+                console.log('response', response)
+                console.log('response.data', response.data)
+                console.log('response.data.cirurgia',response.data.cirurgia)
+                setCirurgia(response.data.cirurgia)
+                setQCirurgia(response.data.qCirurgia)
+            })
+            .catch(error => {
+                erroDataService(error)
+            })
+    }
+
     useEffect(() => {
 
 
         pegaPacientes()
+        pegaAnamnese()
 
     }, [])
 
@@ -100,14 +115,14 @@ const CadastroAnamnese = () => {
             manchasRochas, cicatrizacaoDemorada, anemia, transfusaoSangue, dst, tonturas,
             convulsoes, diabetes, fuma, alcool, asma, bronquite, rinite, sinusite, gastrite,
             alergiaPeniscilina, cancerDeProstata, alergiaIodo, denteMole, feridaLabioeLingua,
-            anotacao, dataRealizacao, paciente
+            anotacao, paciente
         }
 
 
-        //create
-        dataService.createAnamnese(codPac, anamnese)
+        //update
+        dataService.updateAnamnese(codAnam, anamnese)
             .then(response => {
-                console.log('Anamnese criada', response.data)
+                console.log('Anamnese atualizada', response.data)
                 navigate('/')
             })
             .catch(error => {
@@ -292,4 +307,4 @@ const CadastroAnamnese = () => {
     )
 }
 
-export default CadastroAnamnese;
+export default EditAnamnese;

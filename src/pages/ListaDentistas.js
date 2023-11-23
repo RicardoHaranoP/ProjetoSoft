@@ -10,11 +10,13 @@ import { MdEdit } from 'react-icons/md';
 import '../css/ListaPacientDent.css';
 import { Table } from 'rsuite';
 import dataService from '../services/dataService';
+import { SearchBar } from 'rsuite/esm/Picker';
 
 const { Column, HeaderCell, Cell } = Table;
 
 const ListarDentistas = () => {
     const [dentista, setDentista] = useState([]);
+    const [query, setQuery] = useState("")
 
     useEffect(() => {
         init();
@@ -72,7 +74,7 @@ const ListarDentistas = () => {
 
             dataService.deleteDentista(codDent)
                 .then(response => {
-                    console.log('paciente deletado', response.data);
+                    console.log('dentista deletado', response.data);
                     init();
                 })
                 .catch(function (error) {
@@ -135,9 +137,19 @@ const ListarDentistas = () => {
 
 
                     </div>
+
+                    <div>
+                        <input placeholder="Digite o Dentista" onChange={event => setQuery(event.target.value)} />
+                    </div>
                     <Table
                         height={400}
-                        data={dentista}
+                        data={dentista.filter(elementos => {
+                            if (query === '') {
+                                return elementos;
+                            } else if (elementos.nome.toLowerCase().includes(query.toLowerCase())) {
+                                return elementos;
+                            }
+                        })}
                         onRowClick={rowData => {
                             console.log('rowdata', rowData);
                         }}
@@ -154,7 +166,11 @@ const ListarDentistas = () => {
                             </Cell>
                         </Column>
 
-                        <Column width={150} align="center">
+                        <Column width={70} align="center">
+                            <HeaderCell>UF CRO</HeaderCell>
+                            <Cell dataKey="uf" />
+                        </Column>
+                        <Column width={100} align="center">
                             <HeaderCell>CRO</HeaderCell>
                             <Cell dataKey="cro" />
                         </Column>

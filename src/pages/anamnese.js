@@ -7,7 +7,7 @@ let pacienteAtualNome = null
 export default function anamnese() {
     const navigate = useNavigate()
 
-    const { nomePaciente, codPac } = useParams()
+    const { nomePaciente, codAnam } = useParams()
     const [pacientes, setPacientes] = useState([])
 
 
@@ -62,226 +62,222 @@ export default function anamnese() {
         dataService.getPacientes()
             .then((response) => {
 
-                response.data.forEach(element => {
-
-                    if (element.codPac == codPac) {
-                        pacienteAtualNome = element.nome
-                    }
-                });
                 setPacientes(response.data)
                 console.log('paciente: ', response)
             })
             .catch(error => {
                 erroDataService(error)
             });
+    }
 
-
-
+    function pegaAnamneses() {
+        dataService.getAnamnese(codAnam)
+            .then(response => {
+                console.log('response', response)
+                console.log('response.data', response.data)
+                console.log('response.data.cirurgia',response.data.cirurgia)
+                setCirurgia(response.data.cirurgia)
+                setQCirurgia(response.data.qCirurgia)
+            })
+            .catch(error => {
+                erroDataService(error)
+            })
     }
 
     useEffect(() => {
-     
-            console.log('ta passando?')
-            dataService.getAnamnese(codPac)
-                .then(anamnese => {
-                    console.log('anamnese', anamnese)
-                    setCirurgia(anamnese.data[anamnese.data.length-1].cirurgia)
-                    setQCirurgia(anamnese.data[anamnese.data.length-1].qCirurgia)
-                })
-                .catch(error => {
-                    erroDataService(error)
-                })
-        
+
+        pegaAnamneses()
         pegaPacientes()
 
     }, [])
 
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
 
-        const anamnese = {
-            cirurgia, qCirurgia, alergiaRemedio, qAlergiaRemedio, pressaoAlta, sangraCorte,
-            manchasRochas, cicatrizacaoDemorada, anemia, transfusaoSangue, dst, tonturas,
-            convulsoes, diabetes, fuma, alcool, asma, bronquite, rinite, sinusite, gastrite,
-            alergiaPeniscilina, cancerDeProstata, alergiaIodo, denteMole, feridaLabioeLingua
-        }
-
-
-        //create
-        dataService.createAnamnese(codPac,anamnese)
-            .then(response => {
-                console.log('Anamnese criada', response.data)
-                navigate('/')
-            })
-            .catch(error => {
-                erroDataService(error)
-            })
-
-
-    }
 
     return (
         <div>
 
             <h1>Anamnese {nomePaciente}</h1>
-            <form onSubmit={handleSubmit}>
 
-                <div className="form-group">
-                    <input
-                        type={"checkbox"}
-                        checked={cirurgia}
-                        onChange={(e) => setCirurgia(!cirurgia)}
-                    />
-                    <label>Fez Cirurgia?</label>
-                    <label>Qual?</label>
-                    <input type='text'
+
+            <div className="form-group">
+                <input
+                    type={"checkbox"}
+                    checked={cirurgia}
+                    onChange={(e) => setCirurgia(!cirurgia)}
+                    disabled
+                />
+                <label>Fez Cirurgia?</label>
+                <label>Qual?</label>
+                <input type='text'
                     value={qCirurgia}
-                    onChange={(e)=> setQCirurgia(e.target.value)}
-                    />
-                </div>
-                <div className="form-group">
-                    <input
-                        type="checkbox"
-                    />
-                    <label>Possui alergia a remedio? </label>
+                    onChange={(e) => setQCirurgia(e.target.value)}
+                    readOnly
+                />
+            </div>
+            <div className="form-group">
+                <input
+                    type="checkbox"
+                    disabled
+                />
+                <label>Possui alergia a remedio? </label>
 
 
-                    <label>Qual?</label>
-                    <input
-                        type={'text'}
-                    />
+                <label>Qual?</label>
+                <input
+                    type={'text'}
+                    readOnly
+                />
 
-                </div>
-                <div className="form-group">
-                    <input
-                        type="checkbox"
-                    />
-                    <label>Possui pressão alta?</label>
-                </div>
-                <div className="form-group">
-                    <input
-                        type="checkbox"
-                    />
-                    <label>Sangra muito em corte?</label>
+            </div>
+            <div className="form-group">
+                <input
+                    type="checkbox"
+                    disabled
+                />
+                <label>Possui pressão alta?</label>
+            </div>
+            <div className="form-group">
+                <input
+                    type="checkbox"
+                    disabled
+                />
+                <label>Sangra muito em corte?</label>
 
-                </div>
-                <div className="form-group">
-                    <input
-                        type='checkbox'
-                    />
-                    <label>Alguma mancha rocha?</label>
-                </div>
-                <div className="form-group">
-                    <input
-                        type={'checkbox'}
-                    />
-                    <label>Cicatrização demorada?</label>
-                </div>
-                <div className="form-group">
-                    <input
-                        type={'checkbox'}
-                    />
-                    <label>Anemia?</label>
-                </div>
-                <div className="form-group">
-                    <input
-                        type={'checkbox'}
-                    />
-                    <label>Transfusão de Sangue?</label>
-                </div>
-                <div className="form-group">
-                    <input
-                        type={'checkbox'}
-                    />
-                    <label>DST?</label>
-                </div>
-                <div className="form-group">
-                    <input
-                        type={'checkbox'}
-                    />
-                    <label>Tonturas?</label>
-                </div>
-                <div className="form-group">
-                    <input
-                        type={'checkbox'}
-                    />
-                    <label>Convulsões?</label>
-                </div>
-                <div className="form-group">
-                    <input
-                        type={'checkbox'}
-                    />
-                    <label>Diabetes?</label>
-                </div>
-                <div className="form-group">
-                    <input
-                        type={'checkbox'}
-                    />
-                    <label>Fuma?</label>
-                </div>
-                <div className="form-group">
-                    <input
-                        type={'checkbox'}
-                    />
-                    <label>Alcool?</label>
-                </div>
-                <div className="form-group">
-                    <input
-                        type={'checkbox'}
-                    />
-                    <label>Asma?</label>
-                </div>
-                <div className="form-group">
-                    <input
-                        type={'checkbox'}
-                    />
-                    <label>Bronquite?</label>
-                </div>
-                <div className="form-group">
-                    <input
-                        type={'checkbox'}
-                    />
-                    <label>Rinite?</label>
-                </div>
-                <div className="form-group">
-                    <input
-                        type={'checkbox'}
-                    />
-                    <label>Sinusite?</label>
-                </div>
-                <div className="form-group">
-                    <input
-                        type={'checkbox'}
-                    />
-                    <label>Possui alergia a Peniscilina?</label>
-                </div>
-                <div className="form-group">
-                    <input
-                        type={'checkbox'}
-                    />
-                    <label>Cancer de Prostata?</label>
-                </div>
-                <div className="form-group">
-                    <input
-                        type={'checkbox'}
-                    />
-                    <label>Alergia a Iodo?</label>
-                </div>
-                <div className="form-group">
-                    <input
-                        type={'checkbox'}
-                    />
-                    <label>Dente mole?</label>
-                </div>
-                <div className="form-group">
-                    <input
-                        type={'checkbox'}
-                    />
-                    <label>Ferida Labio e Lingua?</label>
-                </div>
-                <button type="submit" className="btnCadastrar">Salvar</button>
-            </form>
+            </div>
+            <div className="form-group">
+                <input
+                    type='checkbox'
+                    disabled
+                />
+                <label>Alguma mancha rocha?</label>
+            </div>
+            <div className="form-group">
+                <input
+                    type={'checkbox'}
+                    disabled
+                />
+                <label>Cicatrização demorada?</label>
+            </div>
+            <div className="form-group">
+                <input
+                    type={'checkbox'}
+                    disabled
+                />
+                <label>Anemia?</label>
+            </div>
+            <div className="form-group">
+                <input
+                    type={'checkbox'}
+                    disabled
+                />
+                <label>Transfusão de Sangue?</label>
+            </div>
+            <div className="form-group">
+                <input
+                    type={'checkbox'}
+                    disabled
+                />
+                <label>DST?</label>
+            </div>
+            <div className="form-group">
+                <input
+                    type={'checkbox'}
+                    disabled
+                />
+                <label>Tonturas?</label>
+            </div>
+            <div className="form-group">
+                <input
+                    type={'checkbox'}
+                    disabled
+                />
+                <label>Convulsões?</label>
+            </div>
+            <div className="form-group">
+                <input
+                    type={'checkbox'}
+                    disabled
+                />
+                <label>Diabetes?</label>
+            </div>
+            <div className="form-group">
+                <input
+                    type={'checkbox'}
+                    disabled
+                />
+                <label>Fuma?</label>
+            </div>
+            <div className="form-group">
+                <input
+                    type={'checkbox'}
+                    disabled
+                />
+                <label>Alcool?</label>
+            </div>
+            <div className="form-group">
+                <input
+                    type={'checkbox'}
+                    disabled
+                />
+                <label>Asma?</label>
+            </div>
+            <div className="form-group">
+                <input
+                    type={'checkbox'}
+                    disabled
+                />
+                <label>Bronquite?</label>
+            </div>
+            <div className="form-group">
+                <input
+                    type={'checkbox'}
+                />
+                <label>Rinite?</label>
+            </div>
+            <div className="form-group">
+                <input
+                    type={'checkbox'}
+                    disabled
+                />
+                <label>Sinusite?</label>
+            </div>
+            <div className="form-group">
+                <input
+                    type={'checkbox'}
+                    disabled
+                />
+                <label>Possui alergia a Peniscilina?</label>
+            </div>
+            <div className="form-group">
+                <input
+                    type={'checkbox'}
+                    disabled
+                />
+                <label>Cancer de Prostata?</label>
+            </div>
+            <div className="form-group">
+                <input
+                    type={'checkbox'}
+                    disabled
+                />
+                <label>Alergia a Iodo?</label>
+            </div>
+            <div className="form-group">
+                <input
+                    type={'checkbox'}
+                    disabled
+                />
+                <label>Dente mole?</label>
+            </div>
+            <div className="form-group">
+                <input
+                    type={'checkbox'}
+                    disabled
+                />
+                <label>Ferida Labio e Lingua?</label>
+            </div>
+
         </div>
     )
 }

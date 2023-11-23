@@ -15,7 +15,7 @@ const { Column, HeaderCell, Cell } = Table;
 
 const ListarPacientes = () => {
     const [pacientes, setPacientes] = useState([]);
-
+    const [query, setQuery] = useState("")
 
     useEffect(() => {
         init();
@@ -130,9 +130,18 @@ const ListarPacientes = () => {
                             <a className="novo" href="http://localhost:3000/paciente/cadastro" role="button" > <MdAddCircle size={30} /> Novo Paciente</a>
                         </div>
                     </div>
+                    <div>
+                        <input placeholder="Digite o Paciente" onChange={event => setQuery(event.target.value)} />
+                    </div>
                     <Table
                         height={400}
-                        data={pacientes}
+                        data={pacientes.filter(elementos => {
+                            if (query === '') {
+                                return elementos;
+                            } else if (elementos.nome.toLowerCase().includes(query.toLowerCase())) {
+                                return elementos;
+                            }
+                        })}
                         onRowClick={rowData => {
                             console.log(rowData);
                         }}

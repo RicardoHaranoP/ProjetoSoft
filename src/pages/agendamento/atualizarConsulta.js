@@ -5,7 +5,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import dataService from "../../services/dataService";
 
 
-const MarcarConsulta = () => {
+const atualizarConsulta = () => {
 
     const navigate = useNavigate();
     const { codCons } = useParams();
@@ -19,9 +19,6 @@ const MarcarConsulta = () => {
     const [confirmado, setConfirmado] = useState('');
     const [consRealizada, setConsRealizada] = useState('');
 
-    const [pacientes, setPacientes] = useState([]);
-    const [dentistas, setDentistas] = useState([]);
-
 
 
     const saveConsulta = (e) => {
@@ -34,66 +31,59 @@ const MarcarConsulta = () => {
         const camposValidos = isCamposValid();
 
         if (camposValidos) {
-            //create
-            dataService.createConsulta(consulta)
+
+
+            //update
+            dataService.updateConsulta(codCons, consulta)
                 .then(response => {
-                    console.log('Consulta criada', response.data);
+                    console.log('Consulta atualizada', response.data);
                     navigate('/');
                 })
                 .catch(error => {
                     erroDataService(error)
                 });
+
+
         }
-
     }
 
-    async function pegaDentistas() {
+    async function pegaConsulta() {
 
-        await dataService.getDentistas()
+        await dataService.getConsultas()
             .then((response) => {
-                response.data.sort((a, b) => {
-                    if (a.nome < b.nome) return -1
-                    if (a.nome > b.nome) return 1
-                    return 0
-                })
-                setDentistas(response.data)
-                console.log('dentista: ', response.data)
+                response.data.forEach(element => {
+                    if (element.codCons == codCons) {
+                        console.log(element)
+                        setData(element.data)
+                        setPaciente(element.codPac)
+                        setDentista(element.codDent)
+                        setHoraInicio(element.horaInicio)
+                        setHoraFinal(element.horaFinal)
+
+                        let partesHoraInicio = element.horaInicio.split(":")
+                        let partesHoraFinal = element.horaFinal.split(":")
+                        let horas1 = parseInt(partesHoraInicio[0], 10);
+                        let minutos1 = parseInt(partesHoraInicio[1], 10);
+                        let horas2 = parseInt(partesHoraFinal[0], 10);
+                        let minutos2 = parseInt(partesHoraFinal[1], 10);
+                        let diferencaMinutos = (horas2 * 60 + minutos2) - (horas1 * 60 + minutos1);
+                        let horasDiferenca = Math.floor(diferencaMinutos / 60);
+                        let minutosDiferenca = diferencaMinutos % 60;
+                        let aux = horasDiferenca.toString().padStart(2, "0") + ":" + minutosDiferenca.toString().padStart(2, "0")
+                        setDuracao(aux)
+
+                    }
+                });
             })
             .catch(error => {
                 erroDataService(error)
             });
 
-    }
-
-    async function pegaPacientes() {
-
-        await dataService.getPacientes()
-            .then((response) => {
-
-                response.data.sort((a, b) => {
-                    if (a.nome < b.nome) return -1
-                    if (a.nome > b.nome) return 1
-                    return 0
-                })
-                console.log(response.data)
-                setPacientes(response.data)
-                console.log('paciente: ', response.data)
-            })
-            .catch(error => {
-                erroDataService(error)
-            });
     }
 
     useEffect(() => {
-        if (codCons) {
-            dataService.getConsulta(codCons)
-                .then(consulta => {
-                    setData(consulta.data.data);
-                })
-        }
 
-        pegaDentistas()
-        pegaPacientes()
+        pegaConsulta()
 
 
     }, [])
@@ -117,14 +107,6 @@ const MarcarConsulta = () => {
         }
         console.log('error.config', error.config);
     }
-
-    const handleDentistaSelection = (e) => {
-        setDentista(e.target.value)
-    };
-
-    const handlePacienteSelection = (e) => {
-        setPaciente(e.target.value)
-    };
 
     const handleDuracaoSelection = (e) => {
         setDuracao(e.target.value)
@@ -160,6 +142,7 @@ const MarcarConsulta = () => {
         var horaDeFim = horaDeInicio + horaDuracao;
         var minutoDeFim = minutoDeInicio + minutoDuracao;
 
+
         if (minutoDeFim === 60) {
             horaDeFim = horaDeFim + 1
             minutoDeFim = 0
@@ -194,7 +177,7 @@ const MarcarConsulta = () => {
 
             //verificando se o campo está vazio
             if (!campo.value) {
-                createError(campo, `O campx'o "${label}" não pode estar em branco`)
+                createError(campo, `O campo "${label}" não pode estar em branco`)
                 valid = false;
             }
             if (campo.value == 'Selecione o paciente' || campo.value == 'Selecione o dentista' || campo.value == 'escolha') {
@@ -202,17 +185,17 @@ const MarcarConsulta = () => {
                 valid = false;
             }
 
-            
+
             if (campo.id == 'data') {
                 const dataCampo = new Date(campo.value)
                 dataCampo.setDate(dataCampo.getDate() + 1)
                 const diaAtual = new Date()
                 console.log('dataCampo:', dataCampo)
-                if(dataCampo < diaAtual){
+                if (dataCampo < diaAtual) {
                     createError(campo, 'Data não pode ser anterior à atual')
                     valid = false
                 }
-                console.log('data',  campo.value)
+                console.log('data', campo.value)
             }
 
 
@@ -235,10 +218,11 @@ const MarcarConsulta = () => {
                 <div className="row">
                     <div className="col-12">
                         <div className='w-100 d-flex justify-content-between'>
+
                             <div>
 
                                 <button className='helpButton' onClick={changeModal}>?</button>
-                                <h2 className="mb-4 mt-0">Marcar Consulta</h2>
+                                <h2 className="mb-4 mt-0">Atualizar Consulta</h2>
 
                                 <div id='fade' className='hide' ></div>
                                 <div id='modal' className='hide'>
@@ -259,36 +243,8 @@ const MarcarConsulta = () => {
                                 </div>
 
                                 <form className="formulario">
-                                    <label>Dentista: </label><br/>
-                                    <select
-                                        onChange={handleDentistaSelection}
-                                        className="validar"
-                                    >
-                                        <option value={null}>Selecione o dentista</option>
-                                        {dentistas.map((dentist) => (
-                                            <option key={dentist.codDent} value={dentist.codDent}>
-                                                {dentist.nome}
-                                            </option>
-                                        ))}
-                                    </select><br/>
 
-
-
-                                    <label>Paciente:</label>
-                                    <select
-                                        onChange={handlePacienteSelection}
-                                        className="validar"
-                                    >
-                                        <option value={null}>Selecione o paciente</option>
-                                        {pacientes.map((patient) => (
-                                            <option key={patient.codPac} value={patient.codPac}>
-                                                {patient.nome}
-                                            </option>
-                                        ))}
-                                    </select>
-
-
-                                    <label>Data da Consulta:</label>
+                                    <label>data da Consulta:</label>
                                     <input
                                         type="Date"
                                         id="data"
@@ -297,14 +253,13 @@ const MarcarConsulta = () => {
                                         name="data"
                                         className="validar"
                                     />
-                                    <label>Horario da Consulta:</label>
+                                    <label>horario da Consulta:</label>
                                     <select
                                         id="horaInicio"
                                         value={horaInicio}
                                         onChange={handleHoraInicioSelection}
                                         name="horaInicio"
                                         className="validar"
-
                                     >
                                         <option value={null}>escolha</option>
                                         <option value="07:00">07:00</option>
@@ -337,7 +292,7 @@ const MarcarConsulta = () => {
                                         <option value="20:30">20:30</option>
                                         <option value="21:00">21:00</option>
                                     </select>
-                                    <label>Duracao da Consulta:</label>
+                                    <label>duracao da consulta:</label>
                                     <select
                                         id="duracao"
                                         value={duracao}
@@ -355,7 +310,7 @@ const MarcarConsulta = () => {
                                         <span>
                                             <a type="button" className='btnCancelar' href='../'>Cancelar</a>
                                         </span>
-                                        <button className='btnCadastrar' onClick={(e) => saveConsulta(e)} >Cadastrar</button>
+                                        <button className='btnCadastrar' onClick={(e) => saveConsulta(e)} >Salvar</button>
                                     </div>
                                 </form>
                             </div>
@@ -367,4 +322,4 @@ const MarcarConsulta = () => {
     )
 }
 
-export default MarcarConsulta;
+export default atualizarConsulta;

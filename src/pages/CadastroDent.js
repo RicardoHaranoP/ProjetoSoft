@@ -5,15 +5,10 @@ import api from '../services/api';
 import dataService from '../services/dataService';
 import InputMask from "react-input-mask";
 
-
 const CadastroDent = () => {
 
     const navigate = useNavigate();
     const { codDent } = useParams();
-
-
-
-
 
     /*
     const[paciente,setPaciente] = useState({
@@ -22,6 +17,8 @@ const CadastroDent = () => {
         celular: "",
         email: ""
     })*/
+
+    const [opcaoSelecionada, setOpcaoSelecionada] = useState('UF')
 
     const [nome, setNome] = useState('')
     const [cro, setCro] = useState('')
@@ -60,8 +57,9 @@ const CadastroDent = () => {
 
     const saveDentista = (e) => {
         e.preventDefault();
-
-        const dentista = { nome, cro, dataNasc, celular, email };
+        let uf = opcaoSelecionada
+        const dentista = { nome, cro, dataNasc, celular, email, uf };
+        
         const camposValidos = isCamposValid();
 
         if (camposValidos) {
@@ -138,25 +136,39 @@ const CadastroDent = () => {
         //para todo campo no formulario, verifica-se valor válido
         for (let campo of formulario.querySelectorAll('.validar')) {
             const label = campo.previousElementSibling.innerText;
-            //verificando se o campo está vazio
-            if (!campo.value) {
-                createError(campo, `O campo "${label}" não pode estar em branco`)
-                valid = false;
-            }
+            if (campo.id == 'uf') {
+                console.log('deu uf', opcaoSelecionada)
+                if (opcaoSelecionada == 'UF') {
+                    createError(campo, `O campo "${label}" deve ser selecionado`)
+                }
+            } else {
+                //verificando se o campo está vazio
+                if (!campo.value) {
+                    createError(campo, `O campo "${label}" não pode estar em branco`)
+                    valid = false;
+                }
 
-            //validando email
-            if (campo.id == 'email') {
-                if (!validarEmail(campo)) {
-                    valid = false
+                //validando email
+                if (campo.id == 'email') {
+                    if (!validarEmail(campo)) {
+                        valid = false
+                    }
+                }
+
+                if (campo.id == 'cro') {
+                    if (isNaN(campo.value)) {
+                        createError(campo, 'CRO deve ser um número')
+                        valid = false
+                    }
+                }
+
+                if (campo.id == 'dataNasc') {
+                    if (!validarDataNasc(campo)) {
+                        valid = false
+                    }
                 }
             }
 
-            if (campo.id == 'cro') {
-                if (isNaN(campo.value)) {
-                    createError(campo, 'CRO deve ser um número')
-                    valid = false
-                }
-            }
 
         }
 
@@ -180,6 +192,14 @@ const CadastroDent = () => {
             return false
         }
 
+        return true
+    }
+
+    function validarDataNasc(campo) {
+        if (new Date(campo.value) > new Date()) {
+            createError(campo, 'Data não pode ser posterior ao dia atual')
+            return false
+        }
         return true
     }
 
@@ -216,6 +236,15 @@ const CadastroDent = () => {
         }
     }, [])
 
+    const handleOptionClick = (option) => {
+        setOpcaoSelecionada(option);
+    };
+
+    const handleCRO = (e) => {
+        console.log('va',e.target.value.replace(/\D/g, ''))
+        setCro(e.target.value.replace(/\D/g, ''))
+    }
+
     return (
         <div className="col p-4 overflow-auto h-100">
             <div className="row">
@@ -236,16 +265,50 @@ const CadastroDent = () => {
                                     className='validar'
                                 />
 
-                                <label>CRO:</label><br/>
-                                <input
+                                <label>CRO:</label><br />
+                                CRO/
+                                <div className="dropdown">
+                                    <div className="dropbtn" placeholder='UF'>{opcaoSelecionada}</div>
+                                    <div id='uf' className="dropdown-content validar" >
+                                        <a onClick={() => handleOptionClick('AC')}>AC</a>
+                                        <a onClick={() => handleOptionClick('AL')}>AL</a>
+                                        <a onClick={() => handleOptionClick('AP')}>AP</a>
+                                        <a onClick={() => handleOptionClick('AM')}>AM</a>
+                                        <a onClick={() => handleOptionClick('BA')}>BA</a>
+                                        <a onClick={() => handleOptionClick('CE')}>CE</a>
+                                        <a onClick={() => handleOptionClick('DF')}>DF</a>
+                                        <a onClick={() => handleOptionClick('ES')}>ES</a>
+                                        <a onClick={() => handleOptionClick('GO')}>GO</a>
+                                        <a onClick={() => handleOptionClick('MA')}>MA</a>
+                                        <a onClick={() => handleOptionClick('MT')}>MT</a>
+                                        <a onClick={() => handleOptionClick('MS')}>MS</a>
+                                        <a onClick={() => handleOptionClick('MG')}>MG</a>
+                                        <a onClick={() => handleOptionClick('PA')}>PA</a>
+                                        <a onClick={() => handleOptionClick('PB')}>PB</a>
+                                        <a onClick={() => handleOptionClick('PR')}>PR</a>
+                                        <a onClick={() => handleOptionClick('PE')}>PE</a>
+                                        <a onClick={() => handleOptionClick('PI')}>PI</a>
+                                        <a onClick={() => handleOptionClick('RJ')}>RJ</a>
+                                        <a onClick={() => handleOptionClick('RN')}>RN</a>
+                                        <a onClick={() => handleOptionClick('RS')}>RS</a>
+                                        <a onClick={() => handleOptionClick('RO')}>RO</a>
+                                        <a onClick={() => handleOptionClick('RR')}>RR</a>
+                                        <a onClick={() => handleOptionClick('SC')}>SC</a>
+                                        <a onClick={() => handleOptionClick('SP')}>SP</a>
+                                        <a onClick={() => handleOptionClick('SE')}>SE</a>
+                                        <a onClick={() => handleOptionClick('TO')}>TO</a>
+                                    </div>
+                                </div>
+                                <InputMask
+                                    mask='999999'
                                     type="text"
                                     id="cro"
                                     value={cro}
-                                    onChange={(e) => setCro(e.target.value)}
+                                    onChange={handleCRO}
                                     name="cro"
-                                    placeholder="Digite seu cro"
+                                    placeholder="CRO"
                                     className='validar'
-                                    style={{ width: '110px' }}
+                                    style={{ width: '80px' }}
                                 />
 
                                 <label>Data de Nascimento:</label>
@@ -260,13 +323,14 @@ const CadastroDent = () => {
                                 />
 
                                 <br />
-                                <label>Celular:</label><br/>
+                                <label>Celular:</label><br />
                                 <InputMask
                                     mask="(99) 99999-9999"
                                     value={celular}
                                     onChange={(e) => setCelular(e.target.value)}
                                     placeholder="Digite seu número de celular"
                                     className="validar"
+                                    style={{ width: '120px' }}
                                 >
                                     {(inputProps) => <input {...inputProps} />}
                                 </InputMask><br />

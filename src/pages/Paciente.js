@@ -95,7 +95,10 @@ const Paciente = () => {
                                                 <Link to={`../paciente/ListaAnamnese/${codPac}`} type='button' className="btnAgenda mt-2">Anamnese</Link>
                                             </div>
                                             <div>
-                                                <Link to={`../paciente/ListaOdontograma/${codPac}`} type='button' className="btnAgenda mt-2">Odontograma</Link>
+                                                <Link to={`../paciente/odontograma/${codPac}`} type='button' className="btnAgenda mt-2">Odontograma</Link>
+                                            </div>
+                                            <div>
+                                                <Link to={`../paciente/OdontogramaLista/${codPac}`} type='button' className="btnAgenda mt-2">OdontogramaLista</Link>
                                             </div>
                                         </div>
                                     </div>

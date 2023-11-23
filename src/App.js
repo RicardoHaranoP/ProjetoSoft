@@ -16,6 +16,10 @@ import CadastroProcedimentos from './pages/CadastroProcedimentos.js'
 import ListaOdontograma from './pages/ListaOdontograma.js'
 import Odontograma from './pages/odontograma.js'
 import CadastroOdontograma from './pages/CadastroOdontograma.js'
+import AtualizarConsulta from './pages/agendamento/atualizarConsulta.js'
+import OdontogramaCadastroTeste from './pages/cadastroOdontogramaTeste.js'
+import OdontogramaLista from './pages/odontogramaLista.js';
+import EditAnamnese from './pages/editAnamnese.js';
 
 import React, { useState } from "react";
 import {
@@ -26,7 +30,6 @@ import {
   Outlet
 } from "react-router-dom";
 
-import eventos from './pages/agendamento/Agendamento.js'
 
 const users = [
   { username: 'user1', password: 'password1' },
@@ -54,6 +57,7 @@ function App() {
           <Route path='/dentista/cadastro' element={<CadastroDent />} />
           <Route path='/dentista/edit/:codDent' element={<CadastroDent />} />
           <Route path='/dentista/agendamento/:codDent' element={<Agendamento />} />
+          <Route path='/dentista/agendamento/edit/:codCons' element={<AtualizarConsulta/>}/>
 
           <Route path='/paciente/:codPac' element={<Paciente />} />
           <Route path='/paciente/cadastro' element={<CadastroPacient />} />
@@ -63,14 +67,17 @@ function App() {
 
           <Route path='/paciente/ListaAnamnese/:codPac' element={<ListaAnamnese />} />
           <Route path='/paciente/:codPac/anamnese/cadastro' element={<CadastroAnamnese />} />
+          <Route path='/paciente/anamnese/edit/:nomePaciente/:codPac/:codAnam' element={<EditAnamnese />} />
           <Route path='/paciente/anamnese/:codPac' element={<Anamnese />} />
           <Route path='/paciente/anamnese/:nomePaciente/:codAnam' element={<Anamnese />} />
 
           <Route path='/cadastroProcedimentos' element={<CadastroProcedimentos />} />
           
           <Route path='/paciente/ListaOdontograma/:codPac' element={<ListaOdontograma />} />
+          <Route path='/paciente/OdontogramaLista/:codPac' element={<OdontogramaLista />} />
           <Route path='/paciente/:codPac/odontograma/cadastro' element={<CadastroOdontograma />} />
           <Route path='/paciente/odontograma/:codPac' element={<Odontograma />} />
+          <Route path='/paciente/odontograma/:codPac/cadastroTeste' element={<OdontogramaCadastroTeste />} />
 
         </Routes>
       </BrowserRouter>

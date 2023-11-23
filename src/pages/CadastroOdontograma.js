@@ -25,32 +25,54 @@ const CadastroOdontograma = () => {
     const [dente, setDente] = useState('')
     const [face, setFace] = useState('')
     const [valor, setValor] = useState('')
-    const [orcamento, setOrcamento] = useState('')
-    const [procedimento, setProcedimento] = useState(0)
+    const [paciente, setPaciente] = useState()
+    const [procedimento, setProcedimento] = useState('')
     const [qProcedimento, setQProcedimento] = useState('')
-    const [codProcedimento, setCodProcedimento] = useState(0)
+    const [codProcedimento, setCodProcedimento] = useState()
+    const [situacao, setSituacao] = useState('')
+    const [quadrante, setQuadrante] = useState('')
+    const [auxDente, setAuxDente] = useState('')
+    const [vasid, setVasid] = useState(1)
 
+    const tipoDente = [
+        { id: 1, nome: '1ºIncisivo' },
+        { id: 2, nome: '2ºIncisivo' },
+        { id: 3, nome: 'Canino' },
+        { id: 4, nome: '1ºPré-molar' },
+        { id: 5, nome: '2ºPré-molar' },
+        { id: 6, nome: '1ºMolar' },
+        { id: 7, nome: '2ºMolar' },
+        { id: 8, nome: 'Siso' },
+    ];
 
+    const quadrantes = [
+        { id: 1, nome: 'Superior Esquerdo' },
+        { id: 2, nome: 'Superior Direito' },
+        { id: 3, nome: 'Inferior Direito' },
+        { id: 4, nome: 'Inferior Esquerdo' },
+    ]
+
+    const tipoFaces = [
+        { id: 1, nome: 'Vestibular' },
+        { id: 2, nome: 'Lingual' },
+        { id: 3, nome: 'Distal' },
+        { id: 4, nome: 'Mesial' },
+        { id: 5, nome: 'Oclusal' },
+    ]
 
     const saveOdontograma = (e) => {
         e.preventDefault();
 
-        for (const dados of procedimentos){
+        // const dataFormatada = new Intl.DateTimeFormat('pt-Br').format(dataRealizacao)
+        // console.log(dataFormatada)
+        // setDataRealizacao(dataFormatada)
+        // console.log(dataRealizacao)
 
-            if(qProcedimento == dados.nome) {
+        const odontograma = { dataRealizacao, dente, face, valor,quadrante, situacao, procedimento , paciente, codPac, codProcedimento }
 
-                setProcedimento(dados.codProcedimento)
-                
-                console.log(procedimento)
-                break;
-            }
-        }
+        console.log('idPaciente: ', paciente)
 
-
-        const odontograma = { dataRealizacao, dente, face, valor, orcamento, procedimento }
-
-
-        dataService.createOdontograma(codPac, odontograma)
+        dataService.createOdontograma(odontograma)
             .then(response => {
                 console.log('Odontograma adicionado', response.data);
                 navigate('/');
@@ -87,6 +109,8 @@ const CadastroOdontograma = () => {
 
                     if (element.codPac == codPac) {
                         pacienteAtualNome = element.nome
+                        setPaciente(element.codPac)
+
                     }
                 });
                 setPacientes(response.data)
@@ -102,10 +126,10 @@ const CadastroOdontograma = () => {
             .then((response) => {
 
                 const mappedProcedimentos = response.data.map(item => ({ label: item.nome, value: item.nome }));
-                
+
                 setNomesProcedimentos(mappedProcedimentos);
                 setProcedimentos(response.data);
-                
+
                 console.log('procedimentos: ', response)
             })
             .catch(error => {
@@ -113,13 +137,36 @@ const CadastroOdontograma = () => {
             });
     }
 
+    const handleDenteSelection = (e) => {
+        setDente(e.target.value)
+    };
+
+    const handleQuadranteSelection = (e) => {
+        setQuadrante(e.target.value)
+    };
+
+    const handleFaceSelection = (e) => {
+        setFace(e.target.value)
+        console.log('face: ', e.target.value)
+    };
+
+    const handleProcedimentoSelection = (e) => {
+        procedimentos.forEach(element => {
+            if( element.nome == e) {
+                setCodProcedimento(element.codProcedimento)
+                setProcedimento(element.codProcedimento)
+            }
+        })
+    }  
+
+   
+
     useEffect(() => {
 
         pegaPacientes()
         pegaProcedimentos()
 
     }, [])
-
 
     return (
         <div className="col p-4 overflow-auto h-100">
@@ -132,23 +179,50 @@ const CadastroOdontograma = () => {
                             <h2 className="mb-4 mt-0">Cadastro Odontograma {pacienteAtualNome}</h2>
                             <form method='POST' className='formulario'>
                                 <p>{format(dataRealizacao, 'dd/MM/yyyy')}</p>
-                                <div style={{ width: 160 }}>
-                                    <label>Dente</label>
+                                <label>Dente: </label><br/>
+                                <select
+                                    onChange={handleDenteSelection}
+                                    className="validar"
+                                >
+                                    <option value={null}>Selecione Dente</option>
+                                    {tipoDente.map((dente) => (
+                                       
+                                        <option key={dente.id} value={dente.id}>
+                                           
+                                            {dente.nome}
+                                        </option>
+                                    ))}
+                                </select><br/>
+                                <label>Quadrante: </label>
+                                <select
+                                    onChange={handleQuadranteSelection}
+                                    className="validar"
+                                >
+                                    <option value={null}>Selecione Quadrante</option>
+                                    {quadrantes.map((quadrante) => (
+                                       
+                                        <option key={quadrante.id} value={quadrante.id}>
+                                           
+                                            {quadrante.nome}
+                                        </option>
+                                    ))}
+                                </select><br/>
 
-                                    <InputNumber
-                                        value={dente}
-                                        onChange={(e) => setDente(e)}
-                                        min={1} max={32}
-                                    />
-                                </div>
-                                <div style={{ width: 160 }}>
-                                    <label>Face</label>
-                                    <InputNumber
-                                        value={face}
-                                        onChange={(e) => setFace(e)}
-                                        id='face' min={0} max={5}
-                                    />
-                                </div>
+                                <label>Face: </label><br/>
+                                <select
+                                    onChange={handleFaceSelection}
+                                    className="validar"
+                                >
+                                    <option value={null}>Selecione Face</option>
+                                    {tipoFaces.map((faces) => (
+                                       
+                                        <option key={faces.id} value={faces.id}>
+                                           
+                                            {faces.nome}
+                                        </option>
+                                    ))}
+                                </select><br/>
+
                                 <div style={{ width: 160 }}>
                                     <label>Valor</label>
                                     <InputNumber
@@ -157,16 +231,9 @@ const CadastroOdontograma = () => {
                                     />
                                 </div>
                                 <div style={{ width: 160 }}>
-                                    <label>Orçamento</label>
-                                    <InputNumber
-                                        value={orcamento}
-                                        onChange={(e) => setOrcamento(e)}
-                                    />
-                                </div>
-                                <div style={{ width: 160 }}>
                                     <label>Procedimento</label>
                                     <InputPicker
-                                        onChange={(e) => setQProcedimento(e)}
+                                        onChange={handleProcedimentoSelection}
                                         data={nomesProcedimentos}
                                     />
                                 </div>
