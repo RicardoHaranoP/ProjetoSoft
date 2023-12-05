@@ -16,7 +16,9 @@ export default function ListaProcedimentos() {
     const [pacientes, setPacientes] = useState([])
     const [procedimentos, setProcedimentos] = useState([])
     const [query, setQuery] = useState("")
+    const [erro, setErro] = useState()
 
+    
 
     const erroDataService = (error) => {
         if (error.response) {
@@ -64,16 +66,20 @@ export default function ListaProcedimentos() {
                 })
                 .catch(function (error) {
                     erroDataService(error)
+
+                    if (error.message == 'Request failed with status code 500') {
+                        alert('Não é possível deletar este procedimento, pois está sendo utilizado em um Odontograma')
+                    }
                 });
         } else {
             console.log('Operação cancelada!!');
         }
-    
+
     }
 
 
     useEffect(() => {
-        
+
         pegaProcedimentos()
 
     }, [])
@@ -87,7 +93,7 @@ export default function ListaProcedimentos() {
     return (
         <div className="col p-4 overflow-auto h-100">
             <div className="row">
-                <div className="col-12">
+                <div className="col-12 aux">
 
                     <button className='helpButton' onClick={changeModal}>?</button>
                     <div id='fade' className='hide' ></div>
@@ -131,7 +137,7 @@ export default function ListaProcedimentos() {
                     >
                         <Column width={250} align="center" fixed>
                             <HeaderCell>Procedimentos</HeaderCell>
-                            <Cell dataKey='nome'/>
+                            <Cell dataKey='nome' />
                         </Column>
                         <Column width={80} fixed="right">
                             <HeaderCell>Valor</HeaderCell>
@@ -149,6 +155,7 @@ export default function ListaProcedimentos() {
                             </Cell>
                         </Column>
                     </Table>
+
                 </div>
             </div>
         </div>
