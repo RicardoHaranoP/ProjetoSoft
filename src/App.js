@@ -13,13 +13,14 @@ import ListaAnamnese from './pages/ListaAnamnese.js'
 import Anamnese from './pages/anamnese.js'
 import CadastroAnamnese from './pages/cadastroAnamnese.js'
 import CadastroProcedimentos from './pages/CadastroProcedimentos.js'
-import ListaOdontograma from './pages/ListaOdontograma.js'
 import Odontograma from './pages/odontograma.js'
 import CadastroOdontograma from './pages/CadastroOdontograma.js'
 import AtualizarConsulta from './pages/agendamento/atualizarConsulta.js'
 import OdontogramaCadastroTeste from './pages/cadastroOdontogramaTeste.js'
 import OdontogramaLista from './pages/odontogramaLista.js';
 import EditAnamnese from './pages/editAnamnese.js';
+import ListaProcedimentos from './pages/ListaProcedimentos.js';
+import EditOdontograma from './pages/EditOdontograma.js';
 
 import React, { useState } from "react";
 import {
@@ -72,8 +73,9 @@ function App() {
           <Route path='/paciente/anamnese/:nomePaciente/:codAnam' element={<Anamnese />} />
 
           <Route path='/cadastroProcedimentos' element={<CadastroProcedimentos />} />
+          <Route path='/ListaProcedimentos'    element={<ListaProcedimentos/>}/>
           
-          <Route path='/paciente/ListaOdontograma/:codPac' element={<ListaOdontograma />} />
+          <Route path='/paciente/odontograma/edit/:codPac/:codOdon' element={<EditOdontograma/>}/>
           <Route path='/paciente/OdontogramaLista/:codPac' element={<OdontogramaLista />} />
           <Route path='/paciente/:codPac/odontograma/cadastro' element={<CadastroOdontograma />} />
           <Route path='/paciente/odontograma/:codPac' element={<Odontograma />} />

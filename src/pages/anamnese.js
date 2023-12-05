@@ -37,6 +37,7 @@ export default function anamnese() {
     const [alergiaIodo, setAlergiaIodo] = useState(false)
     const [denteMole, setDenteMole] = useState(false)
     const [feridaLabioeLingua, setFeridaLabioeLingua] = useState(false)
+    const [anotacao, setAnotacao] = useState('')
 
     const erroDataService = (error) => {
         if (error.response) {
@@ -78,6 +79,31 @@ export default function anamnese() {
                 console.log('response.data.cirurgia',response.data.cirurgia)
                 setCirurgia(response.data.cirurgia)
                 setQCirurgia(response.data.qCirurgia)
+                setAlergiaRemedio(response.data.alergiaRemedio)
+                setQAlergiaRemedio(response.data.qAlergiaRemedio)
+                setPressaoAlta(response.data.pressaoAlta)
+                setSangraCorte(response.data.sangraCorte)
+                setManchasRochas(response.data.manchasRochas)
+                setCicatrizacaoDemorada(response.data.cicatrizacaoDemorada)
+                setAnemia(response.data.anemia)
+                setTransfusaoSangue(response.data.transfusaoSangue)
+                setDst(response.data.dst)
+                setTonturas(response.data.tonturas)
+                setConvulsoes(response.data.convulsoes)
+                setDiabetes(response.data.diabetes)
+                setFuma(response.data.fuma)
+                setAlcool(response.data.alcool)
+                setAsma(response.data.asma)
+                setBronquite(response.data.bronquite)
+                setRinite(response.data.rinite)
+                setSinusite(response.data.sinusite)
+                setGastrite(response.data.gastrite)
+                setAlergiaPeniscilina(response.data.alergiaPeniscilina)
+                setCancerDeProstata(response.data.cancerDeProstata)
+                setAlergiaIodo(response.data.alergiaIodo)
+                setDenteMole(response.data.denteMole)
+                setFeridaLabioeLingua(response.data.feridaLabioeLingua)
+                setAnotacao(response.data.anotacao)
             })
             .catch(error => {
                 erroDataService(error)
@@ -104,21 +130,18 @@ export default function anamnese() {
                 <input
                     type={"checkbox"}
                     checked={cirurgia}
-                    onChange={(e) => setCirurgia(!cirurgia)}
-                    disabled
                 />
                 <label>Fez Cirurgia?</label>
                 <label>Qual?</label>
                 <input type='text'
                     value={qCirurgia}
-                    onChange={(e) => setQCirurgia(e.target.value)}
                     readOnly
                 />
             </div>
             <div className="form-group">
                 <input
                     type="checkbox"
-                    disabled
+                    checked={alergiaRemedio}
                 />
                 <label>Possui alergia a remedio? </label>
 
@@ -126,6 +149,7 @@ export default function anamnese() {
                 <label>Qual?</label>
                 <input
                     type={'text'}
+                    value={qAlergiaRemedio}
                     readOnly
                 />
 
@@ -133,14 +157,14 @@ export default function anamnese() {
             <div className="form-group">
                 <input
                     type="checkbox"
-                    disabled
+                    checked={pressaoAlta}
                 />
                 <label>Possui pressão alta?</label>
             </div>
             <div className="form-group">
                 <input
                     type="checkbox"
-                    disabled
+                    checked={sangraCorte}
                 />
                 <label>Sangra muito em corte?</label>
 
@@ -148,135 +172,144 @@ export default function anamnese() {
             <div className="form-group">
                 <input
                     type='checkbox'
-                    disabled
+                    checked={manchasRochas}
                 />
                 <label>Alguma mancha rocha?</label>
             </div>
             <div className="form-group">
                 <input
                     type={'checkbox'}
-                    disabled
+                    checked={cicatrizacaoDemorada}
                 />
                 <label>Cicatrização demorada?</label>
             </div>
             <div className="form-group">
                 <input
                     type={'checkbox'}
-                    disabled
+                    checked={anemia}
                 />
                 <label>Anemia?</label>
             </div>
             <div className="form-group">
                 <input
                     type={'checkbox'}
-                    disabled
+                    checked={transfusaoSangue}
                 />
                 <label>Transfusão de Sangue?</label>
             </div>
             <div className="form-group">
                 <input
                     type={'checkbox'}
-                    disabled
+                    checked={dst}
                 />
                 <label>DST?</label>
             </div>
             <div className="form-group">
                 <input
                     type={'checkbox'}
-                    disabled
+                    checked={tonturas}
                 />
                 <label>Tonturas?</label>
             </div>
             <div className="form-group">
                 <input
                     type={'checkbox'}
-                    disabled
+                    checked={convulsoes}
                 />
                 <label>Convulsões?</label>
             </div>
             <div className="form-group">
                 <input
                     type={'checkbox'}
-                    disabled
+                    checked={diabetes}
                 />
                 <label>Diabetes?</label>
             </div>
             <div className="form-group">
                 <input
                     type={'checkbox'}
-                    disabled
+                    checked={fuma}
                 />
                 <label>Fuma?</label>
             </div>
             <div className="form-group">
                 <input
                     type={'checkbox'}
-                    disabled
+                    checked={alcool}
                 />
                 <label>Alcool?</label>
             </div>
             <div className="form-group">
                 <input
                     type={'checkbox'}
-                    disabled
+                    checked={asma}
                 />
                 <label>Asma?</label>
             </div>
             <div className="form-group">
                 <input
                     type={'checkbox'}
-                    disabled
+                    checked={bronquite}
                 />
                 <label>Bronquite?</label>
             </div>
             <div className="form-group">
                 <input
                     type={'checkbox'}
+                    checked={rinite}
                 />
                 <label>Rinite?</label>
             </div>
             <div className="form-group">
                 <input
                     type={'checkbox'}
-                    disabled
+                    checked={sinusite}
                 />
                 <label>Sinusite?</label>
             </div>
             <div className="form-group">
                 <input
                     type={'checkbox'}
-                    disabled
+                    checked={alergiaPeniscilina}
                 />
                 <label>Possui alergia a Peniscilina?</label>
             </div>
             <div className="form-group">
                 <input
                     type={'checkbox'}
-                    disabled
+                    checked={cancerDeProstata}
                 />
                 <label>Cancer de Prostata?</label>
             </div>
             <div className="form-group">
                 <input
                     type={'checkbox'}
-                    disabled
+                    checked={alergiaIodo}
                 />
                 <label>Alergia a Iodo?</label>
             </div>
             <div className="form-group">
                 <input
                     type={'checkbox'}
-                    disabled
+                    checked={denteMole}
                 />
                 <label>Dente mole?</label>
             </div>
             <div className="form-group">
                 <input
                     type={'checkbox'}
-                    disabled
+                    checked={feridaLabioeLingua}
                 />
                 <label>Ferida Labio e Lingua?</label>
             </div>
+            <div className="form-group">
+            <label>Anotações?</label>
+                    <input
+                        type='text'
+                        value={anotacao}
+                    />
+                    
+                </div>
 
         </div>
     )

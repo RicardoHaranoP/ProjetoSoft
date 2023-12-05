@@ -106,7 +106,12 @@ const Odontograma = () => {
             console.log('ElementoDente: ', elementoDente)
             console.log('ElementoFace: ', elementoFace)
 
-            elementoFace.style.backgroundColor = 'red'
+            console.log('situacao', element.situacao)
+            if (element.situacao == 'Concluido' || element.situacao == 'Concluído') {
+                elementoFace.style.backgroundColor = 'green'
+            } else {
+                elementoFace.style.backgroundColor = 'red'
+            }
         })
 
     }
@@ -131,76 +136,6 @@ const Odontograma = () => {
 
     const QuadradosLinha1 = () => {
 
-        const handleQuadradoClick1 = (index) => {
-            var elemento = document.getElementsByClassName('quad1');
-
-            if (clickCount === 0) {
-                elemento[index].style.backgroundColor = 'green';
-            } else if (clickCount === 1) {
-                elemento[index].style.backgroundColor = 'red';
-            } else if (clickCount === 2) {
-                elemento[index].style.backgroundColor = 'black';
-            }
-
-            clickCount = (clickCount + 1) % 3;
-        };
-
-        const handleQuadradoClick2 = (index) => {
-            var elemento = document.getElementsByClassName('quad2');
-
-            if (clickCount === 0) {
-                elemento[index].style.backgroundColor = 'green';
-            } else if (clickCount === 1) {
-                elemento[index].style.backgroundColor = 'red';
-            } else if (clickCount === 2) {
-                elemento[index].style.backgroundColor = 'black';
-            }
-
-            clickCount = (clickCount + 1) % 3;
-        };
-
-        const handleQuadradoClick3 = (index) => {
-            var elemento = document.getElementsByClassName('quad3');
-
-            if (clickCount === 0) {
-                elemento[index].style.backgroundColor = 'green';
-            } else if (clickCount === 1) {
-                elemento[index].style.backgroundColor = 'red';
-            } else if (clickCount === 2) {
-                elemento[index].style.backgroundColor = 'black';
-            }
-
-            clickCount = (clickCount + 1) % 3;
-        };
-
-        const handleQuadradoClick4 = (index) => {
-            var elemento = document.getElementsByClassName('quad4');
-
-            if (clickCount === 0) {
-                elemento[index].style.backgroundColor = 'green';
-            } else if (clickCount === 1) {
-                elemento[index].style.backgroundColor = 'red';
-            } else if (clickCount === 2) {
-                elemento[index].style.backgroundColor = 'black';
-            }
-
-            clickCount = (clickCount + 1) % 3;
-        };
-
-        const handleQuadradoClick5 = (index) => {
-            var elemento = document.getElementsByClassName('quad5');
-
-            if (clickCount === 0) {
-                elemento[index].style.backgroundColor = 'green';
-            } else if (clickCount === 1) {
-                elemento[index].style.backgroundColor = 'red';
-            } else if (clickCount === 2) {
-                elemento[index].style.backgroundColor = 'black';
-            }
-
-            clickCount = (clickCount + 1) % 3;
-        };
-
 
 
         return (<>
@@ -213,8 +148,7 @@ const Odontograma = () => {
 
                             <div
                                 className=" quad1"
-                                onClick={() => handleClick1(index)}
-                                style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                style={{ marginLeft: '15px' }}
                             ></div>
 
                         </div>
@@ -223,26 +157,19 @@ const Odontograma = () => {
                         <div className='linha'>
                             <div
                                 className=" quad3"
-                                onClick={() => handleQuadradoClick3(index)}
-                                style={{ cursor: 'pointer' }}
                             ></div>
                             <div
                                 className=" quad4"
-                                onClick={() => handleQuadradoClick4(index)}
-                                style={{ cursor: 'pointer' }}
                             ></div>
                             <div
                                 className=" quad5"
-                                onClick={() => handleQuadradoClick5(index)}
-                                style={{ cursor: 'pointer' }}
                             ></div>
                         </div >
 
                         <div className='linha'>
                             <div
                                 className=" quad2"
-                                onClick={() => handleQuadradoClick2(index)}
-                                style={{ cursor: 'pointer', marginLeft: '15px' }}
+                                style={{ marginLeft: '15px' }}
                             ></div>
                         </div>
 
@@ -255,7 +182,7 @@ const Odontograma = () => {
         );
     };
 
-   
+
 
     const NumberLine = ({ start, end }) => {
         const generateNumberLine = () => {
@@ -315,1332 +242,1092 @@ const Odontograma = () => {
                         <div>
                             <a className="novo" href={`http://localhost:3000/paciente/${codPac}/odontograma/cadastro`} role="button" > <MdAddCircle size={30} /> Novo Odontograma</a>
                         </div><br /><br /><br /><br />
-                        <div style={{ textAlign:'center' ,alignItems: 'center',   justifyContent: 'space-between'}}>
-                        <div style={{ display: 'flex' }}>
-                            <NumberLine start={18} end={11} />
-                            <NumberLine start={21} end={28} />
-                        </div>
-                        <div style={{ display: 'flex' }}>
-                            <div id={`coluna18`} className='coluna'>
-
-                                <div className='linha'>
-
-                                    <div
-                                        className="quadrado quad1"
-                                        onClick={() => handleQuadradoClick1(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
-
-                                </div>
-
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad3"
-                                        onClick={() => handleQuadradoClick3(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad4"
-                                        onClick={() => handleQuadradoClick4(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad5"
-                                        onClick={() => handleQuadradoClick5(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                </div >
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad2"
-                                        onClick={() => handleQuadradoClick2(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
-                                </div>
-
-
+                        <div style={{ textAlign: 'center', alignItems: 'center', justifyContent: 'space-between' }}>
+                            <div style={{ display: 'flex' }}>
+                                <NumberLine start={18} end={11} />
+                                <NumberLine start={21} end={28} />
                             </div>
-                            <div id={`coluna17`} className='coluna'>
+                            <div style={{ display: 'flex' }}>
+                                <div id={`coluna18`} className='coluna'>
 
-                                <div className='linha'>
+                                    <div className='linha'>
 
-                                    <div
-                                        className="quadrado quad1"
-                                        onClick={() => handleQuadradoClick1(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
+                                        <div
+                                            className="quadrado quad1"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+
+                                    </div>
+
+
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad3"
+                                        ></div>
+                                        <div
+                                            className="quadrado quad5"
+                                        ></div>
+                                        <div
+                                            className="quadrado quad4"
+                                        ></div>
+                                    </div >
+
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad2"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+                                    </div>
+
 
                                 </div>
+                                <div id={`coluna17`} className='coluna'>
+
+                                    <div className='linha'>
+
+                                        <div
+                                            className="quadrado quad1"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+
+                                    </div>
 
 
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad3"
-                                        onClick={() => handleQuadradoClick3(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad4"
-                                        onClick={() => handleQuadradoClick4(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad5"
-                                        onClick={() => handleQuadradoClick5(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                </div >
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad3"
+                                        ></div>
+                                        <div
+                                            className="quadrado quad5"
+                                        ></div>
+                                        <div
+                                            className="quadrado quad4"
+                                        ></div>
+                                    </div >
 
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad2"
-                                        onClick={() => handleQuadradoClick2(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad2"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+                                    </div>
+
+
                                 </div>
+                                <div id={`coluna16`} className='coluna'>
+
+                                    <div className='linha'>
+
+                                        <div
+                                            className="quadrado quad1"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+
+                                    </div>
 
 
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad3"
+                                        ></div>
+                                        <div
+                                            className="quadrado quad5"
+                                        ></div>
+                                        <div
+                                            className="quadrado quad4"
+                                        ></div>
+                                    </div >
+
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad2"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+                                    </div>
+
+
+                                </div>
+                                <div id={`coluna15`} className='coluna'>
+
+                                    <div className='linha'>
+
+                                        <div
+                                            className="quadrado quad1"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+
+                                    </div>
+
+
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad3"
+                                        ></div>
+                                        <div
+                                            className="quadrado quad5"
+                                        ></div>
+                                        <div
+                                            className="quadrado quad4"
+                                        ></div>
+                                    </div >
+
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad2"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+                                    </div>
+
+
+                                </div>
+                                <div id={`coluna14`} className='coluna'>
+
+                                    <div className='linha'>
+
+                                        <div
+                                            className="quadrado quad1"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+
+                                    </div>
+
+
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad3"
+                                        ></div>
+                                        <div
+                                            className="quadrado quad5"
+                                        ></div>
+                                        <div
+                                            className="quadrado quad4"
+                                        ></div>
+                                    </div >
+
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad2"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+                                    </div>
+
+
+                                </div>
+                                <div id={`coluna13`} className='coluna'>
+
+                                    <div className='linha'>
+
+                                        <div
+                                            className="quadrado quad1"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+
+                                    </div>
+
+
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad3"
+                                        ></div>
+                                        <div
+                                            className="quadrado quad5"
+                                        ></div>
+                                        <div
+                                            className="quadrado quad4"
+                                        ></div>
+                                    </div >
+
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad2"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+                                    </div>
+
+
+                                </div>
+                                <div id={`coluna12`} className='coluna'>
+
+                                    <div className='linha'>
+
+                                        <div
+                                            className="quadrado quad1"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+
+                                    </div>
+
+
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad3"
+                                        ></div>
+                                        <div
+                                            className="quadrado quad5"
+                                        ></div>
+                                        <div
+                                            className="quadrado quad4"
+                                        ></div>
+                                    </div >
+
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad2"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+                                    </div>
+
+
+                                </div>
+                                <div id={`coluna11`} className='coluna'>
+
+                                    <div className='linha'>
+
+                                        <div
+                                            className="quadrado quad1"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+
+                                    </div>
+
+
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad3"
+                                        ></div>
+                                        <div
+                                            className="quadrado quad5"
+
+                                        ></div>
+                                        <div
+                                            className="quadrado quad4"
+                                        ></div>
+                                    </div >
+
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad2"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+                                    </div>
+
+
+                                </div>
+                                <div id={`coluna21`} className='coluna'>
+
+                                    <div className='linha'>
+
+                                        <div
+                                            className="quadrado quad1"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+
+                                    </div>
+
+
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad4"
+                                        ></div>
+                                        <div
+                                            className="quadrado quad5"
+
+                                        ></div>
+                                        <div
+                                            className="quadrado quad3"
+                                        ></div>
+                                    </div >
+
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad2"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+                                    </div>
+
+
+                                </div>
+                                <div id={`coluna22`} className='coluna'>
+
+                                    <div className='linha'>
+
+                                        <div
+                                            className="quadrado quad1"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+
+                                    </div>
+
+
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad4"
+                                        ></div>
+                                        <div
+                                            className="quadrado quad5"
+
+                                        ></div>
+                                        <div
+                                            className="quadrado quad3"
+                                        ></div>
+                                    </div >
+
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad2"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+                                    </div>
+
+
+                                </div>
+                                <div id={`coluna23`} className='coluna'>
+
+                                    <div className='linha'>
+
+                                        <div
+                                            className="quadrado quad1"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+
+                                    </div>
+
+
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad4"
+                                        ></div>
+                                        <div
+                                            className="quadrado quad5"
+
+                                        ></div>
+                                        <div
+                                            className="quadrado quad3"
+                                        ></div>
+                                    </div >
+
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad2"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+                                    </div>
+
+
+                                </div>
+                                <div id={`coluna24`} className='coluna'>
+
+                                    <div className='linha'>
+
+                                        <div
+                                            className="quadrado quad1"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+
+                                    </div>
+
+
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad4"
+                                        ></div>
+                                        <div
+                                            className="quadrado quad5"
+
+                                        ></div>
+                                        <div
+                                            className="quadrado quad3"
+                                        ></div>
+                                    </div >
+
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad2"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+                                    </div>
+
+
+                                </div>
+                                <div id={`coluna25`} className='coluna'>
+
+                                    <div className='linha'>
+
+                                        <div
+                                            className="quadrado quad1"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+
+                                    </div>
+
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad4"
+                                        ></div>
+                                        <div
+                                            className="quadrado quad5"
+
+                                        ></div>
+                                        <div
+                                            className="quadrado quad3"
+                                        ></div>
+                                    </div >
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad2"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+                                    </div>
+
+
+                                </div>
+                                <div id={`coluna26`} className='coluna'>
+
+                                    <div className='linha'>
+
+                                        <div
+                                            className="quadrado quad1"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+
+                                    </div>
+
+
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad4"
+                                        ></div>
+                                        <div
+                                            className="quadrado quad5"
+
+                                        ></div>
+                                        <div
+                                            className="quadrado quad3"
+                                        ></div>
+                                    </div >
+
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad2"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+                                    </div>
+
+
+                                </div>
+                                <div id={`coluna27`} className='coluna'>
+
+                                    <div className='linha'>
+
+                                        <div
+                                            className="quadrado quad1"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+
+                                    </div>
+
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad4"
+                                        ></div>
+                                        <div
+                                            className="quadrado quad5"
+
+                                        ></div>
+                                        <div
+                                            className="quadrado quad3"
+                                        ></div>
+                                    </div >
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad2"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+                                    </div>
+
+
+                                </div>
+                                <div id={`coluna28`} className='coluna'>
+
+                                    <div className='linha'>
+
+                                        <div
+                                            className="quadrado quad1"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+
+                                    </div>
+
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad4"
+                                        ></div>
+                                        <div
+                                            className="quadrado quad5"
+
+                                        ></div>
+                                        <div
+                                            className="quadrado quad3"
+                                        ></div>
+                                    </div >
+
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad2"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+                                    </div>
+
+
+                                </div>
                             </div>
-                            <div id={`coluna16`} className='coluna'>
 
-                                <div className='linha'>
+                            <div style={{ display: 'flex' }}>
+                                <div id={`coluna48`} className='coluna'>
 
-                                    <div
-                                        className="quadrado quad1"
-                                        onClick={() => handleQuadradoClick1(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
+                                    <div className='linha'>
+
+                                        <div
+                                            className="quadrado quad2"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+
+                                    </div>
+
+
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad3"
+                                        ></div>
+                                        <div
+                                            className="quadrado quad5"
+
+                                        ></div>
+                                        <div
+                                            className="quadrado quad4"
+                                        ></div>
+                                    </div >
+
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad1"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+                                    </div>
+
 
                                 </div>
+                                <div id={`coluna47`} className='coluna'>
+
+                                    <div className='linha'>
+
+                                        <div
+                                            className="quadrado quad2"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+
+                                    </div>
+
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad3"
+                                        ></div>
+                                        <div
+                                            className="quadrado quad5"
+
+                                        ></div>
+                                        <div
+                                            className="quadrado quad4"
+                                        ></div>
+                                    </div >
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad1"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+                                    </div>
 
 
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad3"
-                                        onClick={() => handleQuadradoClick3(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad4"
-                                        onClick={() => handleQuadradoClick4(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad5"
-                                        onClick={() => handleQuadradoClick5(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                </div >
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad2"
-                                        onClick={() => handleQuadradoClick2(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
                                 </div>
+                                <div id={`coluna46`} className='coluna'>
+
+                                    <div className='linha'>
+
+                                        <div
+                                            className="quadrado quad2"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+
+                                    </div>
 
 
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad3"
+                                        ></div>
+                                        <div
+                                            className="quadrado quad5"
+
+                                        ></div>
+                                        <div
+                                            className="quadrado quad4"
+                                        ></div>
+                                    </div >
+
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad1"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+                                    </div>
+
+
+                                </div>
+                                <div id={`coluna45`} className='coluna'>
+
+                                    <div className='linha'>
+
+                                        <div
+                                            className="quadrado quad2"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+
+                                    </div>
+
+
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad3"
+                                        ></div>
+                                        <div
+                                            className="quadrado quad5"
+
+                                        ></div>
+                                        <div
+                                            className="quadrado quad4"
+                                        ></div>
+                                    </div >
+
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad1"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+                                    </div>
+
+
+                                </div>
+                                <div id={`coluna44`} className='coluna'>
+
+                                    <div className='linha'>
+
+                                        <div
+                                            className="quadrado quad2"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+
+                                    </div>
+
+
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad3"
+                                        ></div>
+                                        <div
+                                            className="quadrado quad5"
+
+                                        ></div>
+                                        <div
+                                            className="quadrado quad4"
+                                        ></div>
+                                    </div >
+
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad1"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+                                    </div>
+
+
+                                </div>
+                                <div id={`coluna43`} className='coluna'>
+
+                                    <div className='linha'>
+
+                                        <div
+                                            className="quadrado quad2"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+
+                                    </div>
+
+
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad3"
+                                        ></div>
+                                        <div
+                                            className="quadrado quad5"
+
+                                        ></div>
+                                        <div
+                                            className="quadrado quad4"
+                                        ></div>
+                                    </div >
+
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad1"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+                                    </div>
+
+
+                                </div>
+                                <div id={`coluna42`} className='coluna'>
+
+                                    <div className='linha'>
+
+                                        <div
+                                            className="quadrado quad2"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+
+                                    </div>
+
+
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad3"
+                                        ></div>
+                                        <div
+                                            className="quadrado quad5"
+
+                                        ></div>
+                                        <div
+                                            className="quadrado quad4"
+                                        ></div>
+                                    </div >
+
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad1"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+                                    </div>
+
+
+                                </div>
+                                <div id={`coluna41`} className='coluna'>
+
+                                    <div className='linha'>
+
+                                        <div
+                                            className="quadrado quad2"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+
+                                    </div>
+
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad3"
+                                        ></div>
+                                        <div
+                                            className="quadrado quad5"
+
+                                        ></div>
+                                        <div
+                                            className="quadrado quad4"
+                                        ></div>
+                                    </div >
+
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad1"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+                                    </div>
+
+
+                                </div>
+                                <div id={`coluna31`} className='coluna'>
+
+                                    <div className='linha'>
+
+                                        <div
+                                            className="quadrado quad2"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+
+                                    </div>
+
+
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad4"
+                                        ></div>
+                                        <div
+                                            className="quadrado quad5"
+
+                                        ></div>
+                                        <div
+                                            className="quadrado quad3"
+                                        ></div>
+                                    </div >
+
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad1"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+                                    </div>
+
+
+                                </div>
+                                <div id={`coluna32`} className='coluna'>
+
+                                    <div className='linha'>
+
+                                        <div
+                                            className="quadrado quad2"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+
+                                    </div>
+
+
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad4"
+                                        ></div>
+                                        <div
+                                            className="quadrado quad5"
+
+                                        ></div>
+                                        <div
+                                            className="quadrado quad3"
+                                        ></div>
+                                    </div >
+
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad1"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+                                    </div>
+
+
+                                </div>
+                                <div id={`coluna33`} className='coluna'>
+
+                                    <div className='linha'>
+
+                                        <div
+                                            className="quadrado quad2"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+
+                                    </div>
+
+
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad4"
+                                        ></div>
+                                        <div
+                                            className="quadrado quad5"
+
+                                        ></div>
+                                        <div
+                                            className="quadrado quad3"
+                                        ></div>
+                                    </div >
+
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad1"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+                                    </div>
+
+
+                                </div>
+                                <div id={`coluna34`} className='coluna'>
+
+                                    <div className='linha'>
+
+                                        <div
+                                            className="quadrado quad2"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+
+                                    </div>
+
+
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad4"
+                                        ></div>
+                                        <div
+                                            className="quadrado quad5"
+
+                                        ></div>
+                                        <div
+                                            className="quadrado quad3"
+                                        ></div>
+                                    </div >
+
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad1"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+                                    </div>
+
+
+                                </div>
+                                <div id={`coluna35`} className='coluna'>
+
+                                    <div className='linha'>
+
+                                        <div
+                                            className="quadrado quad2"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+
+                                    </div>
+
+
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad4"
+                                        ></div>
+                                        <div
+                                            className="quadrado quad5"
+
+                                        ></div>
+                                        <div
+                                            className="quadrado quad3"
+                                        ></div>
+                                    </div >
+
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad1"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+                                    </div>
+
+
+                                </div>
+                                <div id={`coluna36`} className='coluna'>
+
+                                    <div className='linha'>
+
+                                        <div
+                                            className="quadrado quad2"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+
+                                    </div>
+
+
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad4"
+                                        ></div>
+                                        <div
+                                            className="quadrado quad5"
+
+                                        ></div>
+                                        <div
+                                            className="quadrado quad3"
+                                        ></div>
+                                    </div >
+
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad1"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+                                    </div>
+
+
+                                </div>
+                                <div id={`coluna37`} className='coluna'>
+
+                                    <div className='linha'>
+
+                                        <div
+                                            className="quadrado quad2"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+
+                                    </div>
+
+
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad4"
+                                        ></div>
+                                        <div
+                                            className="quadrado quad5"
+
+                                        ></div>
+                                        <div
+                                            className="quadrado quad3"
+                                        ></div>
+                                    </div >
+
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad1"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+                                    </div>
+
+
+                                </div>
+                                <div id={`coluna38`} className='coluna'>
+
+                                    <div className='linha'>
+
+                                        <div
+                                            className="quadrado quad2"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+
+                                    </div>
+
+
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad4"
+                                        ></div>
+                                        <div
+                                            className="quadrado quad5"
+
+                                        ></div>
+                                        <div
+                                            className="quadrado quad3"
+                                        ></div>
+                                    </div >
+                                    <div className='linha'>
+                                        <div
+                                            className="quadrado quad1"
+                                            style={{ marginLeft: '15px' }}
+                                        ></div>
+                                    </div>
+
+
+                                </div>
                             </div>
-                            <div id={`coluna15`} className='coluna'>
-
-                                <div className='linha'>
-
-                                    <div
-                                        className="quadrado quad1"
-                                        onClick={() => handleQuadradoClick1(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
-
-                                </div>
-
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad3"
-                                        onClick={() => handleQuadradoClick3(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad4"
-                                        onClick={() => handleQuadradoClick4(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad5"
-                                        onClick={() => handleQuadradoClick5(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                </div >
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad2"
-                                        onClick={() => handleQuadradoClick2(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
-                                </div>
-
-
+                            <div style={{ display: 'flex' }}>
+                                <NumberLine start={48} end={41} />
+                                <NumberLine start={31} end={38} />
                             </div>
-                            <div id={`coluna14`} className='coluna'>
-
-                                <div className='linha'>
-
-                                    <div
-                                        className="quadrado quad1"
-                                        onClick={() => handleQuadradoClick1(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
-
-                                </div>
-
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad3"
-                                        onClick={() => handleQuadradoClick3(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad4"
-                                        onClick={() => handleQuadradoClick4(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad5"
-                                        onClick={() => handleQuadradoClick5(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                </div >
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad2"
-                                        onClick={() => handleQuadradoClick2(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
-                                </div>
-
-
-                            </div>
-                            <div id={`coluna13`} className='coluna'>
-
-                                <div className='linha'>
-
-                                    <div
-                                        className="quadrado quad1"
-                                        onClick={() => handleQuadradoClick1(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
-
-                                </div>
-
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad3"
-                                        onClick={() => handleQuadradoClick3(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad4"
-                                        onClick={() => handleQuadradoClick4(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad5"
-                                        onClick={() => handleQuadradoClick5(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                </div >
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad2"
-                                        onClick={() => handleQuadradoClick2(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
-                                </div>
-
-
-                            </div>
-                            <div id={`coluna12`} className='coluna'>
-
-                                <div className='linha'>
-
-                                    <div
-                                        className="quadrado quad1"
-                                        onClick={() => handleQuadradoClick1(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
-
-                                </div>
-
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad3"
-                                        onClick={() => handleQuadradoClick3(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad4"
-                                        onClick={() => handleQuadradoClick4(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad5"
-                                        onClick={() => handleQuadradoClick5(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                </div >
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad2"
-                                        onClick={() => handleQuadradoClick2(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
-                                </div>
-
-
-                            </div>
-                            <div id={`coluna11`} className='coluna'>
-
-                                <div className='linha'>
-
-                                    <div
-                                        className="quadrado quad1"
-                                        onClick={() => handleQuadradoClick1(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
-
-                                </div>
-
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad3"
-                                        onClick={() => handleQuadradoClick3(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad4"
-                                        onClick={() => handleQuadradoClick4(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad5"
-                                        onClick={() => handleQuadradoClick5(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                </div >
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad2"
-                                        onClick={() => handleQuadradoClick2(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
-                                </div>
-
-
-                            </div>
-                            <div id={`coluna21`} className='coluna'>
-
-                                <div className='linha'>
-
-                                    <div
-                                        className="quadrado quad1"
-                                        onClick={() => handleQuadradoClick1(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
-
-                                </div>
-
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad3"
-                                        onClick={() => handleQuadradoClick3(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad4"
-                                        onClick={() => handleQuadradoClick4(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad5"
-                                        onClick={() => handleQuadradoClick5(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                </div >
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad2"
-                                        onClick={() => handleQuadradoClick2(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
-                                </div>
-
-
-                            </div>
-                            <div id={`coluna22`} className='coluna'>
-
-                                <div className='linha'>
-
-                                    <div
-                                        className="quadrado quad1"
-                                        onClick={() => handleQuadradoClick1(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
-
-                                </div>
-
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad3"
-                                        onClick={() => handleQuadradoClick3(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad4"
-                                        onClick={() => handleQuadradoClick4(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad5"
-                                        onClick={() => handleQuadradoClick5(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                </div >
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad2"
-                                        onClick={() => handleQuadradoClick2(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
-                                </div>
-
-
-                            </div>
-                            <div id={`coluna23`} className='coluna'>
-
-                                <div className='linha'>
-
-                                    <div
-                                        className="quadrado quad1"
-                                        onClick={() => handleQuadradoClick1(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
-
-                                </div>
-
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad3"
-                                        onClick={() => handleQuadradoClick3(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad4"
-                                        onClick={() => handleQuadradoClick4(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad5"
-                                        onClick={() => handleQuadradoClick5(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                </div >
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad2"
-                                        onClick={() => handleQuadradoClick2(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
-                                </div>
-
-
-                            </div>
-                            <div id={`coluna24`} className='coluna'>
-
-                                <div className='linha'>
-
-                                    <div
-                                        className="quadrado quad1"
-                                        onClick={() => handleQuadradoClick1(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
-
-                                </div>
-
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad3"
-                                        onClick={() => handleQuadradoClick3(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad4"
-                                        onClick={() => handleQuadradoClick4(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad5"
-                                        onClick={() => handleQuadradoClick5(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                </div >
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad2"
-                                        onClick={() => handleQuadradoClick2(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
-                                </div>
-
-
-                            </div>
-                            <div id={`coluna25`} className='coluna'>
-
-                                <div className='linha'>
-
-                                    <div
-                                        className="quadrado quad1"
-                                        onClick={() => handleQuadradoClick1(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
-
-                                </div>
-
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad3"
-                                        onClick={() => handleQuadradoClick3(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad4"
-                                        onClick={() => handleQuadradoClick4(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad5"
-                                        onClick={() => handleQuadradoClick5(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                </div >
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad2"
-                                        onClick={() => handleQuadradoClick2(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
-                                </div>
-
-
-                            </div>
-                            <div id={`coluna26`} className='coluna'>
-
-                                <div className='linha'>
-
-                                    <div
-                                        className="quadrado quad1"
-                                        onClick={() => handleQuadradoClick1(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
-
-                                </div>
-
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad3"
-                                        onClick={() => handleQuadradoClick3(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad4"
-                                        onClick={() => handleQuadradoClick4(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad5"
-                                        onClick={() => handleQuadradoClick5(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                </div >
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad2"
-                                        onClick={() => handleQuadradoClick2(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
-                                </div>
-
-
-                            </div>
-                            <div id={`coluna27`} className='coluna'>
-
-                                <div className='linha'>
-
-                                    <div
-                                        className="quadrado quad1"
-                                        onClick={() => handleQuadradoClick1(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
-
-                                </div>
-
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad3"
-                                        onClick={() => handleQuadradoClick3(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad4"
-                                        onClick={() => handleQuadradoClick4(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad5"
-                                        onClick={() => handleQuadradoClick5(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                </div >
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad2"
-                                        onClick={() => handleQuadradoClick2(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
-                                </div>
-
-
-                            </div>
-                            <div id={`coluna28`} className='coluna'>
-
-                                <div className='linha'>
-
-                                    <div
-                                        className="quadrado quad1"
-                                        onClick={() => handleQuadradoClick1(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
-
-                                </div>
-
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad3"
-                                        onClick={() => handleQuadradoClick3(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad4"
-                                        onClick={() => handleQuadradoClick4(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad5"
-                                        onClick={() => handleQuadradoClick5(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                </div >
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad2"
-                                        onClick={() => handleQuadradoClick2(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
-                                </div>
-
-
-                            </div>
-                        </div>
-
-                        <div style={{ display: 'flex' }}>
-                            <div id={`coluna48`} className='coluna'>
-
-                                <div className='linha'>
-
-                                    <div
-                                        className="quadrado quad2"
-                                        onClick={() => handleQuadradoClick1(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
-
-                                </div>
-
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad3"
-                                        onClick={() => handleQuadradoClick3(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad4"
-                                        onClick={() => handleQuadradoClick4(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad5"
-                                        onClick={() => handleQuadradoClick5(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                </div >
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad1"
-                                        onClick={() => handleQuadradoClick2(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
-                                </div>
-
-
-                            </div>
-                            <div id={`coluna47`} className='coluna'>
-
-                                <div className='linha'>
-
-                                    <div
-                                        className="quadrado quad2"
-                                        onClick={() => handleQuadradoClick1(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
-
-                                </div>
-
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad3"
-                                        onClick={() => handleQuadradoClick3(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad4"
-                                        onClick={() => handleQuadradoClick4(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad5"
-                                        onClick={() => handleQuadradoClick5(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                </div >
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad1"
-                                        onClick={() => handleQuadradoClick2(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
-                                </div>
-
-
-                            </div>
-                            <div id={`coluna46`} className='coluna'>
-
-                                <div className='linha'>
-
-                                    <div
-                                        className="quadrado quad2"
-                                        onClick={() => handleQuadradoClick1(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
-
-                                </div>
-
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad3"
-                                        onClick={() => handleQuadradoClick3(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad4"
-                                        onClick={() => handleQuadradoClick4(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad5"
-                                        onClick={() => handleQuadradoClick5(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                </div >
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad1"
-                                        onClick={() => handleQuadradoClick2(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
-                                </div>
-
-
-                            </div>
-                            <div id={`coluna45`} className='coluna'>
-
-                                <div className='linha'>
-
-                                    <div
-                                        className="quadrado quad2"
-                                        onClick={() => handleQuadradoClick1(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
-
-                                </div>
-
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad3"
-                                        onClick={() => handleQuadradoClick3(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad4"
-                                        onClick={() => handleQuadradoClick4(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad5"
-                                        onClick={() => handleQuadradoClick5(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                </div >
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad1"
-                                        onClick={() => handleQuadradoClick2(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
-                                </div>
-
-
-                            </div>
-                            <div id={`coluna44`} className='coluna'>
-
-                                <div className='linha'>
-
-                                    <div
-                                        className="quadrado quad2"
-                                        onClick={() => handleQuadradoClick1(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
-
-                                </div>
-
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad3"
-                                        onClick={() => handleQuadradoClick3(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad4"
-                                        onClick={() => handleQuadradoClick4(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad5"
-                                        onClick={() => handleQuadradoClick5(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                </div >
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad1"
-                                        onClick={() => handleQuadradoClick2(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
-                                </div>
-
-
-                            </div>
-                            <div id={`coluna43`} className='coluna'>
-
-                                <div className='linha'>
-
-                                    <div
-                                        className="quadrado quad2"
-                                        onClick={() => handleQuadradoClick1(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
-
-                                </div>
-
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad3"
-                                        onClick={() => handleQuadradoClick3(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad4"
-                                        onClick={() => handleQuadradoClick4(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad5"
-                                        onClick={() => handleQuadradoClick5(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                </div >
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad1"
-                                        onClick={() => handleQuadradoClick2(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
-                                </div>
-
-
-                            </div>
-                            <div id={`coluna42`} className='coluna'>
-
-                                <div className='linha'>
-
-                                    <div
-                                        className="quadrado quad2"
-                                        onClick={() => handleQuadradoClick1(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
-
-                                </div>
-
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad3"
-                                        onClick={() => handleQuadradoClick3(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad4"
-                                        onClick={() => handleQuadradoClick4(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad5"
-                                        onClick={() => handleQuadradoClick5(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                </div >
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad1"
-                                        onClick={() => handleQuadradoClick2(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
-                                </div>
-
-
-                            </div>
-                            <div id={`coluna41`} className='coluna'>
-
-                                <div className='linha'>
-
-                                    <div
-                                        className="quadrado quad2"
-                                        onClick={() => handleQuadradoClick1(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
-
-                                </div>
-
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad3"
-                                        onClick={() => handleQuadradoClick3(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad4"
-                                        onClick={() => handleQuadradoClick4(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad5"
-                                        onClick={() => handleQuadradoClick5(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                </div >
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad1"
-                                        onClick={() => handleQuadradoClick2(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
-                                </div>
-
-
-                            </div>
-                            <div id={`coluna31`} className='coluna'>
-
-                                <div className='linha'>
-
-                                    <div
-                                        className="quadrado quad2"
-                                        onClick={() => handleQuadradoClick1(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
-
-                                </div>
-
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad3"
-                                        onClick={() => handleQuadradoClick3(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad4"
-                                        onClick={() => handleQuadradoClick4(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad5"
-                                        onClick={() => handleQuadradoClick5(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                </div >
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad1"
-                                        onClick={() => handleQuadradoClick2(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
-                                </div>
-
-
-                            </div>
-                            <div id={`coluna32`} className='coluna'>
-
-                                <div className='linha'>
-
-                                    <div
-                                        className="quadrado quad2"
-                                        onClick={() => handleQuadradoClick1(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
-
-                                </div>
-
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad3"
-                                        onClick={() => handleQuadradoClick3(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad4"
-                                        onClick={() => handleQuadradoClick4(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad5"
-                                        onClick={() => handleQuadradoClick5(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                </div >
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad1"
-                                        onClick={() => handleQuadradoClick2(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
-                                </div>
-
-
-                            </div>
-                            <div id={`coluna33`} className='coluna'>
-
-                                <div className='linha'>
-
-                                    <div
-                                        className="quadrado quad2"
-                                        onClick={() => handleQuadradoClick1(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
-
-                                </div>
-
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad3"
-                                        onClick={() => handleQuadradoClick3(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad4"
-                                        onClick={() => handleQuadradoClick4(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad5"
-                                        onClick={() => handleQuadradoClick5(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                </div >
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad1"
-                                        onClick={() => handleQuadradoClick2(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
-                                </div>
-
-
-                            </div>
-                            <div id={`coluna34`} className='coluna'>
-
-                                <div className='linha'>
-
-                                    <div
-                                        className="quadrado quad2"
-                                        onClick={() => handleQuadradoClick1(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
-
-                                </div>
-
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad3"
-                                        onClick={() => handleQuadradoClick3(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad4"
-                                        onClick={() => handleQuadradoClick4(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad5"
-                                        onClick={() => handleQuadradoClick5(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                </div >
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad1"
-                                        onClick={() => handleQuadradoClick2(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
-                                </div>
-
-
-                            </div>
-                            <div id={`coluna35`} className='coluna'>
-
-                                <div className='linha'>
-
-                                    <div
-                                        className="quadrado quad2"
-                                        onClick={() => handleQuadradoClick1(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
-
-                                </div>
-
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad3"
-                                        onClick={() => handleQuadradoClick3(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad4"
-                                        onClick={() => handleQuadradoClick4(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad5"
-                                        onClick={() => handleQuadradoClick5(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                </div >
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad1"
-                                        onClick={() => handleQuadradoClick2(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
-                                </div>
-
-
-                            </div>
-                            <div id={`coluna36`} className='coluna'>
-
-                                <div className='linha'>
-
-                                    <div
-                                        className="quadrado quad2"
-                                        onClick={() => handleQuadradoClick1(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
-
-                                </div>
-
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad3"
-                                        onClick={() => handleQuadradoClick3(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad4"
-                                        onClick={() => handleQuadradoClick4(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad5"
-                                        onClick={() => handleQuadradoClick5(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                </div >
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad1"
-                                        onClick={() => handleQuadradoClick2(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
-                                </div>
-
-
-                            </div>
-                            <div id={`coluna37`} className='coluna'>
-
-                                <div className='linha'>
-
-                                    <div
-                                        className="quadrado quad2"
-                                        onClick={() => handleQuadradoClick1(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
-
-                                </div>
-
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad3"
-                                        onClick={() => handleQuadradoClick3(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad4"
-                                        onClick={() => handleQuadradoClick4(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad5"
-                                        onClick={() => handleQuadradoClick5(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                </div >
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad1"
-                                        onClick={() => handleQuadradoClick2(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
-                                </div>
-
-
-                            </div>
-                            <div id={`coluna38`} className='coluna'>
-
-                                <div className='linha'>
-
-                                    <div
-                                        className="quadrado quad2"
-                                        onClick={() => handleQuadradoClick1(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
-
-                                </div>
-
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad3"
-                                        onClick={() => handleQuadradoClick3(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad4"
-                                        onClick={() => handleQuadradoClick4(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                    <div
-                                        className="quadrado quad5"
-                                        onClick={() => handleQuadradoClick5(index)}
-                                        style={{ cursor: 'pointer' }}
-                                    ></div>
-                                </div >
-
-                                <div className='linha'>
-                                    <div
-                                        className="quadrado quad1"
-                                        onClick={() => handleQuadradoClick2(index)}
-                                        style={{ cursor: 'pointer', marginLeft: '15px' }}
-                                    ></div>
-                                </div>
-
-
-                            </div>
-                        </div>
-                        <div style={{ display: 'flex' }}>
-                            <NumberLine start={48} end={41} />
-                            <NumberLine start={31} end={38} />
-                        </div>
                         </div>
                         <div>
 

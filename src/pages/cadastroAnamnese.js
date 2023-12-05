@@ -139,9 +139,11 @@ const CadastroAnamnese = () => {
                         onChange={(e) => setQCirurgia(e.target.value)}
                     />
                 </div>
-                {/* <div className="form-group">
+                <div className="form-group">
                     <input
                         type="checkbox"
+                        checked={alergiaRemedio}
+                        onChange={(e) => setAlergiaRemedio(!alergiaRemedio)}
                     />
                     <label>Possui alergia a remedio? </label>
 
@@ -149,18 +151,25 @@ const CadastroAnamnese = () => {
                     <label>Qual?</label>
                     <input
                         type={'text'}
+
+                        value={qAlergiaRemedio}
+                        onChange={(e) => setQAlergiaRemedio(e.target.value)}
                     />
 
                 </div>
                 <div className="form-group">
                     <input
                         type="checkbox"
+                        checked={pressaoAlta}
+                        onChange={(e) => setPressaoAlta(!pressaoAlta)}
                     />
                     <label>Possui pressão alta?</label>
                 </div>
                 <div className="form-group">
                     <input
                         type="checkbox"
+                        checked={sangraCorte}
+                        onChange={(e) => setSangraCorte(!sangraCorte)}
                     />
                     <label>Sangra muito em corte?</label>
 
@@ -168,125 +177,169 @@ const CadastroAnamnese = () => {
                 <div className="form-group">
                     <input
                         type='checkbox'
+                        checked={manchasRochas}
+                        onChange={(e) => setManchasRochas(!manchasRochas)}
                     />
                     <label>Alguma mancha rocha?</label>
                 </div>
                 <div className="form-group">
                     <input
                         type={'checkbox'}
+                        checked={cicatrizacaoDemorada}
+                        onChange={(e) => setCicatrizacaoDemorada(!cicatrizacaoDemorada)}
                     />
                     <label>Cicatrização demorada?</label>
                 </div>
                 <div className="form-group">
                     <input
                         type={'checkbox'}
+                        checked={anemia}
+                        onChange={(e) => setAnemia(!anemia)}
                     />
                     <label>Anemia?</label>
                 </div>
                 <div className="form-group">
                     <input
                         type={'checkbox'}
+                        checked={transfusaoSangue}
+                        onChange={(e) => setTransfusaoSangue(!transfusaoSangue)}
                     />
                     <label>Transfusão de Sangue?</label>
                 </div>
                 <div className="form-group">
                     <input
                         type={'checkbox'}
+                        checked={dst}
+                        onChange={(e) => setDst(!dst)}
                     />
                     <label>DST?</label>
                 </div>
                 <div className="form-group">
                     <input
                         type={'checkbox'}
+                        checked={tonturas}
+                        onChange={(e) => setTonturas(!tonturas)}
                     />
                     <label>Tonturas?</label>
                 </div>
                 <div className="form-group">
                     <input
                         type={'checkbox'}
+                        checked={convulsoes}
+                        onChange={(e) => setConvulsoes(!convulsoes)}
                     />
                     <label>Convulsões?</label>
                 </div>
                 <div className="form-group">
                     <input
                         type={'checkbox'}
+                        checked={diabetes}
+                        onChange={(e) => setDiabetes(!diabetes)}
                     />
                     <label>Diabetes?</label>
                 </div>
                 <div className="form-group">
                     <input
                         type={'checkbox'}
+                        checked={fuma}
+                        onChange={(e) => setFuma(!fuma)}
                     />
                     <label>Fuma?</label>
                 </div>
                 <div className="form-group">
                     <input
                         type={'checkbox'}
+                        checked={alcool}
+                        onChange={(e) => setAlcool(!alcool)}
                     />
                     <label>Alcool?</label>
                 </div>
                 <div className="form-group">
                     <input
                         type={'checkbox'}
+                        checked={asma}
+                        onChange={(e) => setAsma(!asma)}
                     />
                     <label>Asma?</label>
                 </div>
                 <div className="form-group">
                     <input
                         type={'checkbox'}
+                        checked={bronquite}
+                        onChange={(e) => setBronquite(!bronquite)}
                     />
                     <label>Bronquite?</label>
                 </div>
                 <div className="form-group">
                     <input
                         type={'checkbox'}
+                        checked={rinite}
+                        onChange={(e) => setRinite(!rinite)}
                     />
                     <label>Rinite?</label>
                 </div>
                 <div className="form-group">
                     <input
                         type={'checkbox'}
+                        checked={sinusite}
+                        onChange={(e) => setSinusite(!sinusite)}
                     />
                     <label>Sinusite?</label>
                 </div>
                 <div className="form-group">
                     <input
                         type={'checkbox'}
+                        checked={alergiaPeniscilina}
+                        onChange={(e) => setAlergiaPeniscilina(!alergiaPeniscilina)}
                     />
                     <label>Possui alergia a Peniscilina?</label>
                 </div>
                 <div className="form-group">
                     <input
                         type={'checkbox'}
+                        checked={cancerDeProstata}
+                        onChange={(e) => setCancerDeProstata(!cancerDeProstata)}
                     />
                     <label>Cancer de Prostata?</label>
                 </div>
                 <div className="form-group">
                     <input
                         type={'checkbox'}
+                        checked={alergiaIodo}
+                        onChange={(e) => setAlergiaIodo(!alergiaIodo)}
                     />
                     <label>Alergia a Iodo?</label>
                 </div>
                 <div className="form-group">
                     <input
                         type={'checkbox'}
+                        checked={denteMole}
+                        onChange={(e) => setDenteMole(!denteMole)}
                     />
                     <label>Dente mole?</label>
                 </div>
                 <div className="form-group">
                     <input
                         type={'checkbox'}
+                        checked={feridaLabioeLingua}
+                        onChange={(e) => setFeridaLabioeLingua(!feridaLabioeLingua)}
                     />
                     <label>Ferida Labio e Lingua?</label>
                 </div>
                 <div className="form-group">
+                    <label>Anotações?</label>
                     <input
                         type='text'
+                        value={anotacao}
+                        onChange={(e) => setAnotacao(e.target.value)}
                     />
-                    <label>Anotações?</label>
+
                 </div>
-                 */}
+                <span>
+                    <a type="button" className='btnCancelar' href='../../../pacientes'>Cancelar</a>
+                </span>
                 <button type="submit" className="btnCadastrar">Salvar</button>
+
             </form>
         </div>
     )

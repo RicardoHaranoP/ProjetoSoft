@@ -6,6 +6,7 @@ import { MdAddCircle } from 'react-icons/md';
 import { MdDelete } from 'react-icons/md';
 import { MdEdit } from 'react-icons/md';
 import { Table } from 'rsuite';
+import { format, addDays } from 'date-fns';
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -17,10 +18,38 @@ const OdontogramaLista = () => {
     const navigate = useNavigate();
     const { codPac } = useParams();
 
-
+    const [nomesProcedimentos, setNomesProcedimentos] = useState([])
+    const [procedimentos, setProcedimentos] = useState([])
     const [pacientes, setPacientes] = useState([])
     const [odontograma, setOdontograma] = useState([])
     const [query, setQuery] = useState("")
+
+    const tipoDente = [
+        { id: 1, nome: '1ºIncisivo' },
+        { id: 2, nome: '2ºIncisivo' },
+        { id: 3, nome: 'Canino' },
+        { id: 4, nome: '1ºPré-molar' },
+        { id: 5, nome: '2ºPré-molar' },
+        { id: 6, nome: '1ºMolar' },
+        { id: 7, nome: '2ºMolar' },
+        { id: 8, nome: 'Siso' },
+    ];
+
+    const quadrantes = [
+        { id: 1, nome: 'Superior Esquerdo' },
+        { id: 2, nome: 'Superior Direito' },
+        { id: 3, nome: 'Inferior Direito' },
+        { id: 4, nome: 'Inferior Esquerdo' },
+    ]
+
+    const tipoFaces = [
+        { id: 1, nome: 'Vestibular' },
+        { id: 2, nome: 'Lingual' },
+        { id: 3, nome: 'Distal' },
+        { id: 4, nome: 'Mesial' },
+        { id: 5, nome: 'Oclusal' },
+    ]
+
 
     const erroDataService = (error) => {
         if (error.response) {
@@ -80,26 +109,55 @@ const OdontogramaLista = () => {
         };
     }
 
+    function pegaProcedimentos() {
+
+        dataService.getProcedimentos()
+            .then((response) => {
+
+                const mappedProcedimentos = response.data.map(item => ({ label: item.nome, value: item.nome }));
+
+                setNomesProcedimentos(mappedProcedimentos);
+                setProcedimentos(response.data);
+
+                console.log('procedimentos: ', response)
+            })
+            .catch(error => {
+                erroDataService(error)
+            });
+    }
 
     useEffect(() => {
 
         pegaPacientes();
         pegaOdontogramas();
+        pegaProcedimentos()
 
     }, []);
+//
+    const handleDelete = (codOdon) => {
+        console.log('id: ', codOdon);
+        var retorno = confirm('Realmente deseja excluir odontograma?');
+        if (retorno == true) {
 
-    useEffect(() => {
 
-
-
-
-    }, [odontograma]);
+            dataService.deleteOdontograma(codOdon)
+                .then(response => {
+                    console.log('odontograma deletado', response.data);
+                    navigate('../../')
+                })
+                .catch(error => {
+                    erroDataService(error)
+                });
+        } else {
+            console.log('Operação cancelada!!');
+        }
+    }
 
 
     function changeModal() {
         modal.classList.toggle('hide')
         fade.classList.toggle('hide')
-    }
+    }//
 
     return (
         <>
@@ -126,33 +184,99 @@ const OdontogramaLista = () => {
                         <br /><br /><br />
                         <Table
                             height={400}
-                            data={odontograma.sort((a,b) => b.codOdon - a.codOdon)}
+                            data={odontograma.sort((a, b) => new Date(b.dataRealizacao) - new Date(a.dataRealizacao))}
                             onRowClick={rowData => {
                                 console.log(rowData);
                             }}
                         >
-                            <Column width={250} align="center" fixed>
+                            <Column width={150} align="center" fixed>
                                 <HeaderCell>Data Realização</HeaderCell>
                                 <Cell dataKey="dataRealizacao" >
+                                    {(rowData) => {
+                                        let data = new Date(rowData['dataRealizacao'])
+                                        data = addDays(data, 1)
+                                        const dataFormatada = format(data, 'dd/MM/yyyy')
+                                        return <span>{dataFormatada}</span>
+                                    }}
                                 </Cell>
                             </Column>
 
                             <Column width={150} align="center">
                                 <HeaderCell>Dente</HeaderCell>
-                                <Cell dataKey="dente" />
+                                <Cell dataKey="dente">
+                                    {(rowData, rowIndex) => {
+                                        const valorDente = rowData['dente'];
+                                        for (let i = 0; i <= 7; i++) {
+                                            if (valorDente == tipoDente[i].id) {
+                                                return (<span>{tipoDente[i].nome}</span>)
+                                            }
+                                        }
+                                    }}
+                                </Cell>
+                            </Column>
+
+                            <Column width={150} align="center">
+                                <HeaderCell>Quadrante</HeaderCell>
+                                <Cell dataKey="quadrante">
+                                    {(rowData, rowIndex) => {
+                                        const valor = rowData['quadrante'];
+                                        for (let i = 0; i <= 3; i++) {
+                                            if (valor == quadrantes[i].id) {
+                                                return (<span>{quadrantes[i].nome}</span>)
+                                            }
+                                        }
+                                    }}
+                                </Cell>
                             </Column>
 
                             <Column width={150} align="center">
                                 <HeaderCell>Face</HeaderCell>
-                                <Cell dataKey="face" />
+                                <Cell dataKey="face">
+                                    {(rowData, rowIndex) => {
+                                        const valor = rowData['face'];
+                                        for (let i = 0; i <= 7; i++) {
+                                            if (valor == tipoFaces[i].id) {
+                                                return (<span>{tipoFaces[i].nome}</span>)
+                                            }
+                                        }
+                                    }}
+                                </Cell>
                             </Column>
+
+                            <Column width={150} align="center">
+                                <HeaderCell>Procedimento</HeaderCell>
+                                <Cell dataKey="codProcedimento">
+                                    {(rowData, rowIndex) => {
+                                        const valor = rowData['codProcedimento'];
+       
+                                        for (let i =0; i<procedimentos.length; i++) {
+                                            if(procedimentos[i].codProcedimento == valor){
+                                                return (<span>{procedimentos[i].nome}</span>)
+                                            }
+                                        }
+
+                                    }}
+                                </Cell>
+                            </Column>
+
+                            <Column width={150} align="center">
+                                <HeaderCell>Situacao</HeaderCell>
+                                <Cell dataKey="situacao">
+                                    {(rowData, rowIndex) => {
+                                        const valor = rowData['situacao'];
+                                        console.log('valor ',valor)
+                                        return(<span>{valor}</span>)
+                                    }}
+                                </Cell>
+                            </Column>
+
                             <Column width={80} fixed="right">
                                 <HeaderCell>Editar</HeaderCell>
 
                                 <Cell>
                                     {rowData => (
                                         <span>
-                                            <Link to={`../paciente/edit/${rowData.codPac}`} ><MdEdit /></Link>
+                                            <Link to={`../paciente/odontograma/edit/${codPac}/${rowData.codOdon}`} ><MdEdit /></Link>
                                         </span>
                                     )}
                                 </Cell>
@@ -163,7 +287,7 @@ const OdontogramaLista = () => {
                                 <Cell>
                                     {rowData => (
                                         <span>
-                                            <a onClick={() => handleDelete(rowData.codPac)}><MdDelete /></a>
+                                            <a onClick={() => handleDelete(rowData.codOdon)}><MdDelete /></a>
                                         </span>
                                     )}
                                 </Cell>

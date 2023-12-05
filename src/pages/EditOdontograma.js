@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
 import '../css/Cadastro.css';
 import dataService from '../services/dataService';
-import { Input, InputNumber, InputPicker } from 'rsuite';
+import { InputNumber, InputPicker } from 'rsuite';
 import { format } from 'date-fns';
 
 let pacienteAtualNome = null
 
-const CadastroOdontograma = () => {
+const EditOdontograma = () => {
 
     const teste = ['extracao', 'limpeza', 'restauracao'].map(
         item => ({ label: item, value: item })
@@ -19,9 +19,9 @@ const CadastroOdontograma = () => {
     const [pacientes, setPacientes] = useState([])
 
     const navigate = useNavigate();
-    const { codPac } = useParams();
+    const { codPac, codOdon } = useParams();
 
-    const [dataRealizacao, setDataRealizacao] = useState(new Date())
+
     const [dente, setDente] = useState('')
     const [face, setFace] = useState('')
     const [valor, setValor] = useState('')
@@ -32,6 +32,9 @@ const CadastroOdontograma = () => {
     const [situacao, setSituacao] = useState('')
     const [quadrante, setQuadrante] = useState('')
     const [auxDente, setAuxDente] = useState('')
+    const [dataRealizacao, setDataRealizacao] = useState(new Date());
+
+
 
     const tipoDente = [
         { id: 1, nome: '1ºIncisivo' },
@@ -45,10 +48,10 @@ const CadastroOdontograma = () => {
     ];
 
     const quadrantes = [
-        { id: 1, nome: 'Superior Direito' },
-        { id: 2, nome: 'Superior Esquerdo' },
-        { id: 3, nome: 'Inferior Esquerdo' },
-        { id: 4, nome: 'Inferior Direito' },
+        { id: 1, nome: 'Superior Esquerdo' },
+        { id: 2, nome: 'Superior Direito' },
+        { id: 3, nome: 'Inferior Direito' },
+        { id: 4, nome: 'Inferior Esquerdo' },
     ]
 
     const tipoFaces = [
@@ -66,19 +69,22 @@ const CadastroOdontograma = () => {
 
     const saveOdontograma = (e) => {
         e.preventDefault();
+        // const ano = dataRealizacao.getFullYear()
+        // const mes = dataRealizacao.getMonth()
+        // const dia = dataRealizacao.getDate()
+        // const dataFormatada = `${ano}-${mes}-${dia}`
 
-        // const dataFormatada = new Intl.DateTimeFormat('pt-Br').format(dataRealizacao)
-        // console.log(dataFormatada)
         // setDataRealizacao(dataFormatada)
-        // console.log(dataRealizacao)
 
+        // console.log(dataFormatada)
         const odontograma = { dataRealizacao, dente, face, valor, quadrante, situacao, procedimento, paciente, codPac, codProcedimento }
         const camposValidos = isCamposValid()
         console.log('idPaciente: ', paciente)
+
         if (camposValidos) {
-            dataService.createOdontograma(odontograma)
+            dataService.updateOdontograma(codOdon, odontograma)
                 .then(response => {
-                    console.log('Odontograma adicionado', response.data);
+                    console.log('Odontograma atualizado', response.data);
                     navigate('/');
                 }).catch(error => {
                     erroDataService(error)
@@ -135,12 +141,34 @@ const CadastroOdontograma = () => {
                 setNomesProcedimentos(mappedProcedimentos);
                 setProcedimentos(response.data);
 
+                response.data.forEach(element => {
+                    if (element.codProcedimento == codProcedimento) {
+                        setQProcedimento(element.nome)
+                        console.log(element.nome)
+                    }
+                })
                 console.log('procedimentos: ', response)
             })
             .catch(error => {
                 erroDataService(error)
             });
     }
+
+    function pegaOdontograma() {
+        dataService.getOdontograma(codOdon)
+            .then(response => {
+                console.log('responseODONt', response)
+                setDente(response.data.dente)
+                setQuadrante(response.data.quadrante)
+                setFace(response.data.face)
+                setCodProcedimento(response.data.codProcedimento)
+                setProcedimento(response.data.codProcedimento)
+            })
+            .catch(error => {
+                erroDataService(error)
+            })
+    }
+
 
     const handleDenteSelection = (e) => {
         setDente(e.target.value)
@@ -158,10 +186,10 @@ const CadastroOdontograma = () => {
     const handleProcedimentoSelection = (e) => {
         procedimentos.forEach(element => {
             if (element.nome == e) {
-                setQProcedimento(element.nome)
                 setCodProcedimento(element.codProcedimento)
                 setProcedimento(element.codProcedimento)
                 setValor(element.valor)
+
             }
         })
     }
@@ -186,24 +214,13 @@ const CadastroOdontograma = () => {
         //para todo campo no formulario, verifica-se valor válido
         for (let campo of formulario.querySelectorAll('.validar')) {
             const label = campo.previousElementSibling.previousElementSibling.innerText;
-
             //verificando se o campo está vazio
             if (!campo.value || campo.value == 'Selecione Dente' || campo.value == 'Selecione Quadrante' || campo.value == 'Selecione Face' || campo.value == 'Selecione Situacao') {
                 createError(campo, `O campo "${label}" não pode estar em branco`)
                 valid = false;
             }
+            //
         }
-        //para Validar Procedimento
-        for (let campo of formulario.querySelectorAll('.validarProcedimento')) {
-            const label = campo.previousElementSibling.previousElementSibling.innerText;
-
-            //verificando se o campo está vazio
-            if (!qProcedimento) {
-                createError(campo, `O campo "${label}" não pode estar em branco`)
-                valid = false;
-            }
-        }
-
         return valid
     }
 
@@ -215,12 +232,21 @@ const CadastroOdontograma = () => {
         campo.insertAdjacentElement('afterend', div)
     }
 
+
     useEffect(() => {
 
         pegaPacientes()
+        pegaOdontograma()
         pegaProcedimentos()
 
     }, [])
+    useEffect(() => {
+
+
+        pegaProcedimentos()
+
+
+    }, [codProcedimento])
 
     return (
         <div className="col p-4 overflow-auto h-100">
@@ -230,11 +256,12 @@ const CadastroOdontograma = () => {
                         <div>
 
 
-                            <h2 className="mb-4 mt-0">Cadastro Odontograma {pacienteAtualNome}</h2>
+                            <h2 className="mb-4 mt-0">Atualizar Odontograma {pacienteAtualNome}</h2>
                             <form method='POST' className='formulario'>
                                 <p>{format(dataRealizacao, 'dd/MM/yyyy')}</p>
                                 <label>Dente: </label><br />
                                 <select
+                                    value={dente}
                                     onChange={handleDenteSelection}
                                     className="validar"
                                 >
@@ -249,6 +276,7 @@ const CadastroOdontograma = () => {
                                 </select><br />
                                 <label>Quadrante: </label><br />
                                 <select
+                                    value={quadrante}
                                     onChange={handleQuadranteSelection}
                                     className="validar"
                                 >
@@ -266,6 +294,7 @@ const CadastroOdontograma = () => {
                                 <select
                                     onChange={handleFaceSelection}
                                     className="validar"
+                                    value={face}
                                 >
                                     <option value={null}>Selecione Face</option>
                                     {tipoFaces.map((faces) => (
@@ -278,11 +307,10 @@ const CadastroOdontograma = () => {
                                 </select><br />
 
                                 <div style={{ width: 160 }}>
-                                    <label>Procedimento</label><br />
+                                    <label>Procedimento</label>
                                     <InputPicker
                                         onChange={handleProcedimentoSelection}
                                         data={nomesProcedimentos}
-                                        className='validarProcedimento'
                                         value={qProcedimento}
                                     />
                                 </div>
@@ -302,9 +330,9 @@ const CadastroOdontograma = () => {
                                 </select><br />
                                 <div>
                                     <span>
-                                        <a type="button" className='btnCancelar' href='../../../pacientes'>Cancelar</a>
+                                        <a type="button" className='btnCancelar' href='../../../../'>Cancelar</a>
                                     </span>
-                                    <button className='btnCadastrar' onClick={(e) => saveOdontograma(e)}>Cadastrar</button>
+                                    <button className='btnCadastrar' onClick={(e) => saveOdontograma(e)}>Salvar</button>
                                 </div>
                             </form>
 
@@ -318,4 +346,4 @@ const CadastroOdontograma = () => {
     )
 }
 
-export default CadastroOdontograma;
+export default EditOdontograma;

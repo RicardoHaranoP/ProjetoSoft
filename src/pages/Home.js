@@ -32,7 +32,7 @@ export default function Home() {
 
             <a href="./pacientes" role="button">Pacientes</a>
 
-            <a href="./cadastroProcedimentos" role="button">Procedimentos</a>
+            <a href="./ListaProcedimentos" role="button">Procedimentos</a>
         </div>
     )
 }

@@ -67,9 +67,9 @@ const EditAnamnese = () => {
                 response.data.forEach(element => {
 
                     if (element.codPac == codPac) {
-                        
+
                         pacienteAtualNome = element.nome
-                        
+
                         setPaciente(element)
                     }
                 });
@@ -89,9 +89,34 @@ const EditAnamnese = () => {
             .then(response => {
                 console.log('response', response)
                 console.log('response.data', response.data)
-                console.log('response.data.cirurgia',response.data.cirurgia)
+                console.log('response.data.cirurgia', response.data.cirurgia)
                 setCirurgia(response.data.cirurgia)
                 setQCirurgia(response.data.qCirurgia)
+                setAlergiaRemedio(response.data.alergiaRemedio)
+                setQAlergiaRemedio(response.data.qAlergiaRemedio)
+                setPressaoAlta(response.data.pressaoAlta)
+                setSangraCorte(response.data.sangraCorte)
+                setManchasRochas(response.data.manchasRochas)
+                setCicatrizacaoDemorada(response.data.cicatrizacaoDemorada)
+                setAnemia(response.data.anemia)
+                setTransfusaoSangue(response.data.transfusaoSangue)
+                setDst(response.data.dst)
+                setTonturas(response.data.tonturas)
+                setConvulsoes(response.data.convulsoes)
+                setDiabetes(response.data.diabetes)
+                setFuma(response.data.fuma)
+                setAlcool(response.data.alcool)
+                setAsma(response.data.asma)
+                setBronquite(response.data.bronquite)
+                setRinite(response.data.rinite)
+                setSinusite(response.data.sinusite)
+                setGastrite(response.data.gastrite)
+                setAlergiaPeniscilina(response.data.alergiaPeniscilina)
+                setCancerDeProstata(response.data.cancerDeProstata)
+                setAlergiaIodo(response.data.alergiaIodo)
+                setDenteMole(response.data.denteMole)
+                setFeridaLabioeLingua(response.data.feridaLabioeLingua)
+                setAnotacao(response.data.anotacao)
             })
             .catch(error => {
                 erroDataService(error)
@@ -154,9 +179,11 @@ const EditAnamnese = () => {
                         onChange={(e) => setQCirurgia(e.target.value)}
                     />
                 </div>
-                {/* <div className="form-group">
+                <div className="form-group">
                     <input
                         type="checkbox"
+                        checked={alergiaRemedio}
+                        onChange={(e) => setAlergiaRemedio(!alergiaRemedio)}
                     />
                     <label>Possui alergia a remedio? </label>
 
@@ -164,18 +191,24 @@ const EditAnamnese = () => {
                     <label>Qual?</label>
                     <input
                         type={'text'}
+                        value={qAlergiaRemedio}
+                        onChange={(e) => setQAlergiaRemedio(e.target.value)}
                     />
 
                 </div>
                 <div className="form-group">
                     <input
                         type="checkbox"
+                        checked={pressaoAlta}
+                        onChange={(e) => setPressaoAlta(!pressaoAlta)}
                     />
                     <label>Possui pressão alta?</label>
                 </div>
                 <div className="form-group">
                     <input
                         type="checkbox"
+                        checked={sangraCorte}
+                        onChange={(e) => setSangraCorte(!sangraCorte)}
                     />
                     <label>Sangra muito em corte?</label>
 
@@ -183,124 +216,165 @@ const EditAnamnese = () => {
                 <div className="form-group">
                     <input
                         type='checkbox'
+                        checked={manchasRochas}
+                        onChange={(e) => setManchasRochas(!manchasRochas)}
                     />
                     <label>Alguma mancha rocha?</label>
                 </div>
                 <div className="form-group">
                     <input
                         type={'checkbox'}
+                        checked={cicatrizacaoDemorada}
+                        onChange={(e) => setCicatrizacaoDemorada(!cicatrizacaoDemorada)}
                     />
                     <label>Cicatrização demorada?</label>
                 </div>
                 <div className="form-group">
                     <input
                         type={'checkbox'}
+                        checked={anemia}
+                        onChange={(e) => setAnemia(!anemia)}
                     />
                     <label>Anemia?</label>
                 </div>
                 <div className="form-group">
                     <input
                         type={'checkbox'}
+                        checked={transfusaoSangue}
+                        onChange={(e) => setTransfusaoSangue(!transfusaoSangue)}
                     />
                     <label>Transfusão de Sangue?</label>
                 </div>
                 <div className="form-group">
                     <input
                         type={'checkbox'}
+                        checked={dst}
+                        onChange={(e) => setDst(!dst)}
                     />
                     <label>DST?</label>
                 </div>
                 <div className="form-group">
                     <input
                         type={'checkbox'}
+                        checked={tonturas}
+                        onChange={(e) => setTonturas(!tonturas)}
                     />
                     <label>Tonturas?</label>
                 </div>
                 <div className="form-group">
                     <input
                         type={'checkbox'}
+                        checked={convulsoes}
+                        onChange={(e) => setConvulsoes(!convulsoes)}
                     />
                     <label>Convulsões?</label>
                 </div>
                 <div className="form-group">
                     <input
                         type={'checkbox'}
+                        checked={diabetes}
+                        onChange={(e) => setDiabetes(!diabetes)}
                     />
                     <label>Diabetes?</label>
                 </div>
                 <div className="form-group">
                     <input
                         type={'checkbox'}
+                        checked={fuma}
+                        onChange={(e) => setFuma(!fuma)}
                     />
                     <label>Fuma?</label>
                 </div>
                 <div className="form-group">
                     <input
                         type={'checkbox'}
+                        checked={alcool}
+                        onChange={(e) => setAlcool(!alcool)}
                     />
                     <label>Alcool?</label>
                 </div>
                 <div className="form-group">
                     <input
                         type={'checkbox'}
+                        checked={asma}
+                        onChange={(e) => setAsma(!asma)}
                     />
                     <label>Asma?</label>
                 </div>
                 <div className="form-group">
                     <input
                         type={'checkbox'}
+                        checked={bronquite}
+                        onChange={(e) => setBronquite(!bronquite)}
                     />
                     <label>Bronquite?</label>
                 </div>
                 <div className="form-group">
                     <input
                         type={'checkbox'}
+                        checked={rinite}
+                        onChange={(e) => setRinite(!rinite)}
                     />
                     <label>Rinite?</label>
                 </div>
                 <div className="form-group">
                     <input
                         type={'checkbox'}
+                        checked={sinusite}
+                        onChange={(e) => setSinusite(!sinusite)}
                     />
                     <label>Sinusite?</label>
                 </div>
                 <div className="form-group">
                     <input
                         type={'checkbox'}
+                        checked={alergiaPeniscilina}
+                        onChange={(e) => setAlergiaPeniscilina(!alergiaPeniscilina)}
                     />
                     <label>Possui alergia a Peniscilina?</label>
                 </div>
                 <div className="form-group">
                     <input
                         type={'checkbox'}
+                        checked={cancerDeProstata}
+                        onChange={(e) => setCancerDeProstata(!cancerDeProstata)}
                     />
                     <label>Cancer de Prostata?</label>
                 </div>
                 <div className="form-group">
                     <input
                         type={'checkbox'}
+                        checked={alergiaIodo}
+                        onChange={(e) => setAlergiaIodo(!alergiaIodo)}
                     />
                     <label>Alergia a Iodo?</label>
                 </div>
                 <div className="form-group">
                     <input
                         type={'checkbox'}
+                        checked={denteMole}
+                        onChange={(e) => setDenteMole(!denteMole)}
                     />
                     <label>Dente mole?</label>
                 </div>
                 <div className="form-group">
                     <input
                         type={'checkbox'}
+                        checked={feridaLabioeLingua}
+                        onChange={(e) => setFeridaLabioeLingua(!feridaLabioeLingua)}
                     />
                     <label>Ferida Labio e Lingua?</label>
                 </div>
                 <div className="form-group">
+                    <label>Anotações?</label>
                     <input
                         type='text'
+                        value={anotacao}
+                        onChange={(e) => setAnotacao(e.target.value)}
                     />
-                    <label>Anotações?</label>
+
                 </div>
-                 */}
+
                 <button type="submit" className="btnCadastrar">Salvar</button>
             </form>
         </div>
