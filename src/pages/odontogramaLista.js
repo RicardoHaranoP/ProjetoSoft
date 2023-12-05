@@ -23,6 +23,7 @@ const OdontogramaLista = () => {
     const [pacientes, setPacientes] = useState([])
     const [odontograma, setOdontograma] = useState([])
     const [query, setQuery] = useState("")
+    const [valorSugerido, setValorSugerido] = useState([])
 
     const tipoDente = [
         { id: 1, nome: '1ºIncisivo' },
@@ -260,11 +261,21 @@ const OdontogramaLista = () => {
                             </Column>
 
                             <Column width={150} align="center">
+                                <HeaderCell>Valor Sugerido</HeaderCell>
+                                <Cell dataKey="valor">
+                                    {(rowData, rowIndex) => {
+                                        const valor = rowData['valor'];
+                                        return(<span>{valor}</span>)
+
+                                    }}
+                                </Cell>
+                            </Column>
+
+                            <Column width={150} align="center">
                                 <HeaderCell>Situacao</HeaderCell>
                                 <Cell dataKey="situacao">
                                     {(rowData, rowIndex) => {
                                         const valor = rowData['situacao'];
-                                        console.log('valor ',valor)
                                         return(<span>{valor}</span>)
                                     }}
                                 </Cell>
