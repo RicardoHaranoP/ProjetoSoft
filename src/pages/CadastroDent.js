@@ -26,6 +26,7 @@ const CadastroDent = () => {
     const [celular, setCelular] = useState('')
     const [email, setEmail] = useState('')
 
+
     api.get('/dentista')
         .catch(function (error) {
             if (error.response) {
@@ -59,7 +60,7 @@ const CadastroDent = () => {
         e.preventDefault();
         let uf = opcaoSelecionada
         const dentista = { nome, cro, dataNasc, celular, email, uf };
-        
+        console.log(cro)
         const camposValidos = isCamposValid();
 
         if (camposValidos) {
@@ -138,8 +139,9 @@ const CadastroDent = () => {
             const label = campo.previousElementSibling.innerText;
             if (campo.id == 'uf') {
                 console.log('deu uf', opcaoSelecionada)
-                if (opcaoSelecionada == 'UF') {
+                if (opcaoSelecionada == 'UF') { 
                     createError(campo, `O campo "${label}" deve ser selecionado`)
+                    valid = false
                 }
             } else {
                 //verificando se o campo está vazio
@@ -156,7 +158,7 @@ const CadastroDent = () => {
                 }
 
                 if (campo.id == 'cro') {
-                    if (isNaN(campo.value)) {
+                    if (isNaN(campo.value.replace(/\D/g, ''))) {
                         createError(campo, 'CRO deve ser um número')
                         valid = false
                     }
@@ -213,6 +215,7 @@ const CadastroDent = () => {
                     setDataNasc(dentista.data.dataNasc);
                     setCelular(dentista.data.celular);
                     setEmail(dentista.data.email);
+                    setOpcaoSelecionada(dentista.data.uf)
                 })
                 .catch(error => {
                     //if (error.)
@@ -327,6 +330,7 @@ const CadastroDent = () => {
                                 <InputMask
                                     mask="(99) 99999-9999"
                                     value={celular}
+                                    id='celular'
                                     onChange={(e) => setCelular(e.target.value)}
                                     placeholder="Digite seu número de celular"
                                     className="validar"

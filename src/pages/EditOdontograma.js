@@ -163,6 +163,8 @@ const EditOdontograma = () => {
                 setFace(response.data.face)
                 setCodProcedimento(response.data.codProcedimento)
                 setProcedimento(response.data.codProcedimento)
+                setSituacao(response.data.situacao)
+                setValor(response.data.valor)
             })
             .catch(error => {
                 erroDataService(error)
@@ -318,6 +320,7 @@ const EditOdontograma = () => {
                                 <select
                                     onChange={handleSituacaoSelection}
                                     className="validar"
+                                    value={situacao}
                                 >
                                     <option value={null}>Selecione Situacao</option>
                                     {tipoSituacao.map((situacao) => (

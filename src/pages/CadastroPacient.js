@@ -25,36 +25,36 @@ const CadastroPacient = () => {
     const [dataNasc, setDataNasc] = useState('')
     const [celular, setCelular] = useState('')
     const [email, setEmail] = useState('')
-    
+
     function pegaCpfs() {
         dataService.getPacientes()
-        .then(response => {
-            console.log('pacientes', response.data)
+            .then(response => {
+                console.log('pacientes', response.data)
 
-            let cpfs = response.data.map(paciente => {
-                return paciente.cpf
+                let cpfs = response.data.map(paciente => {
+                    return paciente.cpf
+                })
+
+                setCpfsRegistrados(cpfs)
             })
-
-            setCpfsRegistrados(cpfs)    
-        })
-        .catch(function (error) {
-            if (error.response) {
-                // The request was made and the server responded with a status code
-                // that falls out of the range of 2xx
-                console.log(error.response.data);
-                console.log(error.response.status);
-                console.log(error.response.headers);
-            } else if (error.request) {
-                // The request was made but no response was received
-                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                // http.ClientRequest in node.js
-                console.log(error.request);
-            } else {
-                // Something happened in setting up the request that triggered an Error
-                console.log('Error', error.message);
-            }
-            console.log(error.config);
-        });
+            .catch(function (error) {
+                if (error.response) {
+                    // The request was made and the server responded with a status code
+                    // that falls out of the range of 2xx
+                    console.log(error.response.data);
+                    console.log(error.response.status);
+                    console.log(error.response.headers);
+                } else if (error.request) {
+                    // The request was made but no response was received
+                    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                    // http.ClientRequest in node.js
+                    console.log(error.request);
+                } else {
+                    // Something happened in setting up the request that triggered an Error
+                    console.log('Error', error.message);
+                }
+                console.log(error.config);
+            });
     }
 
     const savePaciente = (e) => {
@@ -149,9 +149,13 @@ const CadastroPacient = () => {
                 }
                 console.log('oi')
 
-                //verificar se já está registrado
-                if(!isCPFDuplicado(campo)){
-                    valid = false
+                if (!codPac) {
+
+                    //verificar se já está registrado
+                    if (!isCPFDuplicado(campo)) {
+                        valid = false
+                    }
+
                 }
             }
 
@@ -162,7 +166,7 @@ const CadastroPacient = () => {
                 }
             }
 
-            if(campo.id == 'dataNasc') {
+            if (campo.id == 'dataNasc') {
                 if (!validarDataNasc(campo)) {
                     valid = false
                 }
@@ -193,7 +197,7 @@ const CadastroPacient = () => {
             createError(campo, 'CPF já está registrado')
             return false
         }
-        
+
         return true
     }
 
@@ -208,7 +212,7 @@ const CadastroPacient = () => {
     }
 
     function validarDataNasc(campo) {
-        if (new Date(campo.value) > new Date()){
+        if (new Date(campo.value) > new Date()) {
             createError(campo, 'Data não pode ser posterior ao dia atual')
             return false
         }
@@ -314,7 +318,7 @@ const CadastroPacient = () => {
                                 />
 
 
-                                <label>CPF:</label><br/>
+                                <label>CPF:</label><br />
                                 <InputMask
                                     mask="999.999.999-99"
                                     id='cpf'
@@ -338,7 +342,7 @@ const CadastroPacient = () => {
                                     className='validar'
                                 />
                                 <br />
-                                <label>Celular:</label><br/>
+                                <label>Celular:</label><br />
                                 <InputMask
                                     mask="(99) 99999-9999"
                                     value={celular}
@@ -347,7 +351,7 @@ const CadastroPacient = () => {
                                     className="validar"
                                 >
                                     {(inputProps) => <input {...inputProps} />}
-                                </InputMask><br/>
+                                </InputMask><br />
 
                                 <label>email:</label>
                                 <input
@@ -362,7 +366,7 @@ const CadastroPacient = () => {
 
                                 <div>
                                     <span>
-                                        <a type="button" className='btnCancelar' href='../pacientes'>Cancelar</a>
+                                        <a type="button" className='btnCancelar' href='../../'>Cancelar</a>
                                     </span>
                                     <button className='btnCadastrar' onClick={(e) => savePaciente(e)}>Cadastrar</button>
                                 </div>

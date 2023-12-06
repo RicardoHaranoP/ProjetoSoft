@@ -131,7 +131,7 @@ const ListaAnamnese = () => {
                     </div>
                     <Table
                         height={400}
-                        data={anamnese}
+                        data={anamnese.sort((a, b) => new Date(b.dataRealizacao) - new Date(a.dataRealizacao))}
                         onRowClick={rowData => {
                             console.log('rowdata', rowData);
                         }}
