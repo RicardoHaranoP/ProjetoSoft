@@ -21,7 +21,7 @@ const CadastroProcedimentos = () => {
             dataService.createProcedimento(procedimento)
                 .then(response => {
                     console.log("Procedimento criado", response.data);
-                    navigate('/')
+                    navigate('/ListaProcedimentos')
                 })
                 .catch(error => {
                     erroDataService(error)
@@ -130,7 +130,7 @@ const CadastroProcedimentos = () => {
                         <label >Envolve face?</label> */}
 
                         <div style={{ width: 160 }}>
-                            <label>Valor Sugerido:</label>
+                            <label>Valor Sugerido (R$):</label>
                             <InputNumber
                                 value={valor}
                                 onChange={(e) => setValor(e)}
@@ -141,7 +141,7 @@ const CadastroProcedimentos = () => {
                         </div>
                         <div>
                             <span>
-                                <a type="button" className='btnCancelar' href='../'>Cancelar</a>
+                                <a type="button" className='btnCancelar' href='../ListaProcedimentos'>Cancelar</a>
                             </span>
                             <button type="submit" className="btnCadastrar">Cadastrar</button>
                         </div>

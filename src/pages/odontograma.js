@@ -240,7 +240,7 @@ const Odontograma = () => {
                         </div>
                         <h2 className="mb-5 mt-0">Odontograma {pacienteAtualNome} </h2>
                         <div>
-                            <a className="novo" href={`http://localhost:3000/paciente/${codPac}/odontograma/cadastro`} role="button" > <MdAddCircle size={30} /> Novo Odontograma</a>
+                            <a className="novo" href={`http://localhost:3000/paciente/${codPac}/odontograma/cadastro`} role="button" > <MdAddCircle size={30} /> Incluir novo Procedimento no Odontograma</a>
                         </div><br /><br /><br /><br />
                         <div style={{ textAlign: 'center', alignItems: 'center', justifyContent: 'space-between' }}>
                             <div style={{ display: 'flex' }}>

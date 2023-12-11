@@ -19,6 +19,8 @@ const { Column, HeaderCell, Cell } = Table;
 const ListaAnamnese = () => {
     const [anamnese, setAnamnese] = useState([]);
     const [pacienteAtualNome, setPacienteAtualNome] = useState(null);
+    const [query, setQuery] = useState("")
+
 
     const { codPac } = useParams();
     const navigate = useNavigate()
@@ -34,6 +36,7 @@ const ListaAnamnese = () => {
             .then(response => {
                 console.log('anamnese', response.data)
                 response.data.forEach(element => {
+
                     if (element.codPac == codPac) {
                         setAnamnese((prevState) => [...prevState, element])
                     }
@@ -69,7 +72,7 @@ const ListaAnamnese = () => {
             dataService.deleteAnamnese(id)
                 .then((response) => {
                     console.log('anamnese deletada ', response)
-                    navigate('../')
+                    navigate(`../paciente/${codPac}`)
 
                 })
                 .catch(error => {
@@ -129,9 +132,20 @@ const ListaAnamnese = () => {
                             <a className="novo" href={`http://localhost:3000/paciente/${codPac}/anamnese/cadastro`} role="button" > <MdAddCircle size={30} /> Nova Anamnese</a>
                         </div>
                     </div>
+                    <div>
+                        <input placeholder="Busque o Paciente" onChange={event => setQuery(event.target.value)} />
+                        <span>Busque a partir do dia</span>
+                    </div>
                     <Table
                         height={400}
-                        data={anamnese.sort((a, b) => new Date(b.dataRealizacao) - new Date(a.dataRealizacao))}
+                        data={anamnese.filter(elementos => {
+                            if (query === '') {
+                                return elementos;
+                            } else if (elementos.dataRealizacao.includes(query)) {
+                                return elementos;
+                            }
+                        })
+                            .sort((a, b) => new Date(b.dataRealizacao) - new Date(a.dataRealizacao))}
                         onRowClick={rowData => {
                             console.log('rowdata', rowData);
                         }}

@@ -10,17 +10,68 @@ import { MdEdit } from 'react-icons/md';
 import '../css/ListaPacientDent.css';
 import { Table } from 'rsuite';
 import dataService from '../services/dataService';
-import { SearchBar } from 'rsuite/esm/Picker';
+import { set } from 'rsuite/esm/utils/dateUtils';
 
 const { Column, HeaderCell, Cell } = Table;
 
 const ListarDentistas = () => {
     const [dentista, setDentista] = useState([]);
     const [query, setQuery] = useState("")
+    const [dataAtual, setDataAtual] = useState(new Date())
+    const [consultasPosteriores, setConsultasPosteriores] = useState([])
+
 
     useEffect(() => {
         init();
+        pegaConsultasPosteriores()
     }, []);
+
+    const pegaConsultasPosteriores = () => {
+        dataService.getConsultas()
+            .then(response => {
+                console.log('consultas: ', response.data[0].data)
+                let consultasFormatadas = response.data.map(element => {
+                    let data = new Date(element.data)
+                    data.setDate(data.getDate() + 1);
+                    element.data = data.toLocaleDateString('pt-BR', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric'
+                    });
+                    return element
+                })
+                consultasFormatadas.forEach(element => {
+                    const partesData = element.data.split('/')
+                    const dia = parseInt(partesData[0], 10);
+                    const mes = parseInt(partesData[1], 10) - 1; 
+                    const ano = parseInt(partesData[2], 10);
+                    const dataDaConsulta = new Date(ano, mes, dia);
+                    if (dataDaConsulta > dataAtual) {
+                        console.log('elemenet', element.data)
+                        setConsultasPosteriores((prevState) => [...prevState, element])
+                    }
+
+                });
+            })
+            .catch(function (error) {
+                if (error.response) {
+                    // The request was made and the server responded with a status code
+                    // that falls out of the range of 2xx
+                    console.log(error.response.data);
+                    console.log(error.response.status);
+                    console.log(error.response.headers);
+                } else if (error.request) {
+                    // The request was made but no response was received
+                    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                    // http.ClientRequest in node.js
+                    console.log(error.request);
+                } else {
+                    // Something happened in setting up the request that triggered an Error
+                    console.log('Error', error.message);
+                }
+                console.log(error.config);
+            });
+    }
 
     const init = () => {
         dataService.getDentistas()
@@ -68,10 +119,22 @@ const ListarDentistas = () => {
 
     const handleDelete = (codDent) => {
         console.log('id: ', codDent);
-        var retorno = confirm('Realmente deseja excluir dentista?');
+        let nomeDentista = ''
+        dentista.forEach(element => {
+            if (codDent == element.codDent) {
+                nomeDentista = element.nome
+            }
+        })
+        var retorno = confirm(`Realmente deseja excluir dentista ${nomeDentista}?`);
         if (retorno == true) {
 
-
+            consultasPosteriores.forEach(element => {
+                if(element.codDent == codDent) {
+                    alert('Não foi possível deletar o dentista pois possui consultas marcadas futuramente')
+                    init();
+                }
+            })
+            
             dataService.deleteDentista(codDent)
                 .then(response => {
                     console.log('dentista deletado', response.data);
@@ -139,7 +202,8 @@ const ListarDentistas = () => {
                     </div>
 
                     <div>
-                        <input placeholder="Digite o Dentista" onChange={event => setQuery(event.target.value)} />
+                        <input placeholder="Busque o Dentista" onChange={event => setQuery(event.target.value)} />
+                        <span>Busque a partir do nome, cro, unidade federativa, celular, data de nascimento ou email    </span>
                     </div>
                     <Table
                         height={400}
@@ -148,6 +212,16 @@ const ListarDentistas = () => {
                                 return elementos;
                             } else if (elementos.nome.toLowerCase().includes(query.toLowerCase())) {
                                 return elementos;
+                            } else if (elementos.cro.includes(query)) {
+                                return elementos;
+                            } else if (elementos.email.includes(query)) {
+                                return elementos;
+                            } else if (elementos.dataNasc.includes(query)) {
+                                return elementos;
+                            } else if (elementos.celular.includes(query)) {
+                                return elementos
+                            } else if (elementos.uf.toLowerCase().includes(query.toLowerCase())) {
+                                return elementos
                             }
                         })}
                         onRowClick={rowData => {
@@ -167,7 +241,7 @@ const ListarDentistas = () => {
                         </Column>
 
                         <Column width={70} align="center">
-                            <HeaderCell>UF CRO</HeaderCell>
+                            <HeaderCell>UF</HeaderCell>
                             <Cell dataKey="uf" />
                         </Column>
                         <Column width={100} align="center">

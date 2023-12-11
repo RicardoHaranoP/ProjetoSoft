@@ -18,6 +18,7 @@ const MarcarConsulta = () => {
     const [duracao, setDuracao] = useState('');
     const [confirmado, setConfirmado] = useState('');
     const [consRealizada, setConsRealizada] = useState('');
+    const [consultas, setConsultas] = useState('');
 
     const [pacientes, setPacientes] = useState([]);
     const [dentistas, setDentistas] = useState([]);
@@ -84,6 +85,18 @@ const MarcarConsulta = () => {
             });
     }
 
+    function pegaConsultas() {
+
+        dataService.getConsultas()
+            .then((response) => {
+                console.log('consultas', response.data)
+                setConsultas(response.data)
+            })
+            .catch(error => {
+                erroDataService(error)
+            })
+    }
+
     useEffect(() => {
         if (codCons) {
             dataService.getConsulta(codCons)
@@ -94,6 +107,7 @@ const MarcarConsulta = () => {
 
         pegaDentistas()
         pegaPacientes()
+        pegaConsultas()
 
 
     }, [])
@@ -194,7 +208,7 @@ const MarcarConsulta = () => {
 
             //verificando se o campo está vazio
             if (!campo.value) {
-                createError(campo, `O campx'o "${label}" não pode estar em branco`)
+                createError(campo, `O campo "${label}" não pode estar em branco`)
                 valid = false;
             }
             if (campo.value == 'Selecione o paciente' || campo.value == 'Selecione o dentista' || campo.value == 'escolha') {
@@ -202,19 +216,47 @@ const MarcarConsulta = () => {
                 valid = false;
             }
 
-            
+
             if (campo.id == 'data') {
                 const dataCampo = new Date(campo.value)
                 dataCampo.setDate(dataCampo.getDate() + 1)
                 const diaAtual = new Date()
                 console.log('dataCampo:', dataCampo)
-                if(dataCampo < diaAtual){
+                if (dataCampo < diaAtual) {
                     createError(campo, 'Data não pode ser anterior à atual')
                     valid = false
                 }
-                console.log('data',  campo.value)
+                console.log('data', campo.value)
             }
 
+            if (campo.id == 'duracao') {
+
+                consultas.forEach(element => {
+                    const pacienteAux = element.codPac
+                    const horaInicioAux = element.horaInicio
+                    const horaFinalAux = element.horaFinal
+                    let diaDaConsultaAux = new Date(element.data)
+                    diaDaConsultaAux.setDate(diaDaConsultaAux.getDate()+1)
+                    diaDaConsultaAux = new Date(diaDaConsultaAux).toLocaleDateString('pt-BR', {day: '2-digit', month: '2-digit', year: 'numeric'})
+                    if (dentista == element.codDent && data == element.data && horaInicio < element.horaFinal && horaFinal > element.horaInicio && duracao != 'escolha') {
+
+                        pacientes.forEach(element => {
+                            if (element.codPac == pacienteAux) {
+                                console.log(element)
+                                createError(campo, `A consulta existente vai de ${horaInicioAux} até ${horaFinalAux} do dia ${diaDaConsultaAux} com o paciente de nome ${element.nome}`)
+                            }
+                        })
+                        dentistas.forEach(element => {
+                            if (element.codDent == dentista) {
+                                createError(campo, `Já existe uma consulta nesse horário para o(a) dentista ${element.nome}`)
+                            }
+                        })
+
+                    }
+
+                    console.log('consulta: ', element)
+                });
+            }
 
         }
         return valid
@@ -259,7 +301,7 @@ const MarcarConsulta = () => {
                                 </div>
 
                                 <form className="formulario">
-                                    <label>Dentista: </label><br/>
+                                    <label>Dentista: </label><br />
                                     <select
                                         onChange={handleDentistaSelection}
                                         className="validar"
@@ -270,7 +312,7 @@ const MarcarConsulta = () => {
                                                 {dentist.nome}
                                             </option>
                                         ))}
-                                    </select><br/>
+                                    </select><br />
 
 
 

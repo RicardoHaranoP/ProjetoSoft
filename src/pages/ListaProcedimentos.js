@@ -18,7 +18,7 @@ export default function ListaProcedimentos() {
     const [query, setQuery] = useState("")
     const [erro, setErro] = useState()
 
-    
+
 
     const erroDataService = (error) => {
         if (error.response) {
@@ -46,7 +46,11 @@ export default function ListaProcedimentos() {
             .then((response) => {
 
 
-                setProcedimentos(response.data);
+                setProcedimentos(response.data.sort((a, b) => {
+                    if (a.nome < b.nome) return -1
+                    if (a.nome > b.nome) return 1
+                    return 0
+                }));
 
                 console.log('procedimentos: ', response)
             })
@@ -62,7 +66,7 @@ export default function ListaProcedimentos() {
             dataService.deleteProcedimento(codProcedimento)
                 .then(response => {
                     console.log('procedimento deletado', response.data);
-                    navigate('../')
+                    pegaProcedimentos()
                 })
                 .catch(function (error) {
                     erroDataService(error)
@@ -120,7 +124,8 @@ export default function ListaProcedimentos() {
 
                     </div>
                     <div>
-                        <input placeholder="Digite o Procedimento" onChange={event => setQuery(event.target.value)} />
+                        <input placeholder="Busque o Procedimento" onChange={event => setQuery(event.target.value)} />
+                        <span>Busque a partir do nome</span>
                     </div>
                     <Table
                         height={400}
@@ -145,7 +150,6 @@ export default function ListaProcedimentos() {
                         </Column>
                         <Column width={80} fixed="right">
                             <HeaderCell>Deletar</HeaderCell>
-
                             <Cell>
                                 {rowData => (
                                     <span>

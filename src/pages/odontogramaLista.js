@@ -134,7 +134,7 @@ const OdontogramaLista = () => {
         pegaProcedimentos()
 
     }, []);
-//
+    //
     const handleDelete = (codOdon) => {
         console.log('id: ', codOdon);
         var retorno = confirm('Realmente deseja excluir odontograma?');
@@ -144,7 +144,7 @@ const OdontogramaLista = () => {
             dataService.deleteOdontograma(codOdon)
                 .then(response => {
                     console.log('odontograma deletado', response.data);
-                    navigate('../../')
+                    navigate(`../../paciente/${codPac}`)
                 })
                 .catch(error => {
                     erroDataService(error)
@@ -178,14 +178,28 @@ const OdontogramaLista = () => {
                                 </ul>
                             </div>
                         </div>
-                        <h2 className="mb-5 mt-0">Odontograma {pacienteAtualNome} Lista</h2>
+                        <h2 className="mb-5 mt-0">Procedimentos Odontograma {pacienteAtualNome}</h2>
                         <div>
-                            <a className="novo" href={`http://localhost:3000/paciente/${codPac}/odontograma/cadastro`} role="button" > <MdAddCircle size={30} /> Novo Odontograma</a>
+                            <a className="novo" href={`http://localhost:3000/paciente/${codPac}/odontograma/cadastro`} role="button" > <MdAddCircle size={30} /> Inclulir novo Procedimento no Odontograma</a>
                         </div>
                         <br /><br /><br />
+                        <div>
+                            <input placeholder="Busque o Paciente" onChange={event => setQuery(event.target.value)} />
+                            <span>Busque a partir do valor Sugerido ou da Situacao</span>
+                        </div>
                         <Table
                             height={400}
-                            data={odontograma.sort((a, b) => new Date(b.dataRealizacao) - new Date(a.dataRealizacao))}
+                            data={odontograma
+                                .filter(elementos => {
+                                    if (query === '') {
+                                        return elementos;
+                                    } else if (elementos.valor.includes(query)) {
+                                        return elementos
+                                    } else if (elementos.situacao.includes(query)){
+                                        return elementos
+                                    }
+                                })
+                                .sort((a, b) => new Date(b.dataRealizacao) - new Date(a.dataRealizacao))}
                             onRowClick={rowData => {
                                 console.log(rowData);
                             }}
@@ -249,9 +263,9 @@ const OdontogramaLista = () => {
                                 <Cell dataKey="codProcedimento">
                                     {(rowData, rowIndex) => {
                                         const valor = rowData['codProcedimento'];
-       
-                                        for (let i =0; i<procedimentos.length; i++) {
-                                            if(procedimentos[i].codProcedimento == valor){
+
+                                        for (let i = 0; i < procedimentos.length; i++) {
+                                            if (procedimentos[i].codProcedimento == valor) {
                                                 return (<span>{procedimentos[i].nome}</span>)
                                             }
                                         }
@@ -261,11 +275,11 @@ const OdontogramaLista = () => {
                             </Column>
 
                             <Column width={150} align="center">
-                                <HeaderCell>Valor Sugerido</HeaderCell>
+                                <HeaderCell>Valor Sugerido (R$)</HeaderCell>
                                 <Cell dataKey="valor">
                                     {(rowData, rowIndex) => {
                                         const valor = rowData['valor'];
-                                        return(<span>{valor}</span>)
+                                        return (<span>{valor}</span>)
 
                                     }}
                                 </Cell>
@@ -276,7 +290,7 @@ const OdontogramaLista = () => {
                                 <Cell dataKey="situacao">
                                     {(rowData, rowIndex) => {
                                         const valor = rowData['situacao'];
-                                        return(<span>{valor}</span>)
+                                        return (<span>{valor}</span>)
                                     }}
                                 </Cell>
                             </Column>

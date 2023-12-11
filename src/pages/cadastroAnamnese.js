@@ -108,7 +108,7 @@ const CadastroAnamnese = () => {
         dataService.createAnamnese(codPac, anamnese)
             .then(response => {
                 console.log('Anamnese criada', response.data)
-                navigate('/')
+                navigate(`/paciente/ListaAnamnese/${codPac}`)
             })
             .catch(error => {
                 erroDataService(error)
@@ -336,9 +336,9 @@ const CadastroAnamnese = () => {
 
                 </div>
                 <span>
-                    <a type="button" className='btnCancelar' href='../../../pacientes'>Cancelar</a>
+                    <a type="button" className='btnCancelar' href= {`../../../paciente/ListaAnamnese/${codPac}`}>Cancelar</a>
                 </span>
-                <button type="submit" className="btnCadastrar">Salvar</button>
+                <button type="submit" className="btnCadastrar" >Salvar</button>
 
             </form>
         </div>

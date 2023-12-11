@@ -79,7 +79,7 @@ const CadastroOdontograma = () => {
             dataService.createOdontograma(odontograma)
                 .then(response => {
                     console.log('Odontograma adicionado', response.data);
-                    navigate('/');
+                    navigate(`/paciente/OdontogramaLista/${codPac}`);
                 }).catch(error => {
                     erroDataService(error)
                 })
@@ -230,7 +230,7 @@ const CadastroOdontograma = () => {
                         <div>
 
 
-                            <h2 className="mb-4 mt-0">Cadastro Odontograma {pacienteAtualNome}</h2>
+                            <h2 className="mb-4 mt-0">Cadastro Procedimentos Odontograma {pacienteAtualNome}</h2>
                             <form method='POST' className='formulario'>
                                 <p>{format(dataRealizacao, 'dd/MM/yyyy')}</p>
                                 <label>Dente: </label><br />
@@ -302,7 +302,7 @@ const CadastroOdontograma = () => {
                                 </select><br />
                                 <div>
                                     <span>
-                                        <a type="button" className='btnCancelar' href='../../../pacientes'>Cancelar</a>
+                                        <a type="button" className='btnCancelar' href={`../../../paciente/${codPac}`}>Cancelar</a>
                                     </span>
                                     <button className='btnCadastrar' onClick={(e) => saveOdontograma(e)}>Cadastrar</button>
                                 </div>

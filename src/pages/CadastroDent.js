@@ -69,7 +69,7 @@ const CadastroDent = () => {
                 dataService.updateDentista(codDent, dentista)
                     .then(response => {
                         console.log('Dentista atualizado', response.data);
-                        navigate('/');
+                        navigate('/dentistas');
                     })
                     .catch(error => {
                         //if (error.)
@@ -97,7 +97,7 @@ const CadastroDent = () => {
                     .then(response => {
 
                         console.log("Dentista adicionado", response.data);
-                        navigate("/");
+                        navigate("/dentistas");
                     })
                     .catch(error => {
                         //if (error.)
@@ -188,7 +188,7 @@ const CadastroDent = () => {
 
 
     function validarEmail(campo) {
-        const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        const emailRegex = /^[^@\s]+@[^@\s]+$/;
         if (!emailRegex.test(campo.value)) {
             createError(campo, 'Email inválido')
             return false
@@ -198,8 +198,8 @@ const CadastroDent = () => {
     }
 
     function validarDataNasc(campo) {
-        if (new Date(campo.value) > new Date()) {
-            createError(campo, 'Data não pode ser posterior ao dia atual')
+        if (new Date(campo.value) > new Date().setFullYear(new Date().getFullYear() - 18)) {
+            createError(campo, 'Dentistas devem possuir no mínimo 18 anos')
             return false
         }
         return true
@@ -352,9 +352,9 @@ const CadastroDent = () => {
 
                                 <div>
                                     <span>
-                                        <a type="button" className='btnCancelar' href='../pacientes'>Cancelar</a>
+                                        <a type="button" className='btnCancelar' href='../../../dentistas'>Cancelar</a>
                                     </span>
-                                    <button className='btnCadastrar' onClick={(e) => saveDentista(e)}>Cadastrar</button>
+                                    <button className='btnCadastrar'  onClick={(e) => saveDentista(e)}>Cadastrar</button>
                                 </div>
                             </form>
                         </div>

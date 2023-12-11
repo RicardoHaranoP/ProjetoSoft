@@ -69,7 +69,7 @@ const CadastroPacient = () => {
                 dataService.updatePaciente(codPac, paciente)
                     .then(response => {
                         console.log('paciente atualizado', response.data);
-                        navigate('/');
+                        navigate('/pacientes');
                     })
                     .catch(error => {
                         //if (error.)
@@ -96,7 +96,7 @@ const CadastroPacient = () => {
                 dataService.createPaciente(paciente)
                     .then(response => {
                         console.log("Paciente adicionado", response.data);
-                        navigate("/");
+                        navigate("/pacientes");
                     })
                     .catch(error => {
                         //if (error.)
@@ -202,7 +202,7 @@ const CadastroPacient = () => {
     }
 
     function validarEmail(campo) {
-        const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        const emailRegex = /^[^@\s]+@[^@\s]+$/;
         if (!emailRegex.test(campo.value)) {
             createError(campo, 'Email inválido')
             return false
@@ -366,7 +366,7 @@ const CadastroPacient = () => {
 
                                 <div>
                                     <span>
-                                        <a type="button" className='btnCancelar' href='../../'>Cancelar</a>
+                                        <a type="button" className='btnCancelar' href='../../pacientes'>Cancelar</a>
                                     </span>
                                     <button className='btnCadastrar' onClick={(e) => savePaciente(e)}>Cadastrar</button>
                                 </div>
